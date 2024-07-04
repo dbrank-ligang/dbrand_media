@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+  list-style: none;
+}
+.mediaDetailBox > div {
+  // border: 1px solid red;
+}
+.mediaDetailBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  .mediaDetail_left {
+    display: flex;
+    flex-direction: column;
+    width: 256px;
+    height: 100%;
+    overflow: hidden;
+    .left_top {
+      height: 200px;
+      overflow: hidden;
+      text-align: center;
+      .left_top_tit1 {
+        margin-top: 20px;
+        font-weight: 700;
+        line-height: 40px;
+      }
+      .left_top_tit2 {
+        font-size: 30px;
+        font-weight: 700;
+        color: rgb(89 68 0);
+      }
+      .left_top_tit3 {
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+    .left_bottom {
+      flex: 1;
+      padding-left: 0;
+      overflow: auto;
+      text-align: center;
+      li {
+        width: 100%;
+        cursor: pointer;
+        background-color: #ffffff;
+      }
+      li > .mediaName_nav {
+        min-height: 60px;
+        line-height: 60px;
+        span {
+          display: inline-block;
+          width: 5px;
+          height: 5px;
+          margin: 3px 10px;
+          background-color: #000000;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+  .active {
+    background-color: rgb(255 249 207 / 100%) !important;
+    .mediaName_nav {
+      font-weight: 700;
+      border-right: 5px solid #ffdd00;
+    }
+  }
+  .mediaDetail_right {
+    flex: 1;
+    height: 100%;
+    margin-left: 20px;
+    overflow: auto;
+    .mediaSource {
+      width: 100%;
+      height: auto;
+      padding: 20px;
+      background: rgb(255 255 255 / 100%);
+      border-radius: 6px;
+      .mediaSource_tit {
+        font-size: 18px;
+        font-weight: 550;
+      }
+      .mediaSource_listBox {
+        padding: 15px 15px 0;
+        overflow: auto;
+        .mediaSource_listRow {
+          display: flex;
+          justify-content: left;
+          margin-bottom: 10px;
+          .mediaSource_rowCon {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            justify-content: left;
+            div {
+              margin: 0 10px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+    .numberDetailBox {
+      width: 100%;
+      height: auto;
+      padding: 20px;
+      background: rgb(255 255 255 / 100%);
+      border-radius: 6px;
+      .numberDetailBox_tit {
+        font-size: 18px;
+        font-weight: 550;
+      }
+      .numberDetailBox_Row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        width: 100%;
+        height: auto;
+        word-wrap: break-word;
+        margin-bottom: 8px;
+        .numberDetailBox_rowTit {
+          min-width: 50px;
+        }
+        .numberDetailBox_rowCon {
+          flex: 1;
+          width: 200px;
+          word-wrap: break-word;
+        }
+      }
+    }
+    .contentListBox {
+      width: 100%;
+      height: auto;
+      padding: 20px;
+      background: rgb(255 255 255 / 100%);
+      border-radius: 6px;
+      .contentListBox_tit{
+        font-size: 20px;
+      }
+    }
+    .tableBox{
+      width: 100%;
+      margin-top: 30px;
+      thead{
+
+      }
+    }
+    :deep(.el-table thead){
+      color: #000 !important;
+    }
+  }
+  .activeMedia {
+    background-color: #ffdd00; /* 你想要的背景色 */
+    border-radius: 5px;
+  }
+  .activeNumber {
+    background-color: #ffdd00; /* 你想要的背景色 */
+    border-radius: 5px;
+  }
+}

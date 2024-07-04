@@ -1,0 +1,209 @@
+[
+  {
+    "top": [
+      {
+        "type": "chuantong",
+        "list": [
+          {
+            "name": "传统媒体-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] }
+            ]
+          },
+          {
+            "name": "传统媒体-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "传统媒体-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "zixun",
+        "list": [
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "zimeiti",
+        "list": [
+          {
+            "name": "自媒体-明星名人",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "自媒体-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "subdivide": [
+      {
+        "type": "chuantong",
+        "list": [
+          {
+            "name": "传统媒体-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [0, 0, 0] }
+            ]
+          },
+          {
+            "name": "传统媒体-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "zixun",
+        "list": [
+          {
+            "name": "资讯-中央级",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "咨询-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "zimeiti",
+        "list": [
+          {
+            "name": "自媒体-明星名人",
+            "list": [
+              { "mediaId": "111", "mediaName": "新华社", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "人民网", "publishFlag": [1, 1, 0] }
+            ]
+          },
+          {
+            "name": "自媒体-社会大众类",
+            "list": [
+              { "mediaId": "111", "mediaName": "工人日报", "publishFlag": [1, 1, 0] },
+              { "mediaId": "222", "mediaName": "科技日报", "publishFlag": [1, 1, 0] }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,91 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "path": "/home/index",
+      "name": "home",
+      "component": "/home/index",
+      "meta": {
+        "icon": "HomeFilled",
+        "title": "首页",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": true,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/mediaSugges/index",
+      "name": "mediaSugges",
+      "component": "/mediaSugges/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "媒体推荐",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/mediaDetail/index",
+      "name": "mediaDetail",
+      "component": "/mediaDetail/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "媒体详情",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/mediaSearch/index",
+      "name": "mediaSearch",
+      "component": "/mediaSearch/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "媒体查询",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/numberSearch/index",
+      "name": "numberSearch",
+      "component": "/numberSearch/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "账号查询",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    },
+
+    {
+      "path": "/about/index",
+      "name": "about",
+      "component": "/about/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "关于项目",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    }
+  ],
+  "msg": "成功"
+}

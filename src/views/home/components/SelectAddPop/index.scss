@@ -1,0 +1,68 @@
+* {
+  box-sizing: border-box;
+}
+.selectTab {
+  display: flex;
+  justify-content: space-between;
+  width: 150px;
+  cursor: pointer;
+}
+.treeBox {
+  padding-left: 10px;
+}
+.tagBox {
+  padding-left: 77px;
+}
+
+/* stylelint-disable-next-line no-duplicate-selectors */
+.listTitle {
+  width: 200px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 19px;
+  color: #000000;
+}
+.custom-tree-node {
+  // animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.addListBox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  .addTitle {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+.buttonStyle_cancel {
+  color: #000000;
+  border: 1px solid #ffdd00;
+}
+.buttonStyle {
+  color: #000000;
+  background-color: #ffdd00;
+  border: none;
+}
+:deep(.el-input__wrapper) {
+  width: 100%;
+}
+.el-checkbox {
+  width: 210px;
+}
+:deep(.el-notification) {
+  background-color: #ffdd00 !important;
+}
