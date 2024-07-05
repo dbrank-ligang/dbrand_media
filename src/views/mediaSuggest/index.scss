@@ -1,0 +1,108 @@
+* {
+  box-sizing: border-box;
+  list-style: none;
+}
+.mediaSuggestBox{
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  overflow: hidden;
+
+  .mediaSuggest_tit{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    .mediaSuggest_tit1{
+      // font-size: 18px;
+      font-weight: 700;
+
+    }
+    .mediaSuggest_tit2{
+      margin-left: 5px;
+
+    }
+  }
+  .searchBox{
+    width: 80%;
+    margin-left: 30px;
+    .searchBox_1{
+      display: flex;
+      justify-content: left;
+      line-height: 30px;
+      margin-top: 20px;
+      height: 30px;
+
+      .selectBox{
+        display: flex;
+        justify-content: left;
+        margin-left: 20px;
+      }
+    }
+    .searchBox_2{
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      height: 30px;
+      line-height: 30px;
+      
+      .searchBox2_left {
+        display: flex;
+        justify-content: left;
+        .searchBox_2Con {
+          display: flex;
+          flex: 1;
+          flex-wrap: wrap;
+          justify-content: left;
+          div {
+            margin: 0 10px;
+            cursor: pointer;
+          }
+        }
+      }
+      .buttonStyle {
+        background-color: #ffdd00;
+      }
+    }
+   
+  }
+
+
+  .activePlatform {
+    background-color: #ffdd00; /* 你想要的背景色 */
+    border-radius: 5px;
+  }
+  :deep(.el-table thead){
+    color: #000 !important;
+  }
+  :deep(.is-link){
+    color: #000;
+  }
+
+  .tableBox{
+    width: 90%;
+    height: auto;
+    display: flex;
+    justify-content: left;
+    // border: 1px solid red;
+    margin: 30px 0 30px 30px;
+    // padding: 30px 40px;
+    .tableTile{
+      width: 100%;
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .sellBox {
+      width: 43%;
+      height: 300px;
+      // border: 1px solid red;
+    }
+    .sellNoBox {
+      width: 43%;
+      height: 300px;
+      // border: 1px solid red;
+      margin-left: 5%;
+   
+    }
+  }
+}

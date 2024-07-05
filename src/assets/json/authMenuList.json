@@ -16,9 +16,9 @@
       }
     },
     {
-      "path": "/mediaSugges/index",
-      "name": "mediaSugges",
-      "component": "/mediaSugges/index",
+      "path": "/mediaSuggest/index",
+      "name": "mediaSuggest",
+      "component": "/mediaSuggest/index",
       "meta": {
         "icon": "InfoFilled",
         "title": "媒体推荐",

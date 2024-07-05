@@ -326,7 +326,7 @@ const mediaSourceArr = ref([
     ]
   }
 ]);
-let numberArr = ref([]); //账号列表
+let numberArr = ref([] as any); //账号列表
 // 账号详情、账号标签
 let numberDetailObj = ref({
   extendFields: {
