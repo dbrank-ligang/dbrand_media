@@ -18,3 +18,24 @@ export const dictListApi = param => {
 export const recommandMediaApi = param => {
   return http.get(`/media/recommandMedia`, param, { loading: false });
 };
+// 競品列表
+export const competitorApi = param => {
+  return http.get(`/media/competitorRecommandMedia`, param, { loading: false });
+};
+
+// 媒体搜索
+// 媒体模糊搜索
+export const searchMediaApi = param => {
+  return http.get(`/media/searchMedia`, param, { loading: false });
+};
+
+// 媒体详情
+// 媒体导航列表
+export const mediaNavApi = param => {
+  return http.get(`/media/unionInfo`, param, { loading: false });
+};
+
+// 媒体&账号列表
+export const accountListApi = param => {
+  return http.get(`/media/accountList`, param, { loading: false });
+};

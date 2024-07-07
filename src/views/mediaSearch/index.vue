@@ -10,6 +10,7 @@
       @select="handleSelect"
       @keyup.enter="handleInputConfirm"
       @blur="handleInputConfirm"
+      value-key="mediaName"
     >
       <template #append><div>搜索</div></template>
     </el-autocomplete>
@@ -31,6 +32,8 @@
 
 <script setup lang="ts" name="mediaSearch">
 import { ref } from "vue";
+import { searchMediaApi } from "@/api/modules/media";
+import router from "@/routers";
 
 const inputValue = ref("");
 const historyListData = ref([
@@ -55,21 +58,6 @@ const tagListData = ref([
   { mediaId: 11, mediaName: "第一财经" },
   { mediaId: 22, mediaName: "第二财经" }
 ]);
-interface RestaurantItem {
-  value: string;
-  link: string;
-}
-const loadAll = () => {
-  return [
-    { value: "vue", link: "https://github.com/vuejs/vue" },
-    { value: "element", link: "https://github.com/ElemeFE/element" },
-    { value: "cooking", link: "https://github.com/ElemeFE/cooking" },
-    { value: "mint-ui", link: "https://github.com/ElemeFE/mint-ui" },
-    { value: "vuex", link: "https://github.com/vuejs/vuex" },
-    { value: "vue-router", link: "https://github.com/vuejs/vue-router" },
-    { value: "babel", link: "https://github.com/babel/babel" }
-  ];
-};
 const historyChange = mediaId => {
   console.log(mediaId);
   // router.replace(MEDIADETAIL_URL);
@@ -81,22 +69,21 @@ const handleInputConfirm = () => {
   if (inputValue.value) {
   }
 };
-const restaurants = ref<RestaurantItem[]>([]);
-const querySearch = (queryString: string, cb: any) => {
-  const results = queryString ? restaurants.value.filter(createFilter(queryString)) : restaurants.value;
-  // call callback function to return suggestions
-  cb(results);
+const querySearch = async (queryString: string, cb: any) => {
+  const { data } = await searchMediaApi({ keyword: queryString });
+  cb(data);
 };
-const createFilter = (queryString: string) => {
-  return (restaurant: RestaurantItem) => {
-    return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
-  };
-};
-
+// 选中后跳转
 const handleSelect = (item: Record<string, any>) => {
   console.log("input框的值", item);
+  let routerUrl = router.resolve({
+    path: "/mediaDetail/index",
+    query: {
+      ...item
+    }
+  });
+  window.open(routerUrl.href, "_blank");
 };
-restaurants.value = loadAll();
 // --------------------搜索逻辑----------------------------
 </script>
 

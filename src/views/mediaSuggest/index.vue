@@ -60,18 +60,18 @@
       <div class="sellBox">
         <div class="tableTile">推荐名单TOP{{ isExpandSell ? 20 : 10 }}</div>
         <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
-          <el-table-column type="index" width="55" label="序号">
+          <el-table-column align="center" type="index" width="55" label="序号">
             <template #default="{ $index }">
               {{ $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column label="媒体名称">
+          <el-table-column align="center" label="媒体名称">
             <template #default="scope">
               <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="mediaCluster" label="所属媒体集群" />
-          <el-table-column prop="mediaType" label="媒体属性" />
+          <el-table-column align="center" prop="mediaCluster" label="所属媒体集群" />
+          <el-table-column align="center" prop="mediaType" label="媒体属性" />
         </el-table>
         <el-button type="info" size="small" @click="handleExpandSell({ type: 1 })">
           {{ isExpandSell ? "- 收起" : " + 展开" }}
@@ -80,18 +80,18 @@
       <div class="sellNoBox">
         <div class="tableTile">不推荐名单TOP{{ isExpandSellNo ? 20 : 10 }}</div>
         <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
-          <el-table-column type="index" width="55" label="序号">
+          <el-table-column align="center" type="index" width="55" label="序号">
             <template #default="{ $index }">
               {{ $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column label="媒体名称">
+          <el-table-column align="center" label="媒体名称">
             <template #default="scope">
               <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="mediacluster" label="所属媒体集群" />
-          <el-table-column prop="mediatype" label="媒体属性" />
+          <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
+          <el-table-column align="center" prop="mediatype" label="媒体属性" />
         </el-table>
         <el-button type="info" size="small" @click="handleExpandSell({ type: 0 })">
           {{ isExpandSellNo ? "- 收起" : " + 展开" }}
@@ -100,25 +100,39 @@
     </div>
 
     <div class="sellBox">
-      <div class="tableTile">竞品合作媒体推测TOP{{ isExpandSell ? 20 : 10 }}</div>
-      <el-table :data="tableData" style="width: 100%; margin-top: 10px; color: #000" border>
-        <el-table-column type="index" width="55" label="序号">
+      <div class="tableTile">
+        竞品合作媒体推测TOP{{ isExpandInfer ? 20 : 10 }}
+        <el-select
+          v-model="competitorBrandId"
+          class="m-2"
+          placeholder="请选择"
+          style="width: 150px"
+          @change="changeCompetitorBrand"
+        >
+          <el-option v-for="item in meitidaleiArr" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
+      </div>
+      <el-table :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
+        <el-table-column align="center" type="index" width="55" label="序号">
           <template #default="{ $index }">
             {{ $index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="媒体名称">
+        <el-table-column align="center" label="媒体名称">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="mediaCluster" label="所属媒体集群" />
-        <el-table-column prop="positiveNum" label="`相关正向内容条数`<br/>123" />
-        <el-table-column prop="title" label="文章示例" />
-        <el-table-column label="可能性">
-          <template #default="scope">
-            {{ scope.row.probability }}
+        <el-table-column align="center" prop="positiveNum" label="`相关正向内容条数`<br/>123">
+          <template #header>
+            <div>(过去12个月内)</div>
+            <div>相关正向内容条数</div>
           </template>
+        </el-table-column>
+        <el-table-column align="center" prop="title" label="文章示例" />
+        <el-table-column align="center" label="可能性">
+          <template #default="scope"> {{ scope.row.probability * 100 }}% </template>
         </el-table-column>
       </el-table>
       <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
@@ -130,17 +144,18 @@
 
 <script setup lang="ts" name="mediaSuggest">
 import { onMounted, ref } from "vue";
-import { mediaTypeApi, dictListApi, recommandMediaApi } from "@/api/modules/media";
+import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
 
 const searchForm = ref({
   type: 1, //推荐；0不推荐；
   num: 10, //查询top10 ；20 查询top20      必填
   brandId: 1, //品牌id              必填
-  platform: "", //平台名称                 非必填
+  platform: null, //平台名称                 非必填
   meitidalei: null, //媒体大类名称             非必填
   hangyexifen: null, //行业细分名称            非必填
   xifenquanceng: null //细分圈层名称           非必填
 } as any);
+const competitorBrandId = ref(""); // 竞品id
 const meitidaleiArr = ref([] as any); // 媒体大类下拉框
 const hangyexifenArr = ref([] as any); // 媒体大类下拉框
 const xifenquancengArr = ref([] as any); // 媒体大类下拉框
@@ -150,39 +165,8 @@ const sellArr = ref([] as any); // 推荐列表
 const isExpandSell = ref(false); // 推荐列表 fasle:收起
 const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
+const inferArr = ref([] as any);
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
-const tableData = ref([
-  {
-    mediaId: 1111,
-    docUrl: "XXXXXX",
-    mediaName: "第一财经",
-    mediacluster: "第一财经日报",
-    mediatype: "传统媒体",
-    positiveNum: 10,
-    title: "文章标题",
-    probability: 0.9
-  },
-  {
-    mediaId: 1111,
-    docUrl: "XXXXXX",
-    mediaName: "第二财经",
-    mediacluster: "第一财经日报",
-    mediatype: "传统媒体",
-    positiveNum: 10,
-    title: "文章标题",
-    probability: 0.5
-  },
-  {
-    mediaId: 1111,
-    docUrl: "XXXXXX",
-    mediaName: "第三财经",
-    mediacluster: "第一财经日报",
-    mediatype: "传统媒体",
-    positiveNum: 10,
-    title: "文章标题",
-    probability: 0.1
-  }
-]);
 //媒体大类选中事件，请求行业细分、细分圈层、清空绑定的value
 const changeMedia = value => {
   console.log(value);
@@ -235,6 +219,22 @@ const getSellArr = async (params: any) => {
     sellNoArr.value = data as any;
   }
 };
+// 竞品列表
+const getInferArr = async (params: any) => {
+  const { data } = await competitorApi(params);
+  inferArr.value = data as any;
+};
+// 競品下拉框 change事件
+const changeCompetitorBrand = value => {
+  console.log(value);
+  competitorBrandId.value = value;
+  getInferArr({
+    ...searchForm.value,
+    num: isExpandSell.value === true ? 20 : 10,
+    competitorBrandId: value,
+    brandId: null
+  });
+};
 
 // 推荐列表-展开收起  false:10,true:20; object:0/1/2(0：不推荐列表，1：推荐列表，2：竞品列表)
 const handleExpandSell = (Object: any) => {
@@ -257,6 +257,11 @@ const handleExpandSell = (Object: any) => {
   // 竞品列表
   if (Object.type === 2) {
     isExpandInfer.value = !isExpandInfer.value;
+    competitorApi({
+      ...searchForm.value,
+      num: isExpandInfer.value === true ? 20 : 10,
+      competitorBrandId: competitorBrandId.value
+    });
   }
 };
 
