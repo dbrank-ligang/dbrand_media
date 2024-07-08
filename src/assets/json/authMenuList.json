@@ -45,6 +45,22 @@
       }
     },
     {
+      "path": "/mediaDetail/index",
+      "name": "mediaDetail",
+      "component": "/mediaDetail/index",
+      "meta": {
+        "icon": "",
+        "title": "媒体详情",
+        "isLink": "",
+        "isHide": true,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true,
+        "activeMenu":"/mediaSearch/index"
+      }
+    },
+    
+    {
       "path": "/numberSearch/index",
       "name": "numberSearch",
       "component": "/numberSearch/index",

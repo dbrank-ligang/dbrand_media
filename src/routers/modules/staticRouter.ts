@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { HOME_URL, LOGIN_URL, MEDIADETAIL } from "@/config";
+import { HOME_URL, LOGIN_URL } from "@/config";
 
 /**
  * staticRouter (静态路由)
@@ -18,14 +18,6 @@ export const staticRouter: RouteRecordRaw[] = [
     }
   },
   {
-    path: MEDIADETAIL,
-    name: "mediaDetail",
-    component: () => import("@/views/mediaDetail/index.vue"),
-    meta: {
-      title: "媒体详情"
-    }
-  },
-  {
     path: "/layout",
     name: "layout",
     component: () => import("@/layouts/index.vue"),
@@ -34,7 +26,6 @@ export const staticRouter: RouteRecordRaw[] = [
     children: []
   }
 ];
-
 /**
  * errorRouter (错误页面路由)
  */

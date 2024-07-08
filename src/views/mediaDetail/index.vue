@@ -16,8 +16,15 @@
           @click="oneLevelClick(item)"
         >
           <div class="mediaName_nav"><span></span>{{ item.mediaName }}</div>
-          <div v-if="oneLevelActiveId == item.mediaId" style="min-height: 50px; font-size: 14px">
-            {{ item.beforeName }}&{{ item.anotherName }}&{{ item.includeName }}
+          <div
+            v-if="oneLevelActiveId == item.mediaId && (item.beforeName || item.anotherName || item.includeName)"
+            style="min-height: 50px; font-size: 14px"
+          >
+            {{
+              (item.beforeName ? item.beforeName + "&" : "") +
+              (item.anotherName ? item.anotherName + "&" : "") +
+              (item.includeName ? item.includeName : "")
+            }}
           </div>
         </li>
       </ul>
