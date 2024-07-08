@@ -29,20 +29,7 @@
         "isKeepAlive": true
       }
     },
-    {
-      "path": "/mediaDetail/index",
-      "name": "mediaDetail",
-      "component": "/mediaDetail/index",
-      "meta": {
-        "icon": "InfoFilled",
-        "title": "媒体详情",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true
-      }
-    },
+
     {
       "path": "/mediaSearch/index",
       "name": "mediaSearch",

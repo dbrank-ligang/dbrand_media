@@ -79,7 +79,7 @@
       </div>
       <div class="sellNoBox">
         <div class="tableTile">不推荐名单TOP{{ isExpandSellNo ? 20 : 10 }}</div>
-        <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
+        <el-table :data="sellNoArr" style="width: 100%; margin-top: 10px; color: #000" border>
           <el-table-column align="center" type="index" width="55" label="序号">
             <template #default="{ $index }">
               {{ $index + 1 }}
@@ -109,7 +109,12 @@
           style="width: 150px"
           @change="changeCompetitorBrand"
         >
-          <el-option v-for="item in meitidaleiArr" :key="item.id" :label="item.name" :value="item.id" />
+          <el-option
+            v-for="item in competitor"
+            :key="item.competitorBrandId"
+            :label="item.competitorBrandName"
+            :value="item.competitorBrandId"
+          />
         </el-select>
       </div>
       <el-table :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
@@ -123,7 +128,7 @@
             <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="mediaCluster" label="所属媒体集群" />
+        <el-table-column prop="mediacluster" label="所属媒体集群" />
         <el-table-column align="center" prop="positiveNum" label="`相关正向内容条数`<br/>123">
           <template #header>
             <div>(过去12个月内)</div>
@@ -167,6 +172,16 @@ const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
 const inferArr = ref([] as any);
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
+const competitor = ref([
+  {
+    competitorBrandName: "竞品A",
+    competitorBrandId: "1"
+  },
+  {
+    competitorBrandName: "竞品B",
+    competitorBrandId: "2"
+  }
+]);
 //媒体大类选中事件，请求行业细分、细分圈层、清空绑定的value
 const changeMedia = value => {
   console.log(value);
@@ -206,18 +221,18 @@ const setMediaSourceActive = (index, item) => {
 const handleSearch = () => {
   console.log(searchForm.value);
   getSellArr({ ...searchForm.value, type: 1 });
-  getSellArr({ ...searchForm.value, type: 0 });
+  getSellNoArr({ ...searchForm.value, type: 0 });
   isExpandSell.value = false;
   isExpandSellNo.value = false;
 };
 // 推荐 不推荐列表
 const getSellArr = async (params: any) => {
   const { data } = await recommandMediaApi(params);
-  if (params.value.type === 1) {
-    sellArr.value = data as any;
-  } else {
-    sellNoArr.value = data as any;
-  }
+  sellArr.value = data as any;
+};
+const getSellNoArr = async (params: any) => {
+  const { data } = await recommandMediaApi(params);
+  sellNoArr.value = data as any;
 };
 // 竞品列表
 const getInferArr = async (params: any) => {
@@ -238,7 +253,8 @@ const changeCompetitorBrand = value => {
 
 // 推荐列表-展开收起  false:10,true:20; object:0/1/2(0：不推荐列表，1：推荐列表，2：竞品列表)
 const handleExpandSell = (Object: any) => {
-  if (Object.type === 1) {
+  // debugger;
+  if (Object.type == 1) {
     isExpandSell.value = !isExpandSell.value;
     getSellArr({
       ...searchForm.value,
@@ -246,9 +262,9 @@ const handleExpandSell = (Object: any) => {
       num: isExpandSell.value === true ? 20 : 10
     });
   }
-  if (Object.type === 0) {
+  if (Object.type == 0) {
     isExpandSellNo.value = !isExpandSellNo.value;
-    getSellArr({
+    getSellNoArr({
       ...searchForm.value,
       type: Object.type,
       num: isExpandSellNo.value === true ? 20 : 10
@@ -259,6 +275,7 @@ const handleExpandSell = (Object: any) => {
     isExpandInfer.value = !isExpandInfer.value;
     competitorApi({
       ...searchForm.value,
+      type: null,
       num: isExpandInfer.value === true ? 20 : 10,
       competitorBrandId: competitorBrandId.value
     });

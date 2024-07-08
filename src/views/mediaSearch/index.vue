@@ -18,49 +18,46 @@
     <div class="hoistryBox">
       <div class="listTit">搜索历史</div>
       <div class="listCon">
-        <div v-for="item in historyListData" :key="item.mediaId" @click="historyChange(item.mediaId)">{{ item.mediaName }}</div>
+        <div v-for="item in historyListData" :key="item.mediaId" @click="historyChange(item)">{{ item.mediaName }}</div>
       </div>
     </div>
     <div class="hoistryBox">
       <div class="listTit">标签推荐</div>
       <div class="listCon">
-        <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item.mediaId)">{{ item.mediaName }}</div>
+        <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item)">{{ item.mediaName }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts" name="mediaSearch">
-import { ref } from "vue";
-import { searchMediaApi } from "@/api/modules/media";
+import { onMounted, ref } from "vue";
+import { searchMediaApi, searchMediaHistoryApi, addMediaHistoryApi, dictListJsonApi } from "@/api/modules/media";
 import router from "@/routers";
+import { MEDIADETAIL } from "@/config";
 
 const inputValue = ref("");
-const historyListData = ref([
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" },
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" }
-]);
-const tagListData = ref([
-  { mediaId: 11, mediaName: "第一财经" },
-  { mediaId: 22, mediaName: "第二财经" }
-]);
-const historyChange = mediaId => {
-  console.log(mediaId);
-  // router.replace(MEDIADETAIL_URL);
+const historyListData = ref([] as any); // 搜索历史列表
+const tagListData = ref([] as any);
+const historyChange = item => {
+  console.log(item);
+  jumpDetail({ mediaId: item.mediaId });
+};
+// 获取搜索历史列表
+const getSearchMediaHistory = async () => {
+  const { data } = await searchMediaHistoryApi();
+  historyListData.value = data as any;
+};
+// 获取搜索历史列表
+const getDictListJson = async () => {
+  const { data } = await dictListJsonApi();
+  tagListData.value = data as any;
+};
+// 添加搜索历史
+const getAddMediaHistory = async (params: any) => {
+  const { data } = await addMediaHistoryApi(params);
+  historyListData.value = data as any;
+  getSearchMediaHistory();
 };
 
 //  input搜索逻辑------------
@@ -73,18 +70,33 @@ const querySearch = async (queryString: string, cb: any) => {
   const { data } = await searchMediaApi({ keyword: queryString });
   cb(data);
 };
-// 选中后跳转
-const handleSelect = (item: Record<string, any>) => {
-  console.log("input框的值", item);
+// --------------------搜索逻辑----------------------------
+
+// 跳转详情页方法
+function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
-    path: "/mediaDetail/index",
+    path: MEDIADETAIL,
     query: {
-      ...item
+      ...urlQuery
     }
   });
   window.open(routerUrl.href, "_blank");
+}
+
+// 选中后跳转
+const handleSelect = (item: Record<string, any>) => {
+  console.log("input框的值", item);
+  // 搜索的媒体是否存在搜索历史中， 存在不进行添加
+  const isHaveMediaId = historyListData.value.some(items => items.mediaId === item.mediaId);
+  if (!isHaveMediaId) {
+    getAddMediaHistory(item);
+  }
+  jumpDetail(item);
 };
-// --------------------搜索逻辑----------------------------
+onMounted(() => {
+  getSearchMediaHistory();
+  getDictListJson();
+});
 </script>
 
 <style scoped lang="scss">

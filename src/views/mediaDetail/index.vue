@@ -63,9 +63,9 @@
       <div class="numberDetailBox" style="margin-top: 10px">
         <div class="numberDetailBox_tit">[账号详情]</div>
         <div style="padding: 15px 0 15px 15px">
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">label：</div>
-            <div class="numberDetailBox_rowCon">value</div>
+          <div class="numberDetailBox_Row" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
+            <div class="numberDetailBox_rowTit">{{ item }}：</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
           </div>
         </div>
       </div>
@@ -75,31 +75,31 @@
         <div style="padding: 15px 0 15px 15px">
           <div class="numberDetailBox_Row">
             <div class="numberDetailBox_rowTit">行业大类标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.hangyedalei }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyedalei || "" }}</div>
             <div class="numberDetailBox_rowTit">行业二级标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.hangyeerji }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
           </div>
           <div class="numberDetailBox_Row">
             <div class="numberDetailBox_rowTit">行业二级标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.hangyeerji }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
           </div>
           <div class="numberDetailBox_Row">
             <div class="numberDetailBox_rowTit">内容属性标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.neirongshuxing }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.neirongshuxing || "" }}</div>
           </div>
           <div class="numberDetailBox_Row">
             <div class="numberDetailBox_rowTit">媒体属性标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.meitishuxing }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.meitishuxing || "" }}</div>
           </div>
           <div class="numberDetailBox_Row">
             <div class="numberDetailBox_rowTit">其他标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj.qita }}</div>
+            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.qita || "" }}</div>
           </div>
         </div>
       </div>
 
       <div class="contentListBox" style="margin-top: 10px">
-        <div class="contentListBox_tit">{{ oneName }}/{{ twoName }}/{{ threeName }}</div>
+        <div class="contentListBox_tit">{{ oneName }} / {{ twoName }} / {{ threeName }}</div>
         <div style="margin-top: 30px">
           [内容列表]
           <el-date-picker
@@ -112,11 +112,11 @@
             @change="changeDate"
           />
         </div>
-        <el-table :data="tableData" height="250" style="width: 100%" class="tableBox">
+        <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
           <el-table-column prop="brandName" label="高相关品牌" />
           <el-table-column label="内容标题">
             <template #default="scope">
-              <a _target="blank" :href="scope.row.docUrl">{{ scope.row.title }}</a>
+              <a target="_blank" :href="scope.row.docUrl">{{ scope.row.title }}</a>
             </template>
           </el-table-column>
           <el-table-column label="发表时间">
@@ -133,13 +133,13 @@
 <script setup lang="ts" name="mediaDetail">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { mediaNavApi, accountListApi } from "@/api/modules/media";
+import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
 const route = useRoute();
 
 // 左侧一级导航列表数据
 const oneLevelObj = ref({
-  unionMediaId: 111, //    媒体集群id
+  unionMediaId: null, //    媒体集群id
   unionMediaName: null, //    媒体集群名称
   url: null,
   client: null,
@@ -148,9 +148,11 @@ const oneLevelObj = ref({
 } as any);
 let activeMediaSourceIndex = ref(0); // 媒体源，默认选中第一个
 const activeNumberIndex = ref(0); // 账号列表，默认选中第一个
-let oneName = ref("一级"); // 一级选中的
-let twoName = ref("二级"); // 二级选中的
-let threeName = ref("三级"); // 三级选中的
+const accountId = ref(null); // 账号列表选中的id
+const oneName = ref("一级"); // 一级选中的
+const twoName = ref("二级"); // 二级选中的
+const threeName = ref("三级"); // 三级选中的
+
 let dateArr = ref([]); // 时间选择器
 const defaultObj = ref({
   mediaId: null,
@@ -164,46 +166,44 @@ const mediaSourceArr = ref([] as any);
 let numberArr = ref([] as any); //账号列表
 // 账号详情、账号标签
 let numberDetailObj = ref({
-  extendFields: {
-    账号名称: "第一财经",
-    XXX: "XXX"
-  },
-  hangyedalei: "xxx", //头部媒体分类
-  neirongshuxing: "xxx", //细分圈层
-  meitishuxing: "xxx", //传统媒体 咨询 自媒体
-  hangyeerji: "xxx", //头部媒体分类下级， 科学科普 人工智能
-  qita: "xx1,xx2"
-});
-const tableData = ref([
-  { brandName: "海尔，海信，澳柯玛", title: "title", publishTime: 1721232000000, docUrl: "www.baidu.com", docId: 111 },
-  { brandName: "海尔，海信，澳柯玛", title: "title", publishTime: 1724601600000, docUrl: "www.baidu.com", docId: 111 },
-  { brandName: "海尔，海信，澳柯玛", title: "title", publishTime: 1724601600000, docUrl: "www.baidu.com", docId: 111 }
-]);
+  extendFields: {},
+  hangyedalei: null,
+  neirongshuxing: null,
+  meitishuxing: null,
+  hangyeerji: null,
+  qita: null
+} as any);
+const articlesArr = ref([] as any);
 const oneLevelActiveId = ref(); // 左侧列表 选中的id
 // // 左侧列表点击事件
 function oneLevelClick(item) {
   oneLevelActiveId.value = item.mediaId;
   getMdiaSourceArr({ mediaId: item.mediaId }); //获取媒体源、账号列表
   console.log("一级菜单栏选中的：", item.mediaName);
+  oneName.value = item.mediaName;
 }
 // 切换媒体源
 function mediaSourceItemClick(mediaItem, i) {
   activeNumberIndex.value = 0;
   activeMediaSourceIndex.value = i + mediaItem.name; // 点击时更新当前活动索引
   getAccountList(mediaItem);
-  console.log(numberArr.value);
+  twoName.value = mediaItem.name;
+  // console.log(numberArr.value);
 }
 // 点击账号
 function accountClick(index: any, item: any) {
   activeNumberIndex.value = index; // 点击时更新当前
-  console.log(index, item);
+  threeName.value = item.accountName; // 选中账号的name
+  accountId.value = item.id; // 选中账号的id
+  getAccountObj(item.id);
 }
 const changeDate = () => {
   // console.log(dateArr.value[0]); // 开始时间
   // console.log(dateArr.value[1]); // 结束时间
-  const startDate = dateArr.value[0];
-  const endDate = dateArr.value[1];
-  console.log(new Date(startDate).getTime(), new Date(endDate).getTime());
+  const startTime = new Date(dateArr.value[0]).getTime() / 1000;
+  const endTime = new Date(dateArr.value[1]).getTime() / 1000;
+  // console.log(new Date(startTime).getTime(), new Date(endTime).getTime());
+  getAarticlesList({ startTime, endTime });
 };
 // 时间戳转换为日期的函数
 const timestampToDate = timestamp => {
@@ -227,6 +227,7 @@ const getOneLevelArr = async (params: any) => {
   }
   oneLevelClick(selectItem);
 };
+
 // 获取媒体源列表
 const getMdiaSourceArr = async (params: any) => {
   const { data } = await accountListApi(params);
@@ -259,6 +260,7 @@ const getMdiaSourceArr = async (params: any) => {
   }
   mediaSourceItemClick(mediaSourceItem, selectIndex); // 传入点击的item 及 第几行
 };
+
 // 获取账户列表
 const getAccountList = mediaItem => {
   numberArr.value = mediaItem.data;
@@ -276,6 +278,18 @@ const getAccountList = mediaItem => {
     }
   }
 };
+
+// 查询账号详情（根据账号列表选中的id）
+const getAccountObj = async (params: any) => {
+  const { data } = await accountApi({ accountId: params });
+  numberDetailObj.value = data as any;
+};
+// 查询账号详情（根据账号列表选中的id）
+const getAarticlesList = async (params: any) => {
+  const { data } = await articlesApi({ startTime: params.startTime, endTime: params.endTime, accountId: accountId.value });
+  articlesArr.value = data as any;
+};
+
 onMounted(() => {
   const myParam = route.query;
   defaultObj.value = myParam;
