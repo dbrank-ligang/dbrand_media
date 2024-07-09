@@ -21,6 +21,7 @@ import { onMounted, ref } from "vue";
 // import LoginForm from "./components/LoginForm.vue";
 import SwitchDark from "@/components/SwitchDark/index.vue";
 import { useUserStore } from "@/stores/modules/user";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { useTabsStore } from "@/stores/modules/tabs";
 import { useKeepAliveStore } from "@/stores/modules/keepAlive";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
@@ -32,6 +33,7 @@ import { userInfoApi } from "@/api/modules/media";
 
 const router = useRouter();
 const userStore = useUserStore();
+const currBrandStore = useCurrBrandStore();
 const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
 const userInfoObj = ref({});
@@ -43,9 +45,8 @@ onMounted(async () => {
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
-  getUserInfoObj();
+  getUserInfoObj(); // 获取个人信息
   // 4.跳转到首页
-  router.push(HOME_URL);
   ElNotification({
     title: getTimeState(),
     message: "欢迎登录",
@@ -59,6 +60,8 @@ const getUserInfoObj = async () => {
   const { data } = await userInfoApi();
   userInfoObj.value = data as any;
   userStore.setUserInfo(data);
+  currBrandStore.setCurrBrandObj((data as any).brands[0]);
+  router.push(HOME_URL);
 };
 </script>
 

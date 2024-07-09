@@ -28,7 +28,9 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-for="item in userInfo.brands" :key="item.brandId">{{ item.brandName }}</el-dropdown-item>
+              <el-dropdown-item v-for="item in userInfo.brands" :key="item.brandId" @click="handleBrand(item)">{{
+                item.brandName
+              }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -61,6 +63,7 @@ import { useGlobalStore } from "@/stores/modules/global";
 import Main from "@/layouts/components/Main/index.vue";
 import SubMenu from "@/layouts/components/Menu/SubMenu.vue";
 import { useUserStore } from "@/stores/modules/user";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { searchMediaApi } from "@/api/modules/media";
@@ -72,6 +75,7 @@ const accordion = computed(() => globalStore.accordion);
 const menuList = computed(() => authStore.showMenuListGet);
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
 const userStore = useUserStore();
+const currBrandStore = useCurrBrandStore();
 const userInfo: any = computed(() => userStore.userInfo);
 const inputValue = ref("");
 
@@ -99,10 +103,13 @@ function jumpDetail(urlQuery: any) {
   inputValue.value = "";
 }
 
-// 选中后跳转
+// 搜索选中后跳转
 const handleSelect = (item: Record<string, any>) => {
   console.log("input框的值", item);
   jumpDetail(item);
+};
+const handleBrand = (item: any) => {
+  currBrandStore.setCurrBrandObj(item);
 };
 </script>
 

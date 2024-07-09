@@ -2,7 +2,7 @@
   <div class="mediaSuggestBox">
     <div class="mediaSuggest_tit">
       <div class="mediaSuggest_tit1">媒体推荐：</div>
-      <div class="mediaSuggest_tit2">海尔集团</div>
+      <div class="mediaSuggest_tit2">{{ currBrandStore.currBrandObj.brandName }}</div>
     </div>
     <div class="searchBox">
       <div class="searchBox_1">
@@ -148,13 +148,14 @@
 </template>
 
 <script setup lang="ts" name="mediaSuggest">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
+const currBrandStore = useCurrBrandStore();
 
 const searchForm = ref({
   type: 1, //推荐；0不推荐；
   num: 10, //查询top10 ；20 查询top20      必填
-  brandId: 1, //品牌id              必填
   platform: null, //平台名称                 非必填
   meitidalei: null, //媒体大类名称             非必填
   hangyexifen: null, //行业细分名称            非必填
@@ -220,8 +221,8 @@ const setMediaSourceActive = (index, item) => {
 // 点击查询 推荐type:1, 不推荐type:0
 const handleSearch = () => {
   console.log(searchForm.value);
-  getSellArr({ ...searchForm.value, type: 1 });
-  getSellNoArr({ ...searchForm.value, type: 0 });
+  getSellArr({ ...searchForm.value, type: 1, brandId: currBrandStore.currBrandObj.brandId });
+  getSellNoArr({ ...searchForm.value, type: 0, brandId: currBrandStore.currBrandObj.brandId });
   isExpandSell.value = false;
   isExpandSellNo.value = false;
 };
@@ -247,7 +248,7 @@ const changeCompetitorBrand = value => {
     ...searchForm.value,
     num: isExpandSell.value === true ? 20 : 10,
     competitorBrandId: value,
-    brandId: null
+    brandId: currBrandStore.currBrandObj.brandId
   });
 };
 
@@ -259,7 +260,8 @@ const handleExpandSell = (Object: any) => {
     getSellArr({
       ...searchForm.value,
       type: Object.type,
-      num: isExpandSell.value === true ? 20 : 10
+      num: isExpandSell.value === true ? 20 : 10,
+      brandId: currBrandStore.currBrandObj.brandId
     });
   }
   if (Object.type == 0) {
@@ -282,6 +284,12 @@ const handleExpandSell = (Object: any) => {
   }
 };
 
+// 使用watch来观察store中的currBrandObj状态
+watch(() => currBrandStore.currBrandObj, onBrandChange);
+// 监听store中选择的品牌
+function onBrandChange() {
+  console.log("brand changed!");
+}
 const handleClick = (row?: any) => {
   console.log(row);
 };
