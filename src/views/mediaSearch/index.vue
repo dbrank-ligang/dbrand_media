@@ -6,7 +6,7 @@
       :trigger-on-focus="false"
       clearable
       style="width: 800px; height: 50px; margin-top: 10%"
-      placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。"
+      placeholder=""
       @select="handleSelect"
       @keyup.enter="handleInputConfirm"
       @blur="handleInputConfirm"
@@ -55,8 +55,7 @@ const getDictListJson = async () => {
 };
 // 添加搜索历史
 const getAddMediaHistory = async (params: any) => {
-  const { data } = await addMediaHistoryApi(params);
-  historyListData.value = data as any;
+  addMediaHistoryApi(params);
   getSearchMediaHistory();
 };
 
@@ -81,6 +80,7 @@ function jumpDetail(urlQuery: any) {
     }
   });
   window.open(routerUrl.href, "_blank");
+  inputValue.value = "";
 }
 
 // 选中后跳转

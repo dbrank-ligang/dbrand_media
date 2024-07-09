@@ -140,7 +140,6 @@ import { reactive, ref, onMounted, onUnmounted } from "vue";
 import dataJson from "./mediaData.json";
 import SelectAddPop from "./components/SelectAddPop/index.vue";
 import moment from "moment";
-import { userInfoApi } from "@/api/modules/media";
 
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
@@ -225,9 +224,6 @@ const scrollRight = index => {
 
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
-  const data = userInfoApi();
-  console.log("data:", data);
-
   scrollRefs.forEach((ref, index) => {
     if (ref.value) {
       (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));

@@ -63,7 +63,7 @@
     {
       "path": "/numberSearch/index",
       "name": "numberSearch",
-      "component": "/numberSearch/index",
+      "component": "/mediaSearch/index",
       "meta": {
         "icon": "InfoFilled",
         "title": "账号查询",

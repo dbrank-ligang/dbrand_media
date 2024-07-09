@@ -29,7 +29,7 @@
       display: flex;
       align-items: center;
       div {
-        margin-left: 20px;
+        // margin-left: 20px;
       }
       .el-dropdown-link {
         font-size: 16px;
@@ -45,7 +45,11 @@
         font-size: 14px;
         color: #8492a6;
       }
+    
     }
+  }
+  :deep(.el-input-group__append) {
+    background-color: #ffdd00;
   }
   .classic-content {
     display: flex;

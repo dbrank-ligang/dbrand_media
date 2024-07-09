@@ -5,7 +5,16 @@ export const userInfoApi = () => {
   return http.get(`/user/userInfo`, {}, { loading: true }); // 正常 post json 请求  ==>  application/json
 };
 
-//媒体推荐页面
+//获取自选类别
+export const userMediaTypeApi = param => {
+  return http.get(`/mediaType/getUserMediaType`, param, { loading: false });
+};
+// 新增大类
+export const saveUserMediaTypeApi = param => {
+  return http.post(`/mediaType/saveUserMediaType`, param, { loading: false });
+};
+
+//--媒体推荐页面
 //媒体大类 下拉框
 export const mediaTypeApi = param => {
   return http.get(`/mediaType/list`, param, { loading: false });

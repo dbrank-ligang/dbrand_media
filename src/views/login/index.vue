@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts" name="login">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 // import LoginForm from "./components/LoginForm.vue";
 import SwitchDark from "@/components/SwitchDark/index.vue";
 import { useUserStore } from "@/stores/modules/user";
@@ -28,11 +28,13 @@ import { useRouter } from "vue-router";
 import { HOME_URL } from "@/config";
 import { ElNotification } from "element-plus";
 import { getTimeState } from "@/utils";
+import { userInfoApi } from "@/api/modules/media";
 
 const router = useRouter();
 const userStore = useUserStore();
 const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
+const userInfoObj = ref({});
 
 onMounted(async () => {
   // 取token，并存下来
@@ -41,6 +43,7 @@ onMounted(async () => {
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
+  getUserInfoObj();
   // 4.跳转到首页
   router.push(HOME_URL);
   ElNotification({
@@ -50,6 +53,13 @@ onMounted(async () => {
     duration: 3000
   });
 });
+
+// 查询个人信息
+const getUserInfoObj = async () => {
+  const { data } = await userInfoApi();
+  userInfoObj.value = data as any;
+  userStore.setUserInfo(data);
+};
 </script>
 
 <style scoped lang="scss">

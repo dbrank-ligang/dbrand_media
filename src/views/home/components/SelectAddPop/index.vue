@@ -67,20 +67,12 @@
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
           @blur="handleInputConfirm"
+          value-key="mediaName"
         />
-        <!-- <el-input
-          ref="InputRef"
-          v-model="inputValue"
-          size="small"
-          @keyup.enter="handleInputConfirm"
-          @blur="handleInputConfirm"
-          maxlength="5"
-          placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。"
-        /> -->
       </div>
       <div class="tagBox">
         <el-tag
-          v-for="tag in dynamicTags"
+          v-for="tag in newType"
           :key="tag"
           type="info"
           size="small"
@@ -109,16 +101,13 @@
 </template>
 
 <script setup lang="ts" name="selectAddPop">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
+import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
 
-// import { ElInput } from "element-plus";
-const dynamicTags = ref(["Tag 1", "Tag 2", "Tag 3"]);
-// const InputRef = ref<InstanceType<typeof ElInput>>();
-let visible = ref(false);
-// let imageSrc = "/src/assets/images/logo.png";
-
+const newType = ref([] as any);
+const visible = ref(false);
 const tabArr = ref([
   { title: "自选类别", isActive: false },
   { title: "我要新增", isActive: false }
@@ -127,57 +116,8 @@ const defaultProps = {
   children: "child",
   label: "name"
 };
-
-let topListArr = ref([
-  {
-    id: "1",
-    name: ["传统媒体-中央级", "咨讯-中央级", null],
-    check: true
-  },
-  {
-    id: "2",
-    name: ["传统媒体-IT科技大类", "咨询-科技大类", "自媒体-科技大类"],
-    check: true,
-    child: [
-      //child没有的话返回[]
-      {
-        id: "3",
-        name: ["传统媒体-手机通讯", "咨询-手机通讯", "自媒体-手机通讯"],
-        check: false
-      },
-      {
-        id: "5",
-        name: ["传统媒体-人工智能", "咨询-人工智能"],
-        check: true
-      }
-    ]
-  }
-]);
-let xifenListArr = ref([
-  {
-    id: "6",
-    name: ["传统媒体-中央级", "咨讯-中央级", null],
-    check: false
-  },
-  {
-    id: "7",
-    name: ["传统媒体-IT科技大类", "咨询-科技大类", "自媒体-科技大类"],
-    check: false,
-    child: [
-      //child没有的话返回[]
-      {
-        id: "8",
-        name: ["传统媒体-手机通讯", "咨询-手机通讯", "自媒体-手机通讯"],
-        check: false
-      },
-      {
-        id: "9",
-        name: ["传统媒体-人工智能", "咨询-人工智能"],
-        check: false
-      }
-    ]
-  }
-]);
+const topListArr = ref([]);
+const xifenListArr = ref([]);
 
 // 取出二维数组中check等于true的id 拼成数组
 const flattenAndCheck = items => {
@@ -192,6 +132,18 @@ const flattenAndCheck = items => {
     }
     return result;
   }, []);
+};
+//  获取细分圈层
+const getXifenTypeArr = async () => {
+  const { data } = await userMediaTypeApi({ barandId: 1, type: "subdivide" });
+  xifenListArr.value = data as any;
+  console.log(xifenListArr.value);
+};
+//  获取头部媒体
+const getTopArr = async () => {
+  const { data } = await userMediaTypeApi({ barandId: 1, type: "top" });
+  topListArr.value = data as any;
+  console.log(topListArr.value);
 };
 
 //  tab切换样式
@@ -209,6 +161,8 @@ const activeBtn = item => {
     el.isActive = false;
   });
   item.isActive = !currentState;
+  getTopArr();
+  getXifenTypeArr();
 };
 
 // 提交完成后的弹窗 自定义组件
@@ -239,7 +193,13 @@ const confirmChange = () => {
     { title: "自选类别", isActive: false },
     { title: "我要新增", isActive: false }
   ];
-  showNotificationWithImage();
+  saveUserMediaType({
+    brandId: "",
+    brandName: "海尔",
+    topMediaTypeIds: flattenAndCheck(topListArr.value),
+    subMdiaTypeIds: flattenAndCheck(xifenListArr.value),
+    newType: newType.value
+  });
 };
 // 取消
 const cancelChange = () => {
@@ -252,49 +212,35 @@ const cancelChange = () => {
 
 // tag删除事件
 const handleClose = (tag: string) => {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1);
+  newType.value.splice(newType.value.indexOf(tag), 1);
 };
 
 const inputValue = ref("");
-interface RestaurantItem {
-  value: string;
-  link: string;
-}
-const loadAll = () => {
-  return [
-    { value: "vue", link: "https://github.com/vuejs/vue" },
-    { value: "element", link: "https://github.com/ElemeFE/element" },
-    { value: "cooking", link: "https://github.com/ElemeFE/cooking" },
-    { value: "mint-ui", link: "https://github.com/ElemeFE/mint-ui" },
-    { value: "vuex", link: "https://github.com/vuejs/vuex" },
-    { value: "vue-router", link: "https://github.com/vuejs/vue-router" },
-    { value: "babel", link: "https://github.com/babel/babel" }
-  ];
-};
 
 const handleInputConfirm = () => {
   if (inputValue.value) {
-    dynamicTags.value.push(inputValue.value);
+    newType.value.push(inputValue.value);
   }
   inputValue.value = "";
 };
 
-const restaurants = ref<RestaurantItem[]>([]);
-const querySearch = (queryString: string, cb: any) => {
-  const results = queryString ? restaurants.value.filter(createFilter(queryString)) : restaurants.value;
-  // call callback function to return suggestions
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (restaurant: RestaurantItem) => {
-    return restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
-  };
+const querySearch = async (queryString: string, cb: any) => {
+  const { data } = await searchMediaApi({ keyword: queryString });
+  cb(data);
 };
 
 const handleSelect = (item: Record<string, any>) => {
   console.log("input框的值", item);
 };
-restaurants.value = loadAll();
+// ---------
+
+const saveUserMediaType = async (params: any) => {
+  saveUserMediaTypeApi(params);
+  await showNotificationWithImage();
+};
+onMounted(async () => {
+  console.log(123);
+});
 </script>
 
 <style lang="scss">
