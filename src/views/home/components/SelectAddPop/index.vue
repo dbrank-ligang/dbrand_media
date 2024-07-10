@@ -66,7 +66,6 @@
           placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。s"
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
-          @blur="handleInputConfirm"
           value-key="mediaName"
         />
       </div>
@@ -106,7 +105,8 @@ import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
 import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
 
-const newType = ref([] as any);
+const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数组
+const newType = ref([] as any); // 新增大类的数组
 const visible = ref(false);
 const tabArr = ref([
   { title: "自选类别", isActive: false },
@@ -120,8 +120,8 @@ const topListArr = ref([]);
 const xifenListArr = ref([]);
 
 // 取出二维数组中check等于true的id 拼成数组
-const flattenAndCheck = items => {
-  return items.reduce((result, item) => {
+const flattenAndCheck = (items: any[]) => {
+  return items.reduce((result: any[], item: { check: any; id: any; child: any }) => {
     // 如果当前项有 check 属性且为 true，则添加其 id 到结果数组中
     if (item.check) {
       result.push(item.id);
@@ -147,14 +147,14 @@ const getTopArr = async () => {
 };
 
 //  tab切换样式
-const getStyle = item => {
+const getStyle = (item: { isActive: any }) => {
   if (item.isActive) {
     return { color: "#948000", borderBottom: "1px solid #948000" };
   }
   return {};
 };
 // tab切换点击事件
-const activeBtn = item => {
+const activeBtn = (item: { isActive: boolean }) => {
   visible.value = true;
   let currentState = item.isActive;
   tabArr.value.forEach(el => {
@@ -185,25 +185,32 @@ const showNotificationWithImage = () => {
 };
 // 确认提交按钮
 const confirmChange = () => {
-  visible.value = false;
   console.log("topMediaIds", flattenAndCheck(topListArr.value));
   console.log("subMediaIds", flattenAndCheck(xifenListArr.value));
+  console.log("newType", newType.value);
   // console.log(topListArr.value); //复选框选中的值
   tabArr.value = [
     { title: "自选类别", isActive: false },
     { title: "我要新增", isActive: false }
   ];
-  saveUserMediaType({
-    brandId: "",
-    brandName: "海尔",
-    topMediaTypeIds: flattenAndCheck(topListArr.value),
-    subMdiaTypeIds: flattenAndCheck(xifenListArr.value),
-    newType: newType.value
-  });
+  try {
+    saveUserMediaType({
+      brandId: "",
+      brandName: "海尔",
+      topMediaTypeIds: flattenAndCheck(topListArr.value),
+      subMdiaTypeIds: flattenAndCheck(xifenListArr.value),
+      newType: newType.value
+    });
+    cancelChange();
+    showNotificationWithImage();
+  } catch (error) {
+    console.log(error);
+  }
 };
-// 取消
+// 取消按鈕
 const cancelChange = () => {
   visible.value = false;
+  newType.value = [];
   tabArr.value = [
     { title: "自选类别", isActive: false },
     { title: "我要新增", isActive: false }
@@ -216,16 +223,26 @@ const handleClose = (tag: string) => {
 };
 
 const inputValue = ref("");
-
 const handleInputConfirm = () => {
-  if (inputValue.value) {
+  const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
+  const isNewType = newType.value.some((item: any) => item === inputValue.value);
+  if (inputValue.value && !isNewType && !isLastQuery) {
+    console.log(inputValue.value);
     newType.value.push(inputValue.value);
+    inputValue.value = "";
+  } else {
+    ElNotification({
+      title: "提示",
+      message: "当前类已存在",
+      type: "warning"
+    });
   }
-  inputValue.value = "";
 };
 
 const querySearch = async (queryString: string, cb: any) => {
   const { data } = await searchMediaApi({ keyword: queryString });
+  console.log(data);
+  lastQueryArr.value = data;
   cb(data);
 };
 
@@ -236,7 +253,6 @@ const handleSelect = (item: Record<string, any>) => {
 
 const saveUserMediaType = async (params: any) => {
   saveUserMediaTypeApi(params);
-  await showNotificationWithImage();
 };
 onMounted(async () => {
   console.log(123);
