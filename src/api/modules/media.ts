@@ -5,6 +5,16 @@ export const userInfoApi = () => {
   return http.get(`/user/userInfo`, {}, { loading: true }); // 正常 post json 请求  ==>  application/json
 };
 
+//首页
+//概览
+export const overviewApi = param => {
+  return http.get(`/statistic/overview`, param, { loading: false });
+};
+// 覆盖图
+export const fugaituApi = param => {
+  return http.get(`/statistic/fugaitu`, param, { loading: false });
+};
+
 //获取自选类别
 export const userMediaTypeApi = param => {
   return http.get(`/mediaType/getUserMediaType`, param, { loading: false });

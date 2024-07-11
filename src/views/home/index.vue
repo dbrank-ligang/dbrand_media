@@ -2,7 +2,9 @@
   <div class="home">
     <!-- 头部筛选条件 -->
     <header class="header_box">
-      <div class="header_box_left">品牌名称：<span class="tiopBg"></span> <span> 海尔集团</span></div>
+      <div class="header_box_left">
+        品牌名称：<span class="tiopBg"></span> <span> {{ currBrandStore.currBrandObj.brandName }}</span>
+      </div>
       <div class="header_box_right">
         <div>
           时间范围：
@@ -27,14 +29,14 @@
       <div class="overview_tit">媒体关注度总览</div>
       <div class="overview_numberBox">
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
-          <div class="media_num">{{ item }}：{{ overviewList.num[i] }}</div>
+          <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：12.34%</div>
-          <div class="media_position">行业内排位：{{ overviewList.order[i] }}</div>
+          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewList?.percent[i] }} %</div>
+          <div class="media_position">行业内排位：{{ overviewList?.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
             <div>
-              <div v-for="(orderItem, index) in overviewList.orderList[i]" :key="orderItem">0{{ index + 1 }}{{ orderItem }}</div>
+              <div v-for="(orderItem, index) in overviewList?.orderList[i]" :key="orderItem">0{{ index + 1 }}{{ orderItem }}</div>
             </div>
           </div>
         </div>
@@ -65,7 +67,7 @@
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
           <div class="media_num">{{ item }}：{{ overviewList.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：12.34%</div>
+          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewList?.percent[i] }} %</div>
           <div class="media_position">行业内排位：{{ overviewList.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
@@ -138,8 +140,13 @@
 // }
 import { reactive, ref, onMounted, onUnmounted } from "vue";
 import dataJson from "./mediaData.json";
-import SelectAddPop from "./components/SelectAddPop/index.vue";
+import SelectAddPop from "./../components/SelectAddPop/index.vue";
+// import SelectAddPop from "./components/SelectAddPop/index.vue";
 import moment from "moment";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
+import { overviewApi } from "@/api/modules/media";
+
+const currBrandStore = useCurrBrandStore();
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
 // 获取上周周日
@@ -149,7 +156,6 @@ let dateArrPk = ref([]); // 对比的时间范围
 
 let isShowContrastTime = ref(false);
 let isShowContrast = ref(false);
-// const overviewList = ref({}); //概览数据
 const mediaData = ref(dataJson);
 
 const numlabelArr = ["头部媒体触达数量", "正向曝光媒体数", "负向曝光媒体数", "整体媒体触达数量"];
@@ -161,17 +167,23 @@ const decArr = [
   "（在本时段内，有关本品牌所有内容的传统媒体/资讯网媒/自媒体的合计数量。不含个人KOL）"
 ];
 // 概览数据
-const overviewList = {
-  num: [10, 5, 6, 4],
-  percent: [0, 500, 23, 400, 5000],
-  order: [10, 5, 6, 4],
-  orderList: [
-    ["海尔", "海信", "格力", "海信", "格力"],
-    ["海尔", "海信", "格力", "海信", "格力"],
-    ["海尔", "海信", "格力", "海信", "格力"],
-    ["海尔", "海信", "格力", "海信", "格力"]
-  ]
-};
+const overviewList = ref({
+  num: [],
+  percent: [],
+  order: [],
+  orderList: []
+} as any);
+// const overviewList = {
+//   num: [10, 5, 6, 4],
+//   percent: [0, 500, 23, 400, 5000],
+//   order: [10, 5, 6, 4],
+//   orderList: [
+//     ["海尔", "海信", "格力", "海信", "格力"],
+//     ["海尔", "海信", "格力", "海信", "格力"],
+//     ["海尔", "海信", "格力", "海信", "格力"],
+//     ["海尔", "海信", "格力", "海信", "格力"]
+//   ]
+// };
 // 创建一个数组来存储滚动区域的状态
 const scrolls = reactive(
   Array.from({ length: 2 }, () => ({
@@ -191,7 +203,7 @@ const getScrollRef = index => el => {
     updateScrollStatus(index);
   }
 };
-// 更新滚动状态
+// 更新横向滚动状态
 const updateScrollStatus = index => {
   const scrollArea = scrollRefs[index].value;
   if (scrollArea) {
@@ -202,9 +214,9 @@ const updateScrollStatus = index => {
     scrolls[index].canScrollRight =
       (scrollArea as any).scrollWidth > Math.ceil((scrollArea as any).scrollLeft) + (scrollArea as any).clientWidth;
   }
-  console.log("scrollWidth", (scrollArea as any).scrollWidth);
-  console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
-  console.log("clientWidth", (scrollArea as any).clientWidth);
+  // console.log("scrollWidth", (scrollArea as any).scrollWidth);
+  // console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
+  // console.log("clientWidth", (scrollArea as any).clientWidth);
 };
 // 滚动方法
 const scrollLeft = index => {
@@ -220,24 +232,6 @@ const scrollRight = index => {
     (scrollArea as any).scrollBy({ left: (scrollArea as any).clientWidth, behavior: "smooth" });
   }
 };
-
-// 监听每个滚动区域的滚动事件
-onMounted(() => {
-  scrollRefs.forEach((ref, index) => {
-    if (ref.value) {
-      (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
-      updateScrollStatus(index);
-    }
-  });
-});
-
-onUnmounted(() => {
-  scrollRefs.forEach(ref => {
-    if (ref.value) {
-      (ref.value as any).removeEventListener("scroll", () => updateScrollStatus(scrollRefs.indexOf(ref)));
-    }
-  });
-});
 
 // 时间搜索
 const changeTime = () => {
@@ -257,6 +251,37 @@ const changePkNo = () => {
 const searchPkTime = () => {
   isShowContrast.value = true;
 };
+// 获取概览数据
+const getOverview = async (params: any) => {
+  const { data } = await overviewApi(params);
+  console.log(data);
+  overviewList.value = data as any;
+};
+
+// 监听每个滚动区域的滚动事件
+onMounted(() => {
+  getOverview({
+    brandId: currBrandStore.currBrandObj.brandId,
+    startTime: dateArr.value[0],
+    endTime: dateArr.value[1]
+  });
+  console.log(dateArr.value[0]); // 开始时间
+  console.log(dateArr.value[1]); // 结束时间
+  scrollRefs.forEach((ref, index) => {
+    if (ref.value) {
+      (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
+      updateScrollStatus(index);
+    }
+  });
+});
+
+onUnmounted(() => {
+  scrollRefs.forEach(ref => {
+    if (ref.value) {
+      (ref.value as any).removeEventListener("scroll", () => updateScrollStatus(scrollRefs.indexOf(ref)));
+    }
+  });
+});
 </script>
 
 <style scoped lang="scss">

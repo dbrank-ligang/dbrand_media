@@ -13,6 +13,7 @@
             <el-select
               v-model="searchForm.meitidalei"
               class="m-2"
+              clearable
               placeholder="请选择"
               style="width: 150px"
               @change="changeMedia"
@@ -24,20 +25,21 @@
         <div class="selectBox">
           <div>行业细分：</div>
           <div>
-            <el-select v-model="searchForm.hangyexifen" class="m-2" placeholder="请选择" style="width: 150px">
+            <el-select v-model="searchForm.hangyexifen" clearable class="m-2" placeholder="请选择" style="width: 150px">
               <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </div>
         </div>
-        <el-button style="margin-left: 10px; margin-top: 2px">我要新增</el-button>
+        <SelectAddPop style="margin-left: 20px" />
         <div class="selectBox">
           <div>细分圈层：</div>
           <div>
-            <el-select v-model="searchForm.xifenquanceng" class="m-2" placeholder="请选择" style="width: 150px">
+            <el-select v-model="searchForm.xifenquanceng" clearable class="m-2" placeholder="请选择" style="width: 150px">
               <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </div>
         </div>
+        <SelectAddPop style="margin-left: 20px" />
       </div>
       <div class="searchBox_2">
         <div class="searchBox2_left">
@@ -110,7 +112,7 @@
           @change="changeCompetitorBrand"
         >
           <el-option
-            v-for="item in competitor"
+            v-for="item in currBrandStore.currBrandObj.competitor"
             :key="item.competitorBrandId"
             :label="item.competitorBrandName"
             :value="item.competitorBrandId"
@@ -135,7 +137,12 @@
             <div>相关正向内容条数</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="title" label="文章示例" />
+        <el-table-column align="center" prop="title" label="文章示例">
+          <template #default="scope">
+            <a target="_blank" :href="`www.${scope.row.docUrl}`">{{ scope.row.title }}</a>
+            <!-- <a target="_blank" href="https://www.baidu.com/">{{ scope.row.title }}</a> -->
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="可能性">
           <template #default="scope"> {{ scope.row.probability * 100 }}% </template>
         </el-table-column>
@@ -151,8 +158,9 @@
 import { onMounted, ref, watch } from "vue";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
-const currBrandStore = useCurrBrandStore();
+import SelectAddPop from "./../components/SelectAddPop/index.vue";
 
+const currBrandStore = useCurrBrandStore();
 const searchForm = ref({
   type: 1, //推荐；0不推荐；
   num: 10, //查询top10 ；20 查询top20      必填
@@ -171,23 +179,25 @@ const sellArr = ref([] as any); // 推荐列表
 const isExpandSell = ref(false); // 推荐列表 fasle:收起
 const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
-const inferArr = ref([] as any);
+const inferArr = ref([] as any); // 竞品列表
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
-const competitor = ref([
-  {
-    competitorBrandName: "竞品A",
-    competitorBrandId: "1"
-  },
-  {
-    competitorBrandName: "竞品B",
-    competitorBrandId: "2"
-  }
-]);
+// const competitor = ref([
+//   {
+//     competitorBrandName: "竞品A",
+//     competitorBrandId: "1"
+//   },
+//   {
+//     competitorBrandName: "竞品B",
+//     competitorBrandId: "2"
+//   }
+// ]);
 //媒体大类选中事件，请求行业细分、细分圈层、清空绑定的value
 const changeMedia = value => {
   console.log(value);
-  getHangyexifen(value);
-  getXifenquancengArr(value);
+  if (value) {
+    getHangyexifen(value);
+    getXifenquancengArr(value);
+  }
   searchForm.value.hangyexifen = null;
   searchForm.value.xifenquanceng = null;
 };
@@ -269,7 +279,8 @@ const handleExpandSell = (Object: any) => {
     getSellNoArr({
       ...searchForm.value,
       type: Object.type,
-      num: isExpandSellNo.value === true ? 20 : 10
+      num: isExpandSellNo.value === true ? 20 : 10,
+      brandId: currBrandStore.currBrandObj.brandId
     });
   }
   // 竞品列表
@@ -285,10 +296,38 @@ const handleExpandSell = (Object: any) => {
 };
 
 // 使用watch来观察store中的currBrandObj状态
-watch(() => currBrandStore.currBrandObj, onBrandChange);
+// watch(() => currBrandStore.currBrandObj, onBrandChange);
+// 监听store中的counter值
+watch(
+  () => currBrandStore.currBrandObj.brandId,
+  (newValue, oldValue) => {
+    // 当brandId值变化时，会执行这里的代码
+    console.log(`Counter changed from ${oldValue} to ${newValue}!`);
+    if (newValue !== oldValue) {
+      onBrandChange();
+    }
+  }
+);
 // 监听store中选择的品牌
 function onBrandChange() {
-  console.log("brand changed!");
+  console.log("切换了brandId!");
+  // 初始化查询条件
+  searchForm.value = {
+    type: 1, //推荐；0不推荐；
+    num: 10, //查询top10 ；20 查询top20      必填
+    platform: null, //平台名称                 非必填
+    meitidalei: null, //媒体大类名称             非必填
+    hangyexifen: null, //行业细分名称            非必填
+    xifenquanceng: null //细分圈层名称           非必填
+  };
+  activePlatformIndex.value = null;
+  // 清空列表数据
+  sellArr.value = []; // 推荐列表
+  isExpandSell.value = false; // 推荐列表 fasle:收起
+  sellNoArr.value = []; // 不推荐列表
+  isExpandSellNo.value = false; // 不推荐列表fasle:收起
+  inferArr.value = []; // 竞品列表
+  isExpandInfer.value = false; // 竞品推荐推荐列表 fasle:收起
 }
 const handleClick = (row?: any) => {
   console.log(row);

@@ -1,55 +1,57 @@
 <template>
   <div class="selectAddPopBox">
     <el-popover :visible="visible" placement="bottom" :width="736" popper-class="custom-popover">
-      <div class="listTitle">头部媒体类别卡片自选</div>
-      <div class="treeBox">
-        <el-tree
-          style="margin-bottom: 20px"
-          :data="topListArr"
-          node-key="id"
-          :expand-on-click-node="false"
-          :check-strictly="true"
-          :props="defaultProps"
-        >
-          <template #default="{ node, data }">
-            <span class="custom-tree-node">
-              <el-checkbox
-                v-for="item in node.label"
-                :key="item"
-                v-show="item !== null"
-                :label="item"
-                v-model="data.check"
-                change
-              />
-              <span> </span>
-            </span>
-          </template>
-        </el-tree>
-      </div>
-      <div class="listTitle">细分媒体圈层卡片自选</div>
-      <div class="treeBox">
-        <el-tree
-          style="margin-bottom: 20px"
-          :data="xifenListArr"
-          node-key="id"
-          :expand-on-click-node="false"
-          :check-strictly="true"
-          :props="defaultProps"
-        >
-          <template #default="{ node, data }">
-            <span class="custom-tree-node">
-              <el-checkbox
-                v-for="item in node.label"
-                :key="item"
-                v-show="item !== null"
-                :label="item"
-                v-model="data.check"
-                change
-              />
-              <span> </span>
-            </span>
-          </template>
-        </el-tree>
+      <div v-if="!isSuggestPath">
+        <div class="listTitle">头部媒体类别卡片自选</div>
+        <div class="treeBox">
+          <el-tree
+            style="margin-bottom: 20px"
+            :data="topListArr"
+            node-key="id"
+            :expand-on-click-node="false"
+            :check-strictly="true"
+            :props="defaultProps"
+          >
+            <template #default="{ node, data }">
+              <span class="custom-tree-node">
+                <el-checkbox
+                  v-for="item in node.label"
+                  :key="item"
+                  v-show="item !== null"
+                  :label="item"
+                  v-model="data.check"
+                  change
+                />
+                <span> </span>
+              </span>
+            </template>
+          </el-tree>
+        </div>
+        <div class="listTitle">细分媒体圈层卡片自选</div>
+        <div class="treeBox">
+          <el-tree
+            style="margin-bottom: 20px"
+            :data="xifenListArr"
+            node-key="id"
+            :expand-on-click-node="false"
+            :check-strictly="true"
+            :props="defaultProps"
+          >
+            <template #default="{ node, data }">
+              <span class="custom-tree-node">
+                <el-checkbox
+                  v-for="item in node.label"
+                  :key="item"
+                  v-show="item !== null"
+                  :label="item"
+                  v-model="data.check"
+                  change
+                />
+                <span> </span>
+              </span>
+            </template>
+          </el-tree>
+        </div>
       </div>
 
       <div class="addListBox" style="margin-top: 10px">
@@ -105,8 +107,14 @@ import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+// 获取当前路由对象
+const currentRoute = router.currentRoute.value;
+console.log(currentRoute.path);
 const currBrandStore = useCurrBrandStore();
+const isSuggestPath = ref(false);
 const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数组
 const newType = ref([] as any); // 新增大类的数组
 const visible = ref(false);
@@ -203,8 +211,17 @@ const confirmChange = () => {
       subMdiaTypeIds: flattenAndCheck(xifenListArr.value),
       newType: newType.value
     });
-    cancelChange();
-    showNotificationWithImage();
+    console.log(newType.value.length);
+    if (isSuggestPath.value && newType.value.length < 1) {
+      ElNotification({
+        type: "warning",
+        title: "提示",
+        message: "未新增任何内容"
+      });
+    } else {
+      cancelChange();
+      showNotificationWithImage();
+    }
   } catch (error) {
     console.log(error);
   }
@@ -213,10 +230,14 @@ const confirmChange = () => {
 const cancelChange = () => {
   visible.value = false;
   newType.value = [];
-  tabArr.value = [
-    { title: "自选类别", isActive: false },
-    { title: "我要新增", isActive: false }
-  ];
+  if (!isSuggestPath.value) {
+    tabArr.value = [
+      { title: "自选类别", isActive: false },
+      { title: "我要新增", isActive: false }
+    ];
+  } else {
+    tabArr.value = [{ title: "我要新增", isActive: false }];
+  }
 };
 
 // tag删除事件
@@ -257,7 +278,10 @@ const saveUserMediaType = async (params: any) => {
   saveUserMediaTypeApi(params);
 };
 onMounted(async () => {
-  console.log(123);
+  if (currentRoute.path === "/mediaSuggest/index") {
+    isSuggestPath.value = true;
+    tabArr.value = [{ title: "我要新增", isActive: false }];
+  }
 });
 </script>
 

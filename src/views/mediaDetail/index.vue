@@ -1,5 +1,137 @@
 <template>
   <div class="mediaDetailBox">
+    <div v-html="rawHtml"></div>
+    <!-- <div style="background: #fff; padding: 20px">
+      <div class="lemmaSummary_jO4rs J-summary">
+        <a name="lemma-summary" class="lemmaSummaryAnchor_hwbCj"></a>
+        <div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6uzzls" data-idx="">
+          <span class="text_S3vZG" data-text="true">
+            《证券时报》创立于1993年，是人民日报社主管主办的全国性财经证券类日报，是中国证监会指定披露上市公司信息、
+          </span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="https://baike.baidu.com/item/%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2/22311?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >中国保监会
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">指定披露</span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >保险信息
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">、中国银监会指定披露</span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="/item/%E4%BF%A1%E6%89%98%E5%85%AC%E5%8F%B8/94434?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >信托公司
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">信息的报刊。</span>
+        </div>
+        <div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6y9hwa" data-idx="">
+          <span class="text_S3vZG" data-text="true">该报以报道</span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="/item/%E8%AF%81%E5%88%B8%E5%B8%82%E5%9C%BA/2986895?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >证券市场
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">为主，兼顾经济</span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="/item/%E9%87%91%E8%9E%8D%E4%BF%A1%E6%81%AF/5280170?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >金融信息
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">，面向国内外</span>
+          <span class="text_S3vZG" data-text="true">
+            <a
+              class="innerLink_I4_DN"
+              href="https://baike.baidu.com/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink"
+              target="_blank"
+              data-from-module="summary"
+              >公开发行
+            </a>
+          </span>
+          <span class="text_S3vZG" data-text="true">。</span>
+        </div>
+      </div>
+      <div class="basicInfo_O1Zot J-basic-info">
+        <dl class="basicInfoBlock_mxixf left">
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">中文名</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">外文名</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">Securities Times</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">主管单位</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">人民日报社</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">主办单位</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC">
+              <span class="text_S3vZG" data-text="true">
+                <a
+                  class="innerLink_I4_DN"
+                  href="/item/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%A4%BE/640119?fromModule=lemma_inlink"
+                  target="_blank"
+                  data-from-module="basicInfo"
+                  >人民日报社
+                </a>
+              </span>
+            </dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">创刊时间</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">1993年</span></dd>
+          </div>
+        </dl>
+        <dl class="basicInfoBlock_mxixf right">
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">出版周期</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">一周六报</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">国内刊号</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">CN44-0157</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">邮发代号</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">45-91</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">编辑出版</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报社</span></dd>
+          </div>
+          <div class="itemWrapper_uuTI3">
+            <dt class="basicInfoItem_kkuIl itemName_JAwrE">刊物类别</dt>
+            <dd class="basicInfoItem_kkuIl itemValue_zVpWC">
+              <span class="text_S3vZG" data-text="true">时报 对开不少于12版</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div> -->
     <div class="mediaDetail_left">
       <div class="left_top">
         <div class="left_top_tit1" style="">[统一归类名称]</div>
@@ -142,8 +274,11 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
-const route = useRoute();
 
+const rawHtml = ref(
+  `<div class="lemmaSummary_jO4rs J-summary"><a name="lemma-summary" class="lemmaSummaryAnchor_hwbCj"></a><div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6uzzls" data-idx=""><span class="text_S3vZG" data-text="true">《证券时报》创立于1993年，是人民日报社主管主办的全国性财经证券类日报，是中国证监会指定披露上市公司信息、</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="https://baike.baidu.com/item/%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2/22311?fromModule=lemma_inlink" target="_blank" data-from-module="summary">中国保监会</a></span><span class="text_S3vZG" data-text="true">指定披露</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink" target="_blank" data-from-module="summary">保险信息</a></span><span class="text_S3vZG" data-text="true">、中国银监会指定披露</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BF%A1%E6%89%98%E5%85%AC%E5%8F%B8/94434?fromModule=lemma_inlink" target="_blank" data-from-module="summary">信托公司</a></span><span class="text_S3vZG" data-text="true">信息的报刊。</span></div><div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6y9hwa" data-idx=""><span class="text_S3vZG" data-text="true">该报以报道</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E8%AF%81%E5%88%B8%E5%B8%82%E5%9C%BA/2986895?fromModule=lemma_inlink" target="_blank" data-from-module="summary">证券市场</a></span><span class="text_S3vZG" data-text="true">为主，兼顾经济</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E9%87%91%E8%9E%8D%E4%BF%A1%E6%81%AF/5280170?fromModule=lemma_inlink" target="_blank" data-from-module="summary">金融信息</a></span><span class="text_S3vZG" data-text="true">，面向国内外</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E5%85%AC%E5%BC%80%E5%8F%91%E8%A1%8C/266659?fromModule=lemma_inlink" target="_blank" data-from-module="summary">公开发行</a></span><span class="text_S3vZG" data-text="true">。</span></div></div><div class="basicInfo_O1Zot J-basic-info"><dl class="basicInfoBlock_mxixf left"><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">中文名</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">外文名</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">Securities Times</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">主管单位</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">人民日报社</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">主办单位</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%A4%BE/640119?fromModule=lemma_inlink" target="_blank" data-from-module="basicInfo">人民日报社</a></span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">创刊时间</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">1993年</span></dd></div></dl><dl class="basicInfoBlock_mxixf right"><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">出版周期</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">一周六报</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">国内刊号</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">CN44-0157</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">邮发代号</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">45-91</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">编辑出版</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报社</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">刊物类别</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">时报 对开不少于12版</span></dd></div></dl></div>`
+);
+const route = useRoute();
 // 左侧一级导航列表数据
 const oneLevelObj = ref({
   unionMediaId: null, //    媒体集群id
@@ -304,7 +439,9 @@ onMounted(() => {
   getOneLevelArr({ mediaId: defaultObj.value.mediaId }); // 获取左侧导航列表
 });
 </script>
-
+<style lang="scss">
+@import "./baike.scss";
+</style>
 <style scoped lang="scss">
 @import "./index.scss";
 </style>
