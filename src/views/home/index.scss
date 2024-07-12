@@ -56,7 +56,13 @@
       font-weight: 700;
       line-height: 35px;
     }
-
+    .overview_numberBox_1>div:nth-child(3):hover {
+      background-color: #f7f7f7;
+      cursor: pointer;
+    }
+    // .overview_numberBox:nth-child(3):hover{
+    //   background-color: #ccc;
+    // }
     // 媒体数据
     .overview_numberBox {
       display: flex;
@@ -66,10 +72,12 @@
 
       // border: 1px solid red;
       .overview_number {
-        width: 220px;
+        width: 240px;
         height: 100%;
         font-size: 16px;
         line-height: 28px;
+        padding: 10px;
+        border-radius: 5px;
         .media_dec {
           font-size: 12px;
           line-height: 18px;

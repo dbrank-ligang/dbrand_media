@@ -27,8 +27,8 @@
     <!-- 正常数据 -->
     <div class="overview">
       <div class="overview_tit">媒体关注度总览</div>
-      <div class="overview_numberBox">
-        <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
+      <div class="overview_numberBox overview_numberBox_1">
+        <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item" @click="changeOverview(i)">
           <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
           <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewList?.percent[i] }} %</div>
@@ -36,7 +36,9 @@
           <div class="media_rank">
             <div>排名详情：</div>
             <div>
-              <div v-for="(orderItem, index) in overviewList?.orderList[i]" :key="orderItem">0{{ index + 1 }}{{ orderItem }}</div>
+              <div v-for="(orderItem, index) in overviewList?.orderList[i]" :key="orderItem">
+                No.{{ index + 1 }}{{ orderItem }}
+              </div>
             </div>
           </div>
         </div>
@@ -139,12 +141,12 @@
 
 // }
 import { reactive, ref, onMounted, onUnmounted } from "vue";
-import dataJson from "./mediaData.json";
+// import dataJson from "./mediaData.json";
 import SelectAddPop from "./../components/SelectAddPop/index.vue";
 // import SelectAddPop from "./components/SelectAddPop/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
-import { overviewApi } from "@/api/modules/media";
+import { fugaituApi, overviewApi } from "@/api/modules/media";
 
 const currBrandStore = useCurrBrandStore();
 // 获取上周周一
@@ -153,11 +155,20 @@ const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").for
 const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format("X");
 let dateArr = ref([dateStart, dateEnd]); // 时间范围
 let dateArrPk = ref([]); // 对比的时间范围
+let isShowContrastTime = ref(false); // 是否显示时间对比（时间选择器组件）
+let isShowContrast = ref(false); // 是否显示时间对比模块
+// const mediaData = ref(dataJson); // 覆盖图数据
+const mediaData = ref({} as any); // 覆盖图数据
+const paramsObj = ref({
+  brandId: currBrandStore.currBrandObj.brandId, //品牌id                               必填
+  type: null, //all 非负；negative 负面；                选填，不填，后端按非负查询
+  startTime: dateArr.value[0], // 开始时间                            必填
+  endTime: dateArr.value[1], // 结束时间                              必填
 
-let isShowContrastTime = ref(false);
-let isShowContrast = ref(false);
-const mediaData = ref(dataJson);
-
+  compareBrandId: null, // 对比品牌id,多个逗分割，最多两个  选填
+  compareStartTime: null, //  对比开始时间                 选填
+  compareEndTime: null // 对比结束时间                选填
+});
 const numlabelArr = ["头部媒体触达数量", "正向曝光媒体数", "负向曝光媒体数", "整体媒体触达数量"];
 const attentionlabelArr = ["头部媒体覆盖度", "正向媒体关注度", "负向媒体关注度", "整体媒体关注度"];
 const decArr = [
@@ -237,6 +248,16 @@ const scrollRight = index => {
 const changeTime = () => {
   console.log(dateArr.value[0]); // 开始时间
   console.log(dateArr.value[1]); // 结束时间
+  paramsObj.value = {
+    ...paramsObj.value,
+    startTime: dateArr.value[0],
+    endTime: dateArr.value[1]
+  };
+};
+// 点击负面概览——跳转负面页面
+const changeOverview = i => {
+  console.log(i);
+  console.log(dateArr.value[0], dateArr.value[1]);
 };
 // 点击对比按钮
 const changePk = () => {
@@ -255,18 +276,31 @@ const searchPkTime = () => {
 const getOverview = async (params: any) => {
   const { data } = await overviewApi(params);
   console.log(data);
-  overviewList.value = data as any;
+  overviewList.value = (data as any).gailan;
+};
+// 获取覆盖图数据
+const getFugaitu = async (params: any) => {
+  const { data } = await fugaituApi(params);
+  console.log(data);
+  mediaData.value = data as any;
 };
 
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
   getOverview({
-    brandId: currBrandStore.currBrandObj.brandId,
-    startTime: dateArr.value[0],
-    endTime: dateArr.value[1]
+    ...paramsObj.value,
+    // startTime: dateArr.value[0],
+    // endTime: dateArr.value[1],
+    brandId: currBrandStore.currBrandObj.brandId
   });
-  console.log(dateArr.value[0]); // 开始时间
-  console.log(dateArr.value[1]); // 结束时间
+  console.log("开始时间", dateArr.value[0]); // 开始时间
+  console.log("结束时间", dateArr.value[1]); // 结束时间
+  getFugaitu({
+    ...paramsObj.value,
+    // startTime: dateArr.value[0],
+    // endTime: dateArr.value[1],
+    type: "all"
+  });
   scrollRefs.forEach((ref, index) => {
     if (ref.value) {
       (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
