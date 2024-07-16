@@ -3,7 +3,41 @@
     <!-- 头部筛选条件 -->
     <header class="header_box">
       <div class="header_box_left">
-        品牌名称：<span class="tiopBg"></span> <span> {{ currBrandStore.currBrandObj.brandName }}</span>
+        品牌名称：<span class="tiopBg red"></span> <span> {{ currBrandStore.currBrandObj.brandName }}</span>
+        <div style="display: inline-block; margin-left: 10px">
+          Vs.<span class="tiopBg yellow" style="margin-left: 10px"></span>
+          <el-select
+            v-model="competitorBrandId"
+            class="m-2"
+            placeholder="请选择"
+            clearable
+            style="width: 120px; margin-left: 10px"
+            @change="changeCompetitorBrand"
+          >
+            <el-option
+              v-for="item in currBrandStore.currBrandObj.competitor"
+              :key="item.competitorBrandId"
+              :label="item.competitorBrandName"
+              :value="item.competitorBrandId"
+            />
+          </el-select>
+          Vs.<span class="tiopBg blue" style="margin-left: 10px"></span>
+          <el-select
+            v-model="competitorBrandId2"
+            class="m-2"
+            placeholder="请选择"
+            clearable
+            style="width: 120px; margin-left: 10px"
+            @change="changeCompetitorBrand2"
+          >
+            <el-option
+              v-for="item in currBrandStore.currBrandObj.competitor"
+              :key="item.competitorBrandId"
+              :label="item.competitorBrandName"
+              :value="item.competitorBrandId"
+            />
+          </el-select>
+        </div>
       </div>
       <div class="header_box_right">
         <div>
@@ -20,8 +54,6 @@
             :default-time="[dateStart, dateEnd]"
           />
         </div>
-        <el-button @click="changePk" class="buttonStyle" v-if="!isShowContrastTime">对比</el-button>
-        <el-button @click="changePkNo" v-else>取消对比</el-button>
       </div>
     </header>
     <!-- 正常数据 -->
@@ -44,44 +76,7 @@
         </div>
       </div>
     </div>
-    <!-- 对比数据 时间选择器 -->
-    <header class="header_box" v-if="isShowContrastTime">
-      <div class="header_box_left"></div>
-      <div class="header_box_right">
-        <div style="display: flex; align-items: center">
-          <span class="tiopBd"></span> <span>对比时段：</span>
-          <el-date-picker
-            v-model="dateArrPk"
-            width="200px"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-          />
-        </div>
-        <el-button class="buttonStyle" @click="searchPkTime">确定</el-button>
-      </div>
-    </header>
-    <!-- 对比数据-->
-    <div class="overview" v-if="isShowContrast">
-      <div class="overview_tit">媒体关注度总览</div>
-      <div class="overview_numberBox">
-        <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
-          <div class="media_num">{{ item }}：{{ overviewListTimeDuibi?.num[i] }}</div>
-          <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewListTimeDuibi?.percent[i] }} %</div>
-          <div class="media_position">行业内排位：{{ overviewListTimeDuibi.order[i] }}</div>
-          <div class="media_rank">
-            <div>排名详情：</div>
-            <div>
-              <div v-for="(orderItem, index) in overviewListTimeDuibi.orderList[i]" :key="orderItem">
-                0{{ index + 1 }}{{ orderItem }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <!-- 头部媒体覆盖图 -->
     <div class="mediaBox" v-for="(item, index) in mediaData" :key="index">
       <div class="mediaHeader">
@@ -152,7 +147,9 @@
 
 // }
 import { reactive, ref, onMounted, onUnmounted } from "vue";
+// import dataJson from "./mediaData.json";
 import SelectAddPop from "./../components/SelectAddPop/index.vue";
+// import SelectAddPop from "./components/SelectAddPop/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
@@ -163,10 +160,10 @@ const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").for
 // 获取上周周日
 const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format("X");
 let dateArr = ref([dateStart, dateEnd]); // 时间范围
-let dateArrPk = ref([]); // 对比的时间范围
+let competitorBrandId = ref(null); // 对比品牌
+let competitorBrandId2 = ref(null); // 对比品牌
+const competitorBrandIdArr = ref([competitorBrandId.value, competitorBrandId2.value]);
 
-let isShowContrastTime = ref(false); // 是否显示时间对比（时间选择器组件）
-let isShowContrast = ref(false); // 是否显示时间对比模块
 // const mediaData = ref(dataJson); // 覆盖图数据
 const mediaData = ref({} as any); // 覆盖图数据
 const paramsObj = ref({
@@ -193,13 +190,50 @@ const overviewList = ref({
   order: [],
   orderList: []
 } as any);
-// 概览数据
-const overviewListTimeDuibi = ref({
-  num: [],
-  percent: [],
-  order: [],
-  orderList: []
-} as any);
+
+// 競品下拉框 change事件
+const changeCompetitorBrand = value => {
+  if (value) {
+    competitorBrandId.value = value;
+    competitorBrandIdArr.value[0] = competitorBrandId.value;
+    console.log(competitorBrandIdArr.value);
+    // paramsObj.value = {
+    //   ...paramsObj.value,
+    //   compareBrandId: competitorBrandIdArr.value
+    // };
+    getOverview({
+      ...paramsObj.value,
+      compareBrandId: competitorBrandIdArr.value.join(","),
+      brandId: currBrandStore.currBrandObj.brandId
+    });
+    getFugaitu({
+      ...paramsObj.value,
+      compareBrandId: competitorBrandIdArr.value.join(","),
+      type: "all"
+    });
+  }
+};
+const changeCompetitorBrand2 = value => {
+  if (value) {
+    competitorBrandId2.value = value;
+    competitorBrandIdArr.value[1] = competitorBrandId2.value;
+    console.log(competitorBrandIdArr.value);
+    // paramsObj.value = {
+    //   ...paramsObj.value,
+    //   compareBrandId: competitorBrandIdArr.value
+    // };
+    getOverview({
+      ...paramsObj.value,
+      compareBrandId: competitorBrandIdArr.value,
+      brandId: currBrandStore.currBrandObj.brandId
+    });
+    getFugaitu({
+      ...paramsObj.value,
+      compareBrandId: competitorBrandIdArr.value,
+      type: "all"
+    });
+  }
+};
 
 // 创建一个数组来存储滚动区域的状态
 const scrolls = reactive(
@@ -286,49 +320,6 @@ const changeOverview = i => {
   console.log(i);
   console.log(dateArr.value[0], dateArr.value[1]);
 };
-// 点击对比按钮
-const changePk = () => {
-  isShowContrastTime.value = true;
-};
-// 选择对比时段后 按确定
-const searchPkTime = () => {
-  console.log(dateArrPk);
-  if (dateArrPk.value.length > 0) {
-    isShowContrast.value = true;
-    const startTime = new Date(dateArrPk.value[0]).getTime() / 1000;
-    const endTime = new Date(dateArrPk.value[1]).getTime() / 1000;
-    console.log(startTime); // 开始时间
-    console.log(endTime); // 结束时间
-    paramsObj.value = {
-      ...paramsObj.value,
-      compareStartTime: startTime,
-      compareEndTime: endTime
-    };
-    getOverview_timeDuibi({
-      // ...paramsObj.value,
-      startTime: startTime,
-      endTime: endTime,
-      brandId: currBrandStore.currBrandObj.brandId
-    });
-
-    getFugaitu({
-      ...paramsObj.value,
-      type: "all"
-    });
-  }
-};
-//取消对比
-const changePkNo = () => {
-  isShowContrastTime.value = false;
-  isShowContrast.value = false;
-  paramsObj.value = {
-    ...paramsObj.value,
-    compareStartTime: null,
-    compareEndTime: null
-  };
-  dateArrPk.value = []; //清空时间对比
-  overviewListTimeDuibi.value = []; //清空时间对比的数据
-};
 
 // 获取概览数据
 const getOverview = async (params: any) => {
@@ -336,12 +327,7 @@ const getOverview = async (params: any) => {
   console.log(data);
   overviewList.value = data;
 };
-// 获取概览数据(时间段对比)
-const getOverview_timeDuibi = async (params: any) => {
-  const { data } = await overviewApi(params);
-  console.log(data);
-  overviewListTimeDuibi.value = data;
-};
+
 // 获取覆盖图数据
 const getFugaitu = async (params: any) => {
   const { data } = await fugaituApi(params);

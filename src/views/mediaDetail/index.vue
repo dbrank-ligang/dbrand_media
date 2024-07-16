@@ -1,269 +1,150 @@
 <template>
-  <div class="mediaDetailBox">
-    <div v-html="rawHtml"></div>
-    <!-- <div style="background: #fff; padding: 20px">
-      <div class="lemmaSummary_jO4rs J-summary">
-        <a name="lemma-summary" class="lemmaSummaryAnchor_hwbCj"></a>
-        <div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6uzzls" data-idx="">
-          <span class="text_S3vZG" data-text="true">
-            《证券时报》创立于1993年，是人民日报社主管主办的全国性财经证券类日报，是中国证监会指定披露上市公司信息、
-          </span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="https://baike.baidu.com/item/%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2/22311?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >中国保监会
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">指定披露</span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >保险信息
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">、中国银监会指定披露</span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="/item/%E4%BF%A1%E6%89%98%E5%85%AC%E5%8F%B8/94434?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >信托公司
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">信息的报刊。</span>
-        </div>
-        <div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6y9hwa" data-idx="">
-          <span class="text_S3vZG" data-text="true">该报以报道</span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="/item/%E8%AF%81%E5%88%B8%E5%B8%82%E5%9C%BA/2986895?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >证券市场
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">为主，兼顾经济</span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="/item/%E9%87%91%E8%9E%8D%E4%BF%A1%E6%81%AF/5280170?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >金融信息
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">，面向国内外</span>
-          <span class="text_S3vZG" data-text="true">
-            <a
-              class="innerLink_I4_DN"
-              href="https://baike.baidu.com/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink"
-              target="_blank"
-              data-from-module="summary"
-              >公开发行
-            </a>
-          </span>
-          <span class="text_S3vZG" data-text="true">。</span>
-        </div>
-      </div>
-      <div class="basicInfo_O1Zot J-basic-info">
-        <dl class="basicInfoBlock_mxixf left">
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">中文名</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">外文名</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">Securities Times</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">主管单位</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">人民日报社</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">主办单位</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC">
-              <span class="text_S3vZG" data-text="true">
-                <a
-                  class="innerLink_I4_DN"
-                  href="/item/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%A4%BE/640119?fromModule=lemma_inlink"
-                  target="_blank"
-                  data-from-module="basicInfo"
-                  >人民日报社
-                </a>
-              </span>
-            </dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">创刊时间</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">1993年</span></dd>
-          </div>
-        </dl>
-        <dl class="basicInfoBlock_mxixf right">
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">出版周期</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">一周六报</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">国内刊号</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">CN44-0157</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">邮发代号</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">45-91</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">编辑出版</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报社</span></dd>
-          </div>
-          <div class="itemWrapper_uuTI3">
-            <dt class="basicInfoItem_kkuIl itemName_JAwrE">刊物类别</dt>
-            <dd class="basicInfoItem_kkuIl itemValue_zVpWC">
-              <span class="text_S3vZG" data-text="true">时报 对开不少于12版</span>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </div> -->
-    <div class="mediaDetail_left">
-      <div class="left_top">
+  <div class="mediaDetail_con">
+    <div class="mediaDetail_up">
+      <div class="mediaDetail_text left_top">
         <div class="left_top_tit1" style="">[统一归类名称]</div>
         <div class="left_top_tit2">{{ oneLevelObj.unionMediaName }}</div>
         <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
         <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
         <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
       </div>
-      <ul class="left_bottom">
-        <li
-          v-for="item in oneLevelObj.mediaList"
-          :key="item.mediaId"
-          :class="{ active: oneLevelActiveId == item.mediaId }"
-          @click="oneLevelClick(item)"
-        >
-          <div class="mediaName_nav"><span></span>{{ item.mediaName }}</div>
-          <div
-            v-if="oneLevelActiveId == item.mediaId && (item.beforeName || item.anotherName || item.includeName)"
-            style="min-height: 50px; font-size: 14px"
-          >
-            {{
-              (item.beforeName ? item.beforeName + "&" : "") +
-              (item.anotherName ? item.anotherName + "&" : "") +
-              (item.includeName ? item.includeName : "")
-            }}
-          </div>
-        </li>
-      </ul>
+      <div class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
+      <!-- <div class="mediaDetail_baike">{{ oneLevelSelectObj?.baike }}</div> -->
     </div>
-    <div class="mediaDetail_right">
-      <div class="mediaSource">
-        <div class="mediaSource_tit">[作为媒体源]</div>
-        <div class="mediaSource_listBox">
-          <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
-            <div class="mediaSource_rowTit">[{{ item.name }}]</div>
-            <div class="mediaSource_rowCon">
-              <div
-                v-for="mediaItem in item.data"
-                :key="mediaItem.name"
-                @click="mediaSourceItemClick(mediaItem, i)"
-                :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
-              >
-                {{ mediaItem.name }}
+    <div class="mediaDetailBox">
+      <div class="mediaDetail_left">
+        <!-- <div class="left_top">
+          <div class="left_top_tit1" style="">[统一归类名称]</div>
+          <div class="left_top_tit2">{{ oneLevelObj.unionMediaName }}</div>
+          <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
+          <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
+          <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
+        </div> -->
+        <div class="left_bottom">
+          <li
+            v-for="item in oneLevelObj.subUnionMediaList"
+            :key="item.subUnionId"
+            :class="{ active: oneLevelActiveId == item.subUnionId }"
+            @click="oneLevelClick(item)"
+          >
+            <div class="mediaName_nav"><span></span>{{ item.subUnionName }}</div>
+            <div
+              v-if="oneLevelActiveId == item.subUnionId && (item.beforeName || item.anotherName || item.includeName)"
+              style="min-height: 50px; font-size: 14px"
+            >
+              {{
+                (item.beforeName ? item.beforeName + "&" : "") +
+                (item.anotherName ? item.anotherName + "&" : "") +
+                (item.includeName ? item.includeName : "")
+              }}
+            </div>
+          </li>
+        </div>
+      </div>
+      <div class="mediaDetail_right">
+        <div class="mediaSource">
+          <div class="mediaSource_tit">[作为媒体源]</div>
+          <div class="mediaSource_listBox">
+            <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
+              <div class="mediaSource_rowTit">[{{ item.name }}]</div>
+              <div class="mediaSource_rowCon">
+                <div
+                  v-for="mediaItem in item.data"
+                  :key="mediaItem.name"
+                  @click="mediaSourceItemClick(mediaItem, i)"
+                  :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
+                >
+                  {{ mediaItem.name }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="mediaSource" style="margin-top: 10px">
-        <div class="mediaSource_tit">[账号列表]</div>
-        <div class="mediaSource_listBox">
-          <div class="mediaSource_listRow">
-            <div class="mediaSource_rowCon">
-              <div
-                v-for="(item, index) in numberArr"
-                :key="item.id"
-                @click="accountClick(index, item)"
-                :class="{ activeNumber: activeNumberIndex == index }"
-              >
-                {{ item.accountName }}
+        <div class="mediaSource" style="margin-top: 10px">
+          <div class="mediaSource_tit">[账号列表]</div>
+          <div class="mediaSource_listBox">
+            <div class="mediaSource_listRow">
+              <div class="mediaSource_rowCon">
+                <div
+                  v-for="(item, index) in numberArr"
+                  :key="item.id"
+                  @click="accountClick(index, item)"
+                  :class="{ activeNumber: activeNumberIndex == index }"
+                >
+                  {{ item.accountName }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="numberDetailBox" style="margin-top: 10px">
-        <div class="numberDetailBox_tit">[账号详情]</div>
-        <div style="padding: 15px 0 15px 15px">
-          <div class="numberDetailBox_Row" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
-            <div class="numberDetailBox_rowTit">{{ item }}：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
+        <div class="numberDetailBox" style="margin-top: 10px">
+          <div class="numberDetailBox_tit">[账号详情]</div>
+          <div style="padding: 15px 0 15px 15px">
+            <div class="numberDetailBox_Row" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
+              <div class="numberDetailBox_rowTit">{{ item }}：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="numberDetailBox" style="margin-top: 10px">
-        <div class="numberDetailBox_tit">[账号标签]</div>
-        <div style="padding: 15px 0 15px 15px">
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">行业大类标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyedalei || "" }}</div>
-            <div class="numberDetailBox_rowTit">行业二级标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
-          </div>
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">行业二级标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
-          </div>
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">内容属性标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.neirongshuxing || "" }}</div>
-          </div>
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">媒体属性标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.meitishuxing || "" }}</div>
-          </div>
-          <div class="numberDetailBox_Row">
-            <div class="numberDetailBox_rowTit">其他标签：</div>
-            <div class="numberDetailBox_rowCon">{{ numberDetailObj?.qita || "" }}</div>
+        <div class="numberDetailBox" style="margin-top: 10px">
+          <div class="numberDetailBox_tit">[账号标签]</div>
+          <div style="padding: 15px 0 15px 15px">
+            <div class="numberDetailBox_Row">
+              <div class="numberDetailBox_rowTit">行业大类标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyedalei || "" }}</div>
+              <div class="numberDetailBox_rowTit">行业二级标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
+            </div>
+            <div class="numberDetailBox_Row">
+              <div class="numberDetailBox_rowTit">行业二级标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
+            </div>
+            <div class="numberDetailBox_Row">
+              <div class="numberDetailBox_rowTit">内容属性标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.neirongshuxing || "" }}</div>
+            </div>
+            <div class="numberDetailBox_Row">
+              <div class="numberDetailBox_rowTit">媒体属性标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.meitishuxing || "" }}</div>
+            </div>
+            <div class="numberDetailBox_Row">
+              <div class="numberDetailBox_rowTit">其他标签：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.qita || "" }}</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="contentListBox" style="margin-top: 10px">
-        <div class="contentListBox_tit">{{ oneName }} / {{ twoName }} / {{ threeName }}</div>
-        <div style="margin-top: 30px">
-          [内容列表]
-          <el-date-picker
-            v-model="dateArr"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-            size="small"
-            @change="changeDate"
-          />
+        <div class="contentListBox" style="margin-top: 10px">
+          <div class="contentListBox_tit">{{ oneName }} / {{ twoName }} / {{ threeName }}</div>
+          <div style="margin-top: 30px">
+            [内容列表]
+            <el-date-picker
+              v-model="dateArr"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              size="small"
+              @change="changeDate"
+            />
+          </div>
+          <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
+            <el-table-column prop="brandName" label="高相关品牌" />
+            <el-table-column label="内容标题">
+              <template #default="scope">
+                <a target="_blank" :href="scope.row.docUrl">{{ scope.row.title }}</a>
+              </template>
+            </el-table-column>
+            <el-table-column label="发表时间">
+              <template #default="scope">
+                {{ timestampToDate(scope.row.publishTime) }}
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-        <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
-          <el-table-column prop="brandName" label="高相关品牌" />
-          <el-table-column label="内容标题">
-            <template #default="scope">
-              <a target="_blank" :href="scope.row.docUrl">{{ scope.row.title }}</a>
-            </template>
-          </el-table-column>
-          <el-table-column label="发表时间">
-            <template #default="scope">
-              {{ timestampToDate(scope.row.publishTime) }}
-            </template>
-          </el-table-column>
-        </el-table>
       </div>
     </div>
   </div>
@@ -275,9 +156,6 @@ import { useRoute } from "vue-router";
 import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
 
-const rawHtml = ref(
-  `<div class="lemmaSummary_jO4rs J-summary"><a name="lemma-summary" class="lemmaSummaryAnchor_hwbCj"></a><div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6uzzls" data-idx=""><span class="text_S3vZG" data-text="true">《证券时报》创立于1993年，是人民日报社主管主办的全国性财经证券类日报，是中国证监会指定披露上市公司信息、</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="https://baike.baidu.com/item/%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2/22311?fromModule=lemma_inlink" target="_blank" data-from-module="summary">中国保监会</a></span><span class="text_S3vZG" data-text="true">指定披露</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BF%9D%E9%99%A9%E4%BF%A1%E6%81%AF/12747170?fromModule=lemma_inlink" target="_blank" data-from-module="summary">保险信息</a></span><span class="text_S3vZG" data-text="true">、中国银监会指定披露</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BF%A1%E6%89%98%E5%85%AC%E5%8F%B8/94434?fromModule=lemma_inlink" target="_blank" data-from-module="summary">信托公司</a></span><span class="text_S3vZG" data-text="true">信息的报刊。</span></div><div class="para_YSJB6 summary_LggeX MARK_MODULE" data-tag="paragraph" data-uuid="gnwl6y9hwa" data-idx=""><span class="text_S3vZG" data-text="true">该报以报道</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E8%AF%81%E5%88%B8%E5%B8%82%E5%9C%BA/2986895?fromModule=lemma_inlink" target="_blank" data-from-module="summary">证券市场</a></span><span class="text_S3vZG" data-text="true">为主，兼顾经济</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E9%87%91%E8%9E%8D%E4%BF%A1%E6%81%AF/5280170?fromModule=lemma_inlink" target="_blank" data-from-module="summary">金融信息</a></span><span class="text_S3vZG" data-text="true">，面向国内外</span><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E5%85%AC%E5%BC%80%E5%8F%91%E8%A1%8C/266659?fromModule=lemma_inlink" target="_blank" data-from-module="summary">公开发行</a></span><span class="text_S3vZG" data-text="true">。</span></div></div><div class="basicInfo_O1Zot J-basic-info"><dl class="basicInfoBlock_mxixf left"><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">中文名</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">外文名</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">Securities Times</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">主管单位</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">人民日报社</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">主办单位</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true"><a class="innerLink_I4_DN" href="/item/%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5%E7%A4%BE/640119?fromModule=lemma_inlink" target="_blank" data-from-module="basicInfo">人民日报社</a></span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">创刊时间</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">1993年</span></dd></div></dl><dl class="basicInfoBlock_mxixf right"><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">出版周期</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">一周六报</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">国内刊号</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">CN44-0157</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">邮发代号</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">45-91</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">编辑出版</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">证券时报社</span></dd></div><div class="itemWrapper_uuTI3"><dt class="basicInfoItem_kkuIl itemName_JAwrE">刊物类别</dt><dd class="basicInfoItem_kkuIl itemValue_zVpWC"><span class="text_S3vZG" data-text="true">时报 对开不少于12版</span></dd></div></dl></div>`
-);
 const route = useRoute();
 // 左侧一级导航列表数据
 const oneLevelObj = ref({
@@ -286,7 +164,7 @@ const oneLevelObj = ref({
   url: null,
   client: null,
   epaper: null,
-  mediaList: []
+  subUnionMediaList: []
 } as any);
 let activeMediaSourceIndex = ref(0); // 媒体源，默认选中第一个
 const activeNumberIndex = ref(0); // 账号列表，默认选中第一个
@@ -298,6 +176,7 @@ const threeName = ref("三级"); // 三级选中的
 let dateArr = ref([]); // 时间选择器
 const defaultObj = ref({
   mediaId: null,
+  subUnionId: null, // 左侧选中的id
   mediaName: null,
   platform: null,
   accountName: null
@@ -317,12 +196,14 @@ let numberDetailObj = ref({
 } as any);
 const articlesArr = ref([] as any);
 const oneLevelActiveId = ref(); // 左侧列表 选中的id
+const oneLevelSelectObj = ref(); // 左侧选中的obj
 // // 左侧列表点击事件
 function oneLevelClick(item) {
-  oneLevelActiveId.value = item.mediaId;
-  getMdiaSourceArr({ mediaId: item.mediaId }); //获取媒体源、账号列表
-  console.log("一级菜单栏选中的：", item.mediaName);
-  oneName.value = item.mediaName;
+  oneLevelActiveId.value = item.subUnionId;
+  getMdiaSourceArr({ subUnionId: item.subUnionId }); //获取媒体源、账号列表
+  console.log("一级菜单栏选中的：", item);
+  oneName.value = item.subUnionName;
+  oneLevelSelectObj.value = item;
 }
 // 切换媒体源
 function mediaSourceItemClick(mediaItem, i) {
@@ -361,13 +242,22 @@ const getOneLevelArr = async (params: any) => {
   oneLevelObj.value = data as any;
   // 找到url中mediaId对应的item
   let selectItem = {};
-  for (let i = 0; i < oneLevelObj.value.mediaList.length; i++) {
-    let item = oneLevelObj.value.mediaList[i];
-    if (item.mediaId == defaultObj.value.mediaId) {
-      selectItem = item;
+  if (defaultObj.value?.subUnionId) {
+    for (let i = 0; i < oneLevelObj.value.subUnionMediaList.length; i++) {
+      let item = oneLevelObj.value.subUnionMediaList[i];
+      console.log(item, "subUnionName");
+      if (item.subUnionId == defaultObj.value.subUnionId) {
+        selectItem = item;
+        oneLevelClick(selectItem);
+      }
+    }
+  } else {
+    if (isArray(oneLevelObj.value.subUnionMediaList) && oneLevelObj.value.subUnionMediaList.length > 0) {
+      let obj = oneLevelObj.value.subUnionMediaList[0];
+      selectItem = obj;
+      oneLevelClick(selectItem);
     }
   }
-  oneLevelClick(selectItem);
 };
 
 // 获取媒体源列表

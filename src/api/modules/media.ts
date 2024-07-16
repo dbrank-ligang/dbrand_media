@@ -63,11 +63,11 @@ export const dictListJsonApi = () => {
 // 媒体详情页面
 // 媒体导航列表
 export const mediaNavApi = param => {
-  return http.get(`/media/unionInfo`, param, { loading: false });
+  return http.get(`/media/unionInfo2`, param, { loading: false });
 };
 // 媒体&账号列表
 export const accountListApi = param => {
-  return http.get(`/media/accountList`, param, { loading: false });
+  return http.get(`/media/accountList2`, param, { loading: false });
 };
 
 // 账号详情

@@ -59,7 +59,35 @@
         "activeMenu":"/mediaSearch/index"
       }
     },
-    
+    {
+      "path": "/brandRatio/index",
+      "name": "brandRatio",
+      "component": "/brandRatio/index",
+      "meta": {
+        "icon": "",
+        "title": "品牌对比",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true
+      }
+    },
+    {
+      "path": "/negative/index",
+      "name": "negative",
+      "component": "/negative/index",
+      "meta": {
+        "icon": "",
+        "title": "负面曝光",
+        "isLink": "",
+        "isHide": true,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true,
+        "activeMenu":"/negative/index"
+      }
+    },
     {
       "path": "/numberSearch/index",
       "name": "numberSearch",

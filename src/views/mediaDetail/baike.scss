@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+  list-style: none;
+}
 .lemmaSummary_jO4rs {
   word-wrap: break-word;
   zoom: 1;
@@ -24,7 +28,7 @@
 }
 
 .para_YSJB6.summary_LggeX {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   text-indent: 2em
 }
 .text_S3vZG {
@@ -42,7 +46,8 @@
 }
 .basicInfo_O1Zot {
   background: url(https://baikebcs.bdimg.com/baike-react/lemma/basicInfo-bg.png);
-  margin: 20px 0 35px
+  background-position-y: 16px;
+  margin: 20px 0 20px
 }
 .basicInfo_O1Zot:after {
   clear: both;
@@ -56,7 +61,7 @@
 
 .basicInfo_O1Zot .basicInfoBlock_mxixf .itemWrapper_uuTI3 {
   position: relative;
-  margin-top: -16px;
+  // margin-top: -16px;
 }
 
 .basicInfo_O1Zot .basicInfoBlock_mxixf .itemWrapper_uuTI3:after {
