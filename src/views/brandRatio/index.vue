@@ -11,7 +11,6 @@
             v-model="competitorBrandId"
             class="m-2"
             placeholder="请选择"
-            clearable
             style="width: 120px; margin-left: 10px"
             @change="changeCompetitorBrand"
           >
@@ -118,8 +117,6 @@ const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format(
 let dateArr = ref([dateStart, dateEnd]); // 时间范围
 let competitorBrandId = ref(null); // 对比品牌
 let competitorBrandId2 = ref(null); // 对比品牌
-const competitorBrandIdArr = ref([competitorBrandId.value, competitorBrandId2.value]);
-
 // const mediaData = ref(dataJson); // 覆盖图数据
 const mediaData = ref({} as any); // 覆盖图数据
 const paramsObj = ref({
@@ -178,44 +175,32 @@ const overviewList = ref({
 const changeCompetitorBrand = value => {
   if (value) {
     competitorBrandId.value = value;
-    competitorBrandIdArr.value[0] = competitorBrandId.value;
-    console.log(competitorBrandIdArr.value);
-    // paramsObj.value = {
-    //   ...paramsObj.value,
-    //   compareBrandId: competitorBrandIdArr.value
-    // };
+    let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
     getOverview({
       ...paramsObj.value,
-      compareBrandId: competitorBrandIdArr.value.join(","),
+      compareBrandId: compareBrandId,
       brandId: currBrandStore.currBrandObj.brandId
     });
     getFugaitu({
       ...paramsObj.value,
-      compareBrandId: competitorBrandIdArr.value.join(","),
+      compareBrandId: compareBrandId,
       type: "all"
     });
   }
 };
 const changeCompetitorBrand2 = value => {
-  if (value) {
-    competitorBrandId2.value = value;
-    competitorBrandIdArr.value[1] = competitorBrandId2.value;
-    console.log(competitorBrandIdArr.value);
-    // paramsObj.value = {
-    //   ...paramsObj.value,
-    //   compareBrandId: competitorBrandIdArr.value
-    // };
-    getOverview({
-      ...paramsObj.value,
-      compareBrandId: competitorBrandIdArr.value,
-      brandId: currBrandStore.currBrandObj.brandId
-    });
-    getFugaitu({
-      ...paramsObj.value,
-      compareBrandId: competitorBrandIdArr.value,
-      type: "all"
-    });
-  }
+  competitorBrandId2.value = value;
+  let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
+  getOverview({
+    ...paramsObj.value,
+    compareBrandId: compareBrandId,
+    brandId: currBrandStore.currBrandObj.brandId
+  });
+  getFugaitu({
+    ...paramsObj.value,
+    compareBrandId: compareBrandId,
+    type: "all"
+  });
 };
 
 // 时间搜索
@@ -262,8 +247,7 @@ onBeforeMount(() => {
 });
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
-  // getOverview({ ...paramsObj.value });
-  // getFugaitu({ ...paramsObj.value, type: "all" });
+  changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId);
 });
 </script>
 

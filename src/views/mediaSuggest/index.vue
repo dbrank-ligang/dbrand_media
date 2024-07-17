@@ -264,7 +264,6 @@ const changeCompetitorBrand = value => {
 
 // 推荐列表-展开收起  false:10,true:20; object:0/1/2(0：不推荐列表，1：推荐列表，2：竞品列表)
 const handleExpandSell = (Object: any) => {
-  // debugger;
   if (Object.type == 1) {
     isExpandSell.value = !isExpandSell.value;
     getSellArr({

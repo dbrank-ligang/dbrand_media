@@ -1,4 +1,5 @@
 <template>
+  <!-- 暂时无用 -->
   <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" size="large">
     <el-form-item prop="username">
       <el-input v-model="loginForm.username" placeholder="用户名：admin / user">
@@ -34,17 +35,17 @@ import { HOME_URL } from "@/config";
 import { getTimeState } from "@/utils";
 import { Login } from "@/api/interface";
 import { ElNotification } from "element-plus";
-import { loginApi } from "@/api/modules/login";
-import { useUserStore } from "@/stores/modules/user";
+// import { loginApi } from "@/api/modules/login";
+// import { useUserStore } from "@/stores/modules/user";
 import { useTabsStore } from "@/stores/modules/tabs";
 import { useKeepAliveStore } from "@/stores/modules/keepAlive";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { CircleClose, UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
-import md5 from "md5";
+// import md5 from "md5";
 
 const router = useRouter();
-const userStore = useUserStore();
+// const userStore = useUserStore();
 const tabsStore = useTabsStore();
 const keepAliveStore = useKeepAliveStore();
 
@@ -69,8 +70,8 @@ const login = (formEl: FormInstance | undefined) => {
     loading.value = true;
     try {
       // 1.执行登录接口
-      const { data } = await loginApi({ ...loginForm, password: md5(loginForm.password) });
-      userStore.setToken(data.access_token);
+      // const { data } = await loginApi({ ...loginForm, password: md5(loginForm.password) });
+      // userStore.setToken("aaaaaa111111");
 
       // 2.添加动态路由
       await initDynamicRouter();

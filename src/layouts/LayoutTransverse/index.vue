@@ -18,7 +18,13 @@
             </template>
             <SubMenu :menu-list="subItem.children" />
           </el-sub-menu>
-          <el-menu-item v-else :key="subItem.path + 'el-menu-item'" :index="subItem.path" @click="handleClickMenu(subItem)">
+          <el-menu-item
+            v-else
+            :key="subItem.path + 'el-menu-item'"
+            :index="subItem.path"
+            :disabled="subItem.meta.isDisabled"
+            @click="handleClickMenu(subItem)"
+          >
             <el-icon>
               <component :is="subItem.meta.icon"></component>
             </el-icon>
@@ -51,6 +57,7 @@ const menuList = computed(() => authStore.showMenuListGet);
 const activeMenu = computed(() => (route.meta.activeMenu ? route.meta.activeMenu : route.path) as string);
 
 const handleClickMenu = (subItem: Menu.MenuOptions) => {
+  if (subItem.meta.isDisabled) return;
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
   router.push(subItem.path);
 };

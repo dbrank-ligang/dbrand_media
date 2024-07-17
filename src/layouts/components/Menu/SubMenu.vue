@@ -9,7 +9,7 @@
       </template>
       <SubMenu :menu-list="subItem.children" />
     </el-sub-menu>
-    <el-menu-item v-else :index="subItem.path" @click="handleClickMenu(subItem)">
+    <el-menu-item v-else :index="subItem.path" :disabled="subItem.meta.isDisabled" @click="handleClickMenu(subItem)">
       <!-- <el-icon v-if="subItem.meta.icon">
         <component :is="subItem.meta.icon"></component>
       </el-icon> -->
@@ -27,6 +27,7 @@ defineProps<{ menuList: Menu.MenuOptions[] }>();
 
 const router = useRouter();
 const handleClickMenu = (subItem: Menu.MenuOptions) => {
+  if (subItem.meta.isDisabled) return;
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
   router.push(subItem.path);
 };

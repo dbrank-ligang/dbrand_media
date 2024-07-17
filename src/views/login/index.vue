@@ -42,11 +42,12 @@ onMounted(async () => {
   // 取token，并存下来
   // userStore.setToken("aaaaaa111111");
   userStore.setToken("cccccc");
-  await initDynamicRouter();
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
-  getUserInfoObj(); // 获取个人信息
+  await getUserInfoObj(); // 获取个人信息
+  await initDynamicRouter(); // 加载路由
+  router.push(HOME_URL);
   // 4.跳转到首页
   ElNotification({
     title: getTimeState(),
@@ -62,7 +63,6 @@ const getUserInfoObj = async () => {
   userInfoObj.value = data as any;
   userStore.setUserInfo(data);
   currBrandStore.setCurrBrandObj((data as any).brands[0]);
-  router.push(HOME_URL);
 };
 </script>
 

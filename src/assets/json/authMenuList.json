@@ -12,7 +12,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": true,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "isDisabled": false
       }
     },
     {
@@ -26,7 +27,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "isDisabled": false
       }
     },
 
@@ -41,7 +43,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "isDisabled": false
       }
     },
     {
@@ -56,7 +59,8 @@
         "isFull": false,
         "isAffix": false,
         "isKeepAlive": true,
-        "activeMenu":"/mediaSearch/index"
+        "activeMenu":"/mediaSearch/index",
+        "isDisabled": false
       }
     },
     {
@@ -70,7 +74,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "isDisabled": false
       }
     },
     {
@@ -85,7 +90,8 @@
         "isFull": false,
         "isAffix": false,
         "isKeepAlive": true,
-        "activeMenu":"/negative/index"
+        "activeMenu":"/negative/index",
+        "isDisabled": false
       }
     },
     {
@@ -99,7 +105,8 @@
         "isHide": false,
         "isFull": false,
         "isAffix": false,
-        "isKeepAlive": true
+        "isKeepAlive": true,
+        "isDisabled": false
       }
     },
 
@@ -115,7 +122,8 @@
         "isFull": false,
         "isAffix": false,
         "isKeepAlive": true,
-        "isClick": false
+        "isClick": false,
+        "isDisabled": false
       }
     }
   ],
