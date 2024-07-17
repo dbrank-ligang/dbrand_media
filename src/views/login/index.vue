@@ -40,7 +40,8 @@ const userInfoObj = ref({});
 
 onMounted(async () => {
   // 取token，并存下来
-  userStore.setToken("aaaaaa111111");
+  // userStore.setToken("aaaaaa111111");
+  userStore.setToken("cccccc");
   await initDynamicRouter();
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);

@@ -296,8 +296,7 @@ const handleExpandSell = (Object: any) => {
 };
 
 // 使用watch来观察store中的currBrandObj状态
-// watch(() => currBrandStore.currBrandObj, onBrandChange);
-// 监听store中的counter值
+// 监听store中的brandId值
 watch(
   () => currBrandStore.currBrandObj.brandId,
   (newValue, oldValue) => {

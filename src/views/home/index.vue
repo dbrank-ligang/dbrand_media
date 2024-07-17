@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div class="home">
     <!-- 头部筛选条件 -->
@@ -31,7 +32,7 @@
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item" @click="changeOverview(i)">
           <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewList?.percent[i] }} %</div>
+          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ numFilter(overviewList?.percent[i]) }}</div>
           <div class="media_position">行业内排位：{{ overviewList?.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
@@ -69,7 +70,7 @@
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
           <div class="media_num">{{ item }}：{{ overviewListTimeDuibi?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewListTimeDuibi?.percent[i] }} %</div>
+          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ numFilter(overviewListTimeDuibi?.percent[i]) }}</div>
           <div class="media_position">行业内排位：{{ overviewListTimeDuibi.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
@@ -82,68 +83,7 @@
         </div>
       </div>
     </div>
-    <!-- 头部媒体覆盖图 -->
-    <div class="mediaBox" v-for="(item, index) in mediaData" :key="index">
-      <div class="mediaHeader">
-        <div class="mediaHeader_tit">{{ index === 0 ? "头部媒体覆盖图" : "细分媒体图层" }}</div>
-        <div>
-          <SelectAddPop />
-        </div>
-      </div>
-
-      <div class="mediaCon" :ref="getScrollRef(index)">
-        <div v-if="scrolls[index].canScrollLeft" @click="scrollLeft(index)" class="scrollButton scrollButton_left">
-          <el-icon><ArrowLeft /></el-icon>
-        </div>
-        <div v-if="scrolls[index].canScrollRight" @click="scrollRight(index)" class="scrollButton scrollButton_right">
-          <el-icon><ArrowRight /></el-icon>
-        </div>
-        <div
-          class="mediaCon_ul"
-          v-for="(mediaTypeArr, mediaTypeArrIndex) in index === 0 ? item.top : item.subdivide"
-          :key="mediaTypeArrIndex"
-        >
-          <div
-            class="mediaCon_li"
-            v-for="(mediaTypeListArr, mediaTypeListArrIndex) in mediaTypeArr.list"
-            :key="mediaTypeListArrIndex"
-          >
-            <div class="media_type">{{ mediaTypeListArr.name.slice(0, 8) }}</div>
-            <div class="media_list">
-              <div
-                class="media_listIner"
-                v-for="(mediaListItem, mediaListItemIndex) in mediaTypeListArr.list"
-                :key="mediaListItemIndex"
-              >
-                <!-- 
-              publishFlag:[1,1,0]; 数组里的1表示展示，0表示不展示
-              publishFlag:[1];单个时： 显示一个红点
-              publishFlag:[1];负面时： name红色字体
-              publishFlag:[1，0]; 时间对比时：显示一个 红圈，红点
-              publishFlag:[1，1，0]; 3个品牌时：显示三个 蓝、 黄，红
-              -->
-                <span v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
-                  <span class="circleBox blue" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                  <span class="circleBox yellow" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[2] }"></span>
-                </span>
-                <span v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
-                  <span class="circleBox ring" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
-                </span>
-
-                <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                </span>
-
-                <span>{{ mediaListItem.mediaName.slice(0, 9) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mediaFooter"></div>
-    </div>
+    <CoverageMap :mediaData="mediaData" />
   </div>
 </template>
 
@@ -151,11 +91,12 @@
 // export default {
 
 // }
-import { reactive, ref, onMounted, onUnmounted } from "vue";
-import SelectAddPop from "./../components/SelectAddPop/index.vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
+import { numFilter } from "@/utils/parseFloat";
 
 const currBrandStore = useCurrBrandStore();
 // 获取上周周一
@@ -201,66 +142,6 @@ const overviewListTimeDuibi = ref({
   orderList: []
 } as any);
 
-// 创建一个数组来存储滚动区域的状态
-const scrolls = reactive(
-  Array.from({ length: 2 }, () => ({
-    scrollLeft: 0,
-    clientWidth: 0,
-    scrollWidth: 0,
-    canScrollLeft: false,
-    canScrollRight: false
-  }))
-);
-const scrollRefs = Array.from({ length: 2 }, () => ref(null));
-
-// 获取滚动区域的ref
-const getScrollRef = index => el => {
-  if (el) {
-    scrollRefs[index].value = el;
-    updateScrollStatus(index);
-  }
-};
-// 更新横向滚动状态
-const updateScrollStatus = index => {
-  const scrollArea = scrollRefs[index].value;
-  if (scrollArea) {
-    scrolls[index].scrollLeft = (scrollArea as any).scrollLeft;
-    scrolls[index].clientWidth = (scrollArea as any).clientWidth;
-    scrolls[index].scrollWidth = (scrollArea as any).scrollWidth;
-    scrolls[index].canScrollLeft = (scrollArea as any).scrollLeft > 0;
-    scrolls[index].canScrollRight =
-      (scrollArea as any).scrollWidth > Math.ceil((scrollArea as any).scrollLeft) + (scrollArea as any).clientWidth;
-  }
-  console.log("scrollWidth", (scrollArea as any).scrollWidth);
-  console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
-  console.log("clientWidth", (scrollArea as any).clientWidth);
-};
-// 滚动方法
-const scrollLeft = index => {
-  const scrollArea = scrollRefs[index].value;
-  if (scrollArea) {
-    (scrollArea as any).scrollBy({ left: -(scrollArea as any).clientWidth, behavior: "smooth" });
-  }
-};
-
-const scrollRight = index => {
-  const scrollArea = scrollRefs[index].value;
-  if (scrollArea) {
-    (scrollArea as any).scrollBy({ left: (scrollArea as any).clientWidth, behavior: "smooth" });
-  }
-};
-// 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
-const flagType = (item: any) => {
-  const length = item.length;
-  if (length === 1) {
-    return "flag";
-  } else if (length === 2) {
-    return "timeFlag";
-  } else {
-    return "brandFlag";
-  }
-};
-
 // 时间搜索
 const changeTime = () => {
   console.log(dateArr.value[0]); // 开始时间
@@ -271,15 +152,10 @@ const changeTime = () => {
     endTime: dateArr.value[1]
   };
   getOverview({
-    // ...paramsObj.value,
     startTime: dateArr.value[0],
-    endTime: dateArr.value[1],
-    brandId: currBrandStore.currBrandObj.brandId
+    endTime: dateArr.value[1]
   });
-  getFugaitu({
-    ...paramsObj.value,
-    type: "all"
-  });
+  getFugaitu({ ...paramsObj.value, type: "all" });
 };
 // 点击负面概览——跳转负面页面
 const changeOverview = i => {
@@ -305,16 +181,11 @@ const searchPkTime = () => {
       compareEndTime: endTime
     };
     getOverview_timeDuibi({
-      // ...paramsObj.value,
       startTime: startTime,
-      endTime: endTime,
-      brandId: currBrandStore.currBrandObj.brandId
+      endTime: endTime
     });
 
-    getFugaitu({
-      ...paramsObj.value,
-      type: "all"
-    });
+    getFugaitu({ ...paramsObj.value, type: "all" });
   }
 };
 //取消对比
@@ -327,56 +198,65 @@ const changePkNo = () => {
     compareEndTime: null
   };
   dateArrPk.value = []; //清空时间对比
-  overviewListTimeDuibi.value = []; //清空时间对比的数据
+  overviewListTimeDuibi.value = { num: [], percent: [], order: [], orderList: [] }; //清空时间对比的数据
 };
 
 // 获取概览数据
 const getOverview = async (params: any) => {
-  const { data } = await overviewApi(params);
+  const { data } = await overviewApi({
+    ...params,
+    brandId: currBrandStore.currBrandObj.brandId
+  });
   console.log(data);
   overviewList.value = data;
 };
 // 获取概览数据(时间段对比)
 const getOverview_timeDuibi = async (params: any) => {
-  const { data } = await overviewApi(params);
-  console.log(data);
+  const { data } = await overviewApi({
+    ...params,
+    brandId: currBrandStore.currBrandObj.brandId
+  });
   overviewListTimeDuibi.value = data;
 };
 // 获取覆盖图数据
 const getFugaitu = async (params: any) => {
-  const { data } = await fugaituApi(params);
+  const { data } = await fugaituApi({
+    ...params,
+    brandId: currBrandStore.currBrandObj.brandId
+  });
   console.log(data);
   mediaData.value = data as any;
 };
 
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
-  setTimeout(() => {
-    scrollRefs.forEach((ref, index) => {
-      if (ref.value) {
-        (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
-        updateScrollStatus(index);
-      }
-    });
-  }, 1000);
-
-  getOverview({
-    ...paramsObj.value,
-    brandId: currBrandStore.currBrandObj.brandId
-  });
-  getFugaitu({
-    ...paramsObj.value,
-    type: "all"
-  });
+  getOverview({ ...paramsObj.value });
+  getFugaitu({ ...paramsObj.value, type: "all" });
 });
 
 onUnmounted(() => {
-  scrollRefs.forEach(ref => {
-    if (ref.value) {
-      (ref.value as any).removeEventListener("scroll", () => updateScrollStatus(scrollRefs.indexOf(ref)));
-    }
-  });
+  console.log(123);
 });
+
+// 使用watch来观察store中的currBrandObj状态
+// 监听store中的brandId值
+watch(
+  () => currBrandStore.currBrandObj.brandId,
+  (newValue, oldValue) => {
+    // 当brandId值变化时，会执行这里的代码
+    console.log(`Counter changed from ${oldValue} to ${newValue}!`);
+    if (newValue !== oldValue) {
+      onBrandChange();
+    }
+  }
+);
+// 监听store中选择的品牌
+function onBrandChange() {
+  console.log("切换了brandId!");
+  changePkNo();
+  getOverview({ ...paramsObj.value });
+  getFugaitu({ ...paramsObj.value, type: "all" });
+}
 </script>
 
 <style scoped lang="scss">

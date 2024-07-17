@@ -8,7 +8,7 @@ export const useCurrBrandStore = defineStore("currBrandObj", {
       currBrandObj: {
         brandId: null,
         brandName: "",
-        competitor: []
+        competitor: [] as any
       }
     };
   },
