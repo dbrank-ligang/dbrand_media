@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
 }
-.brandRatio {
+.negative {
   width: 100%;
   height: 100%;
   .header_box {
@@ -20,15 +20,6 @@
         height: 14px;
         background-color: rgb(209 93 88 / 100%);
         border-radius: 50%;
-      }
-      .red {
-        background-color: #d15d58;
-      }
-      .yellow {
-        background-color: #ffe122;
-      }
-      .blue {
-        background-color: #5576cc;
       }
     }
     .header_box_right {
@@ -65,12 +56,18 @@
       font-weight: 700;
       line-height: 35px;
     }
+    .overview_numberBox_1>div:nth-child(3) {
+      background-color: #f7f7f7;
+      color: #d40000;
+    }
     // 媒体数据
     .overview_numberBox {
       display: flex;
       flex: 1;
       justify-content: space-around;
       height: 100%;
+
+      // border: 1px solid red;
       .overview_number {
         width: 240px;
         height: 100%;
@@ -79,7 +76,6 @@
         padding: 10px;
         border-radius: 5px;
         .media_dec {
-          width: 123px;
           font-size: 12px;
           line-height: 18px;
           color: rgb(128 128 128 / 100%);
@@ -180,11 +176,8 @@
               .red {
                 background-color: #d15d58;
               }
-              .yellow {
-                background-color: #ffe122;
-              }
-              .blue {
-                background-color: #5576cc;
+              .ring {
+                border: 1px solid #d15d58;
               }
             }
           }
@@ -204,5 +197,4 @@
     max-width: 1200px;
     margin-bottom: 20px;
   }
-
 }

@@ -39,21 +39,41 @@
               publishFlag:[1，0]; 时间对比时：显示一个 红圈，红点
               publishFlag:[1，1，0]; 3个品牌时：显示三个 蓝、 黄，红
               -->
-              <span v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
-                <span class="circleBox blue" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                <span class="circleBox yellow" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
-                <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[2] }"></span>
-              </span>
-              <span v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
-                <span class="circleBox ring" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
-              </span>
+              <div style="border: 1px solid red; width: 58px; display: inline-block">
+                <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
+                  <span
+                    class="circleBox"
+                    :class="brandFlagBgColor[i]"
+                    :style="{ opacity: item }"
+                    v-for="(item, i) in mediaListItem.publishFlag"
+                    :key="item"
+                  ></span>
+                  <!-- <span class="circleBox blue" :style="{ opacity: mediaListItem.publishFlag?.[0] }">{{
+                    mediaListItem.publishFlag?.[0]
+                  }}</span>
+                  <span class="circleBox yellow" :style="{ opacity: mediaListItem.publishFlag?.[1] }">{{
+                    mediaListItem.publishFlag?.[1]
+                  }}</span>
+                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag?.[2] }">{{
+                    mediaListItem.publishFlag?.[2]
+                  }}</span> -->
+                </span>
+                <span v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
+                  <span class="circleBox ring" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
+                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
+                </span>
+                <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
+                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
+                </span>
+              </div>
 
-              <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
-                <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
+              <span
+                :style="{
+                  color:
+                    flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1 ? '#d40000' : '#000'
+                }"
+                >{{ mediaListItem.mediaName.slice(0, 9) }}
               </span>
-
-              <span>{{ mediaListItem.mediaName.slice(0, 9) }}</span>
             </div>
           </div>
         </div>
@@ -64,7 +84,14 @@
 </template>
 <script setup lang="ts" name="home">
 import { onMounted, onUnmounted, reactive, ref, defineProps } from "vue";
+import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
+const router = useRouter();
+const brandFlagBgColor = ref({
+  0: "blue",
+  1: "yellow",
+  2: "red"
+});
 
 // const mediaData = ref({} as any); // 覆盖图数据
 const props = defineProps({
@@ -73,12 +100,18 @@ const props = defineProps({
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
 const flagType = (item: any) => {
+  console.log(item);
   const length = item.length;
-  if (length === 1) {
+  // 获取当前路由对象
+  let currentRoute = router.currentRoute.value;
+  console.log(currentRoute);
+  if (length === 1 && currentRoute.path === "/negative/index") {
+    return "negative";
+  } else if (length === 1 && currentRoute.path !== "/negative/index") {
     return "flag";
-  } else if (length === 2) {
+  } else if (length === 2 && currentRoute.path === "/home/index") {
     return "timeFlag";
-  } else {
+  } else if (currentRoute.path === "/brandRatio/index") {
     return "brandFlag";
   }
 };

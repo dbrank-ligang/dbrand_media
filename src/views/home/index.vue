@@ -97,6 +97,8 @@ import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
+import router from "@/routers";
+import { NEGATIVE } from "@/config";
 
 const currBrandStore = useCurrBrandStore();
 // 获取上周周一
@@ -157,10 +159,22 @@ const changeTime = () => {
   });
   getFugaitu({ ...paramsObj.value, type: "all" });
 };
+// 跳转负面曝光页方法
+function jumpNegative(urlQuery: any) {
+  let routerUrl = router.resolve({
+    path: NEGATIVE,
+    query: {
+      ...urlQuery
+    }
+  });
+  window.open(routerUrl.href, "_blank");
+}
 // 点击负面概览——跳转负面页面
 const changeOverview = i => {
-  console.log(i);
-  console.log(dateArr.value[0], dateArr.value[1]);
+  if (i === 2) {
+    console.log(dateArr.value[0], dateArr.value[1]);
+    jumpNegative({ startTime: dateArr.value[0], endTime: dateArr.value[1] });
+  }
 };
 // 点击对比按钮
 const changePk = () => {

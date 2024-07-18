@@ -17,6 +17,21 @@
       }
     },
     {
+      "path": "/brandRatio/index",
+      "name": "brandRatio",
+      "component": "/brandRatio/index",
+      "meta": {
+        "icon": "",
+        "title": "竞品对比",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true,
+        "isDisabled": false
+      }
+    },
+    {
       "path": "/mediaSuggest/index",
       "name": "mediaSuggest",
       "component": "/mediaSuggest/index",
@@ -48,6 +63,21 @@
       }
     },
     {
+      "path": "/numberSearch/index",
+      "name": "numberSearch",
+      "component": "/mediaSearch/index",
+      "meta": {
+        "icon": "InfoFilled",
+        "title": "账号查询",
+        "isLink": "",
+        "isHide": false,
+        "isFull": false,
+        "isAffix": false,
+        "isKeepAlive": true,
+        "isDisabled": false
+      }
+    },
+    {
       "path": "/mediaDetail/index",
       "name": "mediaDetail",
       "component": "/mediaDetail/index",
@@ -64,21 +94,6 @@
       }
     },
     {
-      "path": "/brandRatio/index",
-      "name": "brandRatio",
-      "component": "/brandRatio/index",
-      "meta": {
-        "icon": "",
-        "title": "品牌对比",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "isDisabled": false
-      }
-    },
-    {
       "path": "/negative/index",
       "name": "negative",
       "component": "/negative/index",
@@ -86,7 +101,7 @@
         "icon": "",
         "title": "负面曝光",
         "isLink": "",
-        "isHide": true,
+        "isHide": false,
         "isFull": false,
         "isAffix": false,
         "isKeepAlive": true,
@@ -94,22 +109,6 @@
         "isDisabled": false
       }
     },
-    {
-      "path": "/numberSearch/index",
-      "name": "numberSearch",
-      "component": "/mediaSearch/index",
-      "meta": {
-        "icon": "InfoFilled",
-        "title": "账号查询",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "isDisabled": false
-      }
-    },
-
     {
       "path": "/about/index",
       "name": "about",

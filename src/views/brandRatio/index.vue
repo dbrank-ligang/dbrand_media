@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
-  <div class="home">
+  <div class="brandRatio">
     <!-- 头部筛选条件 -->
     <header class="header_box">
       <div class="header_box_left">
@@ -61,9 +61,6 @@
       <div class="overview_tit">媒体关注度总览</div>
       <div class="overview_numberBox overview_numberBox_1">
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
-          <!-- <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div> -->
-          <!-- <div class="media_attention">{{ attentionlabelArr[i] }}：{{ overviewList?.percent[i] }} %</div>
-          <div class="media_position">行业内排位：{{ overviewList?.order[i] }}</div> -->
           <div class="media_rank">
             <div>
               {{ item }}：
@@ -102,7 +99,7 @@
 // export default {
 
 // }
-import { ref, onMounted, onBeforeMount } from "vue";
+import { ref, onMounted, onBeforeMount, watch } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
@@ -137,45 +134,22 @@ const decArr = [
   "（在本时段内，有关本品牌所有内容的传统媒体/资讯网媒/自媒体的合计数量。不含个人KOL）"
 ];
 // 概览数据
-
 const overviewList = ref({
-  num: [
-    [10, 10, 10],
-    [5, 5, 5],
-    [5, 5, 5],
-    [10, 10, 10]
-  ],
-  percent: [
-    [0.5, 0.5, 0.5],
-    [0.5, 0.5, 0.5],
-    [0.5, 0.5, 0.5],
-    [0.5, 0.5, 0.5]
-  ],
-  order: [
-    [3, 2, 2],
-    [3, 2, 2],
-    [3, 2, 2],
-    [3, 2, 2]
-  ],
-  orderList: [
-    ["海尔No1", "海信No2", "格力No4"],
-    ["海尔", "海信", "格力"],
-    ["海尔", "海信", "格力"],
-    ["海尔", "海信", "格力"]
-  ]
-});
-// const overviewList = ref({
-//   num: [],
-//   percent: [],
-//   order: [],
-//   orderList: []
-// } as any);
+  num: [],
+  percent: [],
+  order: [],
+  orderList: []
+} as any);
 
 // 競品下拉框 change事件
 const changeCompetitorBrand = value => {
   if (value) {
     competitorBrandId.value = value;
     let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
+    paramsObj.value = {
+      ...paramsObj.value,
+      compareBrandId: compareBrandId
+    };
     getOverview({
       ...paramsObj.value,
       compareBrandId: compareBrandId,
@@ -191,6 +165,10 @@ const changeCompetitorBrand = value => {
 const changeCompetitorBrand2 = value => {
   competitorBrandId2.value = value;
   let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
+  paramsObj.value = {
+    ...paramsObj.value,
+    compareBrandId: compareBrandId
+  };
   getOverview({
     ...paramsObj.value,
     compareBrandId: compareBrandId,
@@ -212,7 +190,9 @@ const changeTime = () => {
     startTime: dateArr.value[0],
     endTime: dateArr.value[1]
   };
+  // changeCompetitorBrand();
   getOverview({
+    ...paramsObj.value,
     startTime: dateArr.value[0],
     endTime: dateArr.value[1]
   });
@@ -226,7 +206,7 @@ const getOverview = async (params: any) => {
     brandId: currBrandStore.currBrandObj.brandId
   });
   console.log(data);
-  // overviewList.value = data;
+  overviewList.value = data;
 };
 
 // 获取覆盖图数据
@@ -249,6 +229,27 @@ onBeforeMount(() => {
 onMounted(() => {
   changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId);
 });
+// 使用watch来观察store中的currBrandObj状态
+// 监听store中的brandId值
+watch(
+  () => currBrandStore.currBrandObj.brandId,
+  (newValue, oldValue) => {
+    // 当brandId值变化时，会执行这里的代码
+    console.log(`Counter changed from ${oldValue} to ${newValue}!`);
+    if (newValue !== oldValue) {
+      onBrandChange();
+    }
+  }
+);
+// 监听store中选择的品牌
+function onBrandChange() {
+  console.log("切换了brandId!");
+  competitorBrandId.value = null;
+  competitorBrandId2.value = null;
+  changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId);
+  // getOverview({ ...paramsObj.value });
+  // getFugaitu({ ...paramsObj.value, type: "all" });
+}
 </script>
 
 <style scoped lang="scss">
