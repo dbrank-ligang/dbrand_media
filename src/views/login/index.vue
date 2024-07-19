@@ -41,7 +41,8 @@ const userInfoObj = ref({});
 onMounted(async () => {
   // 取token，并存下来
   // userStore.setToken("aaaaaa111111");
-  userStore.setToken("cccccc");
+  userStore.setToken("bbbbbb222222");
+  // userStore.setToken("cccccc");
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);

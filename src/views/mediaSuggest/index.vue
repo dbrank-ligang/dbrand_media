@@ -159,6 +159,8 @@ import { onMounted, ref, watch } from "vue";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
 import SelectAddPop from "./../components/SelectAddPop/index.vue";
+import router from "@/routers";
+import { MEDIADETAIL } from "@/config";
 
 const currBrandStore = useCurrBrandStore();
 const searchForm = ref({
@@ -181,16 +183,6 @@ const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
 const inferArr = ref([] as any); // 竞品列表
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
-// const competitor = ref([
-//   {
-//     competitorBrandName: "竞品A",
-//     competitorBrandId: "1"
-//   },
-//   {
-//     competitorBrandName: "竞品B",
-//     competitorBrandId: "2"
-//   }
-// ]);
 //媒体大类选中事件，请求行业细分、细分圈层、清空绑定的value
 const changeMedia = value => {
   console.log(value);
@@ -327,8 +319,19 @@ function onBrandChange() {
   inferArr.value = []; // 竞品列表
   isExpandInfer.value = false; // 竞品推荐推荐列表 fasle:收起
 }
+// 跳转详情页方法
+function jumpDetail(urlQuery: any) {
+  let routerUrl = router.resolve({
+    path: MEDIADETAIL,
+    query: {
+      ...urlQuery
+    }
+  });
+  window.open(routerUrl.href, "_blank");
+}
 const handleClick = (row?: any) => {
   console.log(row);
+  jumpDetail({ mediaId: row.mediaId });
 };
 onMounted(() => {
   getMediaType(); // 获取媒体大类

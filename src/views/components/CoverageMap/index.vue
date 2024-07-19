@@ -31,6 +31,7 @@
               class="media_listIner"
               v-for="(mediaListItem, mediaListItemIndex) in mediaTypeListArr.list"
               :key="mediaListItemIndex"
+              @click="mediaClick(mediaListItem)"
             >
               <!-- 
               publishFlag:[1,1,0]; 数组里的1表示展示，0表示不展示
@@ -39,7 +40,7 @@
               publishFlag:[1，0]; 时间对比时：显示一个 红圈，红点
               publishFlag:[1，1，0]; 3个品牌时：显示三个 蓝、 黄，红
               -->
-              <div style="border: 1px solid red; width: 58px; display: inline-block">
+              <div style="display: inline-block">
                 <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
                   <span
                     class="circleBox"
@@ -48,19 +49,16 @@
                     v-for="(item, i) in mediaListItem.publishFlag"
                     :key="item"
                   ></span>
-                  <!-- <span class="circleBox blue" :style="{ opacity: mediaListItem.publishFlag?.[0] }">{{
-                    mediaListItem.publishFlag?.[0]
-                  }}</span>
-                  <span class="circleBox yellow" :style="{ opacity: mediaListItem.publishFlag?.[1] }">{{
-                    mediaListItem.publishFlag?.[1]
-                  }}</span>
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag?.[2] }">{{
-                    mediaListItem.publishFlag?.[2]
-                  }}</span> -->
                 </span>
-                <span v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
-                  <span class="circleBox ring" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[1] }"></span>
+                <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
+                  <span
+                    class="circleBox"
+                    :class="timeFlagBgColor[i]"
+                    :style="{ opacity: item }"
+                    v-for="(item, i) in mediaListItem.publishFlag"
+                    :key="item"
+                  >
+                  </span>
                 </span>
                 <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
                   <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
@@ -70,9 +68,11 @@
               <span
                 :style="{
                   color:
-                    flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1 ? '#d40000' : '#000'
+                    flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1 ? '#d40000' : '#000',
+                  marginLeft: flagType(mediaListItem.publishFlag) === 'negative' ? '30px' : null
                 }"
-                >{{ mediaListItem.mediaName.slice(0, 9) }}
+              >
+                {{ mediaListItem.mediaName.slice(0, 9) }}
               </span>
             </div>
           </div>
@@ -83,6 +83,7 @@
   </div>
 </template>
 <script setup lang="ts" name="home">
+import { MEDIADETAIL } from "@/config";
 import { onMounted, onUnmounted, reactive, ref, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
@@ -92,8 +93,11 @@ const brandFlagBgColor = ref({
   1: "yellow",
   2: "red"
 });
+const timeFlagBgColor = ref({
+  0: "ring",
+  1: "red"
+});
 
-// const mediaData = ref({} as any); // 覆盖图数据
 const props = defineProps({
   mediaData: String
 });
@@ -163,6 +167,21 @@ const scrollRight = index => {
     (scrollArea as any).scrollBy({ left: (scrollArea as any).clientWidth, behavior: "smooth" });
   }
 };
+
+const mediaClick = item => {
+  console.log(item);
+  jumpDetail({ mediaId: item.mediaId });
+};
+// 跳转到媒体详情
+function jumpDetail(urlQuery: any) {
+  let routerUrl = router.resolve({
+    path: MEDIADETAIL,
+    query: {
+      ...urlQuery
+    }
+  });
+  window.open(routerUrl.href, "_blank");
+}
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
   setTimeout(() => {

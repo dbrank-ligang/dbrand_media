@@ -1,13 +1,23 @@
 <!-- 经典布局 -->
 <template>
   <el-container class="layout">
-    <el-header>
+    <el-header style="border-bottom: 1px solid #eee">
       <div class="header-lf mask-image">
         <div class="logo flx-center">
           <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
         </div>
       </div>
+
       <div class="header-ri">
+        token：<el-select
+          v-model="value"
+          style="width: 200px; margin-right: 10px; display: none"
+          placeholder="Select"
+          size="small"
+          @change="changeToken"
+        >
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
         媒体/账号查询<el-autocomplete
           v-model="inputValue"
           :fetch-suggestions="querySearch"
@@ -35,7 +45,9 @@
           </template>
         </el-dropdown>
         <div style="margin-left: 30px">{{ userInfo.name }}</div>
-        <div style="margin-left: 30px">退出登录</div>
+        <div style="margin-left: 30px" @click="logout">
+          <a style="color: #000; text-decoration: none" href="https://dbrank.net/login">退出登录</a>
+        </div>
       </div>
     </el-header>
     <el-container class="classic-content">
@@ -79,6 +91,23 @@ const currBrandStore = useCurrBrandStore();
 const userInfo: any = computed(() => userStore.userInfo);
 const inputValue = ref("");
 
+const value = ref("");
+
+const options = [
+  {
+    value: "aaaaaa111111",
+    label: "一个品牌aaaaaa111111"
+  },
+  {
+    value: "bbbbbb222222",
+    label: "非会员bbbbbb222222"
+  },
+  {
+    value: "cccccc",
+    label: "多个品牌cccccc"
+  }
+];
+
 //  input搜索逻辑------------
 const handleInputConfirm = () => {
   console.log(inputValue.value);
@@ -110,6 +139,16 @@ const handleSelect = (item: Record<string, any>) => {
 };
 const handleBrand = (item: any) => {
   currBrandStore.setCurrBrandObj(item);
+};
+const logout = () => {
+  // 2.清除 Token
+  userStore.setToken("");
+  userStore.setUserInfo("");
+};
+
+const changeToken = value => {
+  console.log(value);
+  userStore.setToken(value);
 };
 </script>
 

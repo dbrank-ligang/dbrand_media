@@ -83,24 +83,27 @@
         </div>
       </div>
     </div>
-    <CoverageMap :mediaData="mediaData" />
+    <CoverageMap v-if="userStore.userInfo.memberShip" :mediaData="mediaData" />
+    <div class="memberShipBox" v-else>
+      <img src="@/assets/images/mengban.png" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts" name="home">
-// export default {
-
-// }
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
+import { useUserStore } from "@/stores/modules/user";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
 import router from "@/routers";
 import { NEGATIVE } from "@/config";
 
 const currBrandStore = useCurrBrandStore();
+const userStore = useUserStore();
+
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
 // 获取上周周日
