@@ -149,8 +149,8 @@ const overviewListTimeDuibi = ref({
 
 // 时间搜索
 const changeTime = () => {
-  console.log(dateArr.value[0]); // 开始时间
-  console.log(dateArr.value[1]); // 结束时间
+  // console.log(dateArr.value[0]); // 开始时间
+  // console.log(dateArr.value[1]); // 结束时间
   paramsObj.value = {
     ...paramsObj.value,
     startTime: dateArr.value[0],
@@ -175,7 +175,7 @@ function jumpNegative(urlQuery: any) {
 // 点击负面概览——跳转负面页面
 const changeOverview = i => {
   if (i === 2) {
-    console.log(dateArr.value[0], dateArr.value[1]);
+    // console.log(dateArr.value[0], dateArr.value[1]);
     jumpNegative({ startTime: dateArr.value[0], endTime: dateArr.value[1] });
   }
 };
@@ -185,13 +185,13 @@ const changePk = () => {
 };
 // 选择对比时段后 按确定
 const searchPkTime = () => {
-  console.log(dateArrPk);
+  // console.log(dateArrPk);
   if (dateArrPk.value.length > 0) {
     isShowContrast.value = true;
     const startTime = new Date(dateArrPk.value[0]).getTime() / 1000;
     const endTime = new Date(dateArrPk.value[1]).getTime() / 1000;
-    console.log(startTime); // 开始时间
-    console.log(endTime); // 结束时间
+    // console.log(startTime); // 开始时间
+    // console.log(endTime); // 结束时间
     paramsObj.value = {
       ...paramsObj.value,
       compareStartTime: startTime,
@@ -224,7 +224,6 @@ const getOverview = async (params: any) => {
     ...params,
     brandId: currBrandStore.currBrandObj.brandId
   });
-  console.log(data);
   overviewList.value = data;
 };
 // 获取概览数据(时间段对比)
@@ -241,7 +240,6 @@ const getFugaitu = async (params: any) => {
     ...params,
     brandId: currBrandStore.currBrandObj.brandId
   });
-  console.log(data);
   mediaData.value = data as any;
 };
 
@@ -252,7 +250,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  console.log(123);
+  // console.log(123);
 });
 
 // 使用watch来观察store中的currBrandObj状态

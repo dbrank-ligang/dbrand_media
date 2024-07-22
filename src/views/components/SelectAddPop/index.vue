@@ -112,7 +112,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 // 获取当前路由对象
 const currentRoute = router.currentRoute.value;
-console.log(currentRoute.path);
 const currBrandStore = useCurrBrandStore();
 const isSuggestPath = ref(false);
 const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数组

@@ -11,8 +11,8 @@
       <div class="header-ri">
         token：<el-select
           v-model="value"
-          style="width: 200px; margin-right: 10px; display: none"
-          placeholder="Select"
+          style="width: 200px; margin-right: 10px"
+          placeholder="选择token"
           size="small"
           @change="changeToken"
         >
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts" name="layoutClassic">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/modules/auth";
 import { useGlobalStore } from "@/stores/modules/global";
@@ -78,7 +78,7 @@ import { useUserStore } from "@/stores/modules/user";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
-import { searchMediaApi } from "@/api/modules/media";
+import { searchMediaApi, userInfoApi } from "@/api/modules/media";
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -146,10 +146,32 @@ const logout = () => {
   userStore.setUserInfo("");
 };
 
+// 查询个人信息
+const getUserInfoObj = async () => {
+  const { data } = await userInfoApi();
+  // userInfoObj.value = data as any;
+  userStore.setUserInfo(data);
+  currBrandStore.setCurrBrandObj((data as any).brands[0]);
+};
+
 const changeToken = value => {
   console.log(value);
   userStore.setToken(value);
 };
+
+// 使用watch来观察store中的token状态
+// 监听store中的token值
+watch(
+  () => userStore.token,
+  (newValue, oldValue) => {
+    // 当token值变化时，会执行这里的代码
+    console.log(`Counter changed from ${oldValue} to ${newValue}!`);
+    if (newValue !== oldValue) {
+      // onBrandChange()
+      getUserInfoObj();
+    }
+  }
+);
 </script>
 
 <style scoped lang="scss">

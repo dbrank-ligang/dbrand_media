@@ -104,11 +104,9 @@ const props = defineProps({
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
 const flagType = (item: any) => {
-  console.log(item);
   const length = item.length;
   // 获取当前路由对象
   let currentRoute = router.currentRoute.value;
-  console.log(currentRoute);
   if (length === 1 && currentRoute.path === "/negative/index") {
     return "negative";
   } else if (length === 1 && currentRoute.path !== "/negative/index") {
@@ -149,9 +147,9 @@ const updateScrollStatus = index => {
     scrolls[index].canScrollRight =
       (scrollArea as any).scrollWidth > Math.ceil((scrollArea as any).scrollLeft) + (scrollArea as any).clientWidth;
   }
-  console.log("scrollWidth", (scrollArea as any).scrollWidth);
-  console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
-  console.log("clientWidth", (scrollArea as any).clientWidth);
+  // console.log("scrollWidth", (scrollArea as any).scrollWidth);
+  // console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
+  // console.log("clientWidth", (scrollArea as any).clientWidth);
 };
 // 滚动方法
 const scrollLeft = index => {
@@ -169,7 +167,6 @@ const scrollRight = index => {
 };
 
 const mediaClick = item => {
-  console.log(item);
   jumpDetail({ mediaId: item.mediaId });
 };
 // 跳转到媒体详情
