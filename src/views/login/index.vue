@@ -39,6 +39,7 @@ const keepAliveStore = useKeepAliveStore();
 const userInfoObj = ref({});
 
 onMounted(async () => {
+  console.log(window.localStorage.getItem("isLogin"));
   // 取token，并存下来
   // userStore.setToken("aaaaaa111111");
   userStore.setToken("bbbbbb222222");

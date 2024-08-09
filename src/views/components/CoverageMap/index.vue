@@ -147,9 +147,9 @@ const updateScrollStatus = index => {
     scrolls[index].canScrollRight =
       (scrollArea as any).scrollWidth > Math.ceil((scrollArea as any).scrollLeft) + (scrollArea as any).clientWidth;
   }
-  // console.log("scrollWidth", (scrollArea as any).scrollWidth);
-  // console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
-  // console.log("clientWidth", (scrollArea as any).clientWidth);
+  console.log("scrollWidth", (scrollArea as any).scrollWidth);
+  console.log("scrollLeft", Math.ceil((scrollArea as any).scrollLeft));
+  console.log("clientWidth", (scrollArea as any).clientWidth);
 };
 // 滚动方法
 const scrollLeft = index => {
