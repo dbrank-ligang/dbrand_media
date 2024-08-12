@@ -99,7 +99,7 @@ const timeFlagBgColor = ref({
 });
 
 const props = defineProps({
-  mediaData: String
+  mediaData: Array
 });
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag

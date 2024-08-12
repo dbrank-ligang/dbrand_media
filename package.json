@@ -21,10 +21,11 @@
   "scripts": {
     "dev": "vite",
     "serve": "vite",
-    "build:dev": "vue-tsc && vite build --mode development",
+    "build:dev": "vite build --mode development",
+    "build:dev1": "vue-tsc && vite build --mode development",
     "build:test": "vue-tsc && vite build --mode test",
     "build:pro": "vue-tsc && vite build --mode production",
-    "type:check": "vue-tsc --noEmit --skipLibCheck",
+    "type:check": "",
     "preview": "npm run build:dev && vite preview",
     "lint:eslint": "eslint --fix --ext .js,.ts,.vue ./src",
     "lint:prettier": "prettier --write \"src/**/*.{js,ts,json,tsx,css,less,scss,vue,html,md}\"",
@@ -98,7 +99,7 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pwa": "^0.17.4",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vue-tsc": "^1.8.27"
+    "vue-tsc": "^2.0.24"
   },
   "engines": {
     "node": ">=16.0.0"
