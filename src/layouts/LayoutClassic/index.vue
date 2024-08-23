@@ -9,9 +9,9 @@
       </div>
 
       <div class="header-ri">
-        token：<el-select
+        <el-select
           v-model="value"
-          style="width: 200px; margin-right: 10px"
+          style="width: 200px; margin-right: 10px; display: none"
           placeholder="选择token"
           size="small"
           @change="changeToken"

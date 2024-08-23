@@ -39,11 +39,22 @@ const keepAliveStore = useKeepAliveStore();
 const userInfoObj = ref({});
 
 onMounted(async () => {
-  console.log(window.localStorage.getItem("isLogin"));
+  function getCookie(name) {
+    let cookies = document.cookie.split("; ");
+    for (let i = 0; i < cookies.length; i++) {
+      let parts = cookies[i].split("=");
+      if (parts[0] === name) {
+        return parts[1];
+      }
+    }
+    return "";
+  }
+  const cookieToke = getCookie("token");
   // 取token，并存下来
   // userStore.setToken("aaaaaa111111");
-  userStore.setToken("bbbbbb222222");
+  // userStore.setToken("bbbbbb222222");
   // userStore.setToken("cccccc");
+  userStore.setToken(cookieToke);
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
