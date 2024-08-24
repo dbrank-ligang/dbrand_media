@@ -108,22 +108,6 @@
         "activeMenu":"/negative/index",
         "isDisabled": false
       }
-    },
-    {
-      "path": "/about/index",
-      "name": "about",
-      "component": "/about/index",
-      "meta": {
-        "icon": "InfoFilled",
-        "title": "关于项目",
-        "isLink": "",
-        "isHide": true,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "isClick": false,
-        "isDisabled": false
-      }
     }
   ],
   "msg": "成功"
