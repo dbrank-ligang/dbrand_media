@@ -39,24 +39,26 @@ const keepAliveStore = useKeepAliveStore();
 const userInfoObj = ref({});
 
 onMounted(async () => {
-  // function getCookie(name) {
-  //   let cookies = document.cookie.split("; ");
-  //   for (let i = 0; i < cookies.length; i++) {
-  //     let parts = cookies[i].split("=");
-  //     if (parts[0] === name) {
-  //       return parts[1];
-  //     }
-  //   }
-  //   return "";
-  // }
-  // const cookieToke = getCookie("token");
-  // userStore.setToken(cookieToke);  //打包是时候打开
+  // ------------------ 线上：获取cookie的token ------------------
+  function getCookie(name) {
+    let cookies = document.cookie.split("; ");
+    for (let i = 0; i < cookies.length; i++) {
+      let parts = cookies[i].split("=");
+      if (parts[0] === name) {
+        return parts[1];
+      }
+    }
+    return "";
+  }
+  const cookieToke = getCookie("token");
+  userStore.setToken(cookieToke); //打包是时候打开
+  // ------------------ 线上获取cookie的token ------------------
 
-  // 取token，并存下来
+  // 本地测试：获取token
   // userStore.setToken("aaaaaa111111");
   // userStore.setToken("bbbbbb222222");
   // userStore.setToken("cccccc");
-  userStore.setToken("46a18f8f163fed66685948f22c64e01e");
+  // userStore.setToken("46a18f8f163fed66685948f22c64e01e");
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);

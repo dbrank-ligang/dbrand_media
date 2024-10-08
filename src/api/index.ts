@@ -69,6 +69,7 @@ class RequestHttp {
         // 登录失效
         if (data.code == ResultEnum.OVERDUE) {
           userStore.setToken("");
+          window.location.href = "https://dbrank.net/login";
           router.replace(LOGIN_URL);
           ElMessage.error(data.msg);
           return Promise.reject(data);

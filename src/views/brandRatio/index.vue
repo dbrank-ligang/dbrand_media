@@ -99,7 +99,7 @@
 // export default {
 
 // }
-import { ref, onMounted, onBeforeMount, watch } from "vue";
+import { ref, onMounted, onBeforeMount, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
@@ -140,6 +140,15 @@ const overviewList = ref({
   order: [],
   orderList: []
 } as any);
+const handleCustomCategoryClick = function () {
+  let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
+  getFugaitu({
+    ...paramsObj.value,
+    compareBrandId: compareBrandId,
+    type: "all"
+  });
+};
+provide("handleCustomCategoryClick", handleCustomCategoryClick);
 
 // 競品下拉框 change事件
 const changeCompetitorBrand = value => {

@@ -102,18 +102,18 @@
 </template>
 
 <script setup lang="ts" name="selectAddPop">
-import { onMounted, ref } from "vue";
+import { inject, onMounted, ref, onActivated } from "vue";
 import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
 import { useRouter } from "vue-router";
-
+const handleCustomCategoryClick = inject<Function>("handleCustomCategoryClick");
 const router = useRouter();
 // 获取当前路由对象
 const currentRoute = router.currentRoute.value;
 const currBrandStore = useCurrBrandStore();
-const isSuggestPath = ref(false);
+const isSuggestPath = ref(false); //false 是媒体推荐页的我要新增，不展示自选类别
 const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数组
 const newType = ref([] as any); // 新增大类的数组
 const visible = ref(false);
@@ -155,6 +155,12 @@ const getTopArr = async () => {
   console.log(topListArr.value);
 };
 
+onActivated(() => {
+  tabArr.value.forEach(el => {
+    el.isActive = false;
+  });
+  visible.value = false;
+});
 //  tab切换样式
 const getStyle = (item: { isActive: any }) => {
   if (item.isActive) {
@@ -188,8 +194,8 @@ const showNotificationWithImage = () => {
   ElNotification({
     dangerouslyUseHTMLString: true, // 允许使用HTML字符串
     // message: htmlContent
-    duration: 0,
-    message: htmlContent
+    message: htmlContent,
+    duration: 3000
   });
 };
 // 确认提交按钮
@@ -211,6 +217,7 @@ const confirmChange = () => {
       newType: newType.value
     });
     console.log(newType.value.length);
+    // 媒体推荐页 只用到我要新增
     if (isSuggestPath.value && newType.value.length < 1) {
       ElNotification({
         type: "warning",
@@ -220,7 +227,6 @@ const confirmChange = () => {
     } else {
       cancelChange();
       showNotificationWithImage();
-      // 这里刷新覆盖图
     }
   } catch (error) {
     console.log(error);
@@ -275,8 +281,19 @@ const handleSelect = (item: Record<string, any>) => {
 // ---------
 
 const saveUserMediaType = async (params: any) => {
-  saveUserMediaTypeApi(params);
+  saveUserMediaTypeApi(params)
+    .then(res => {
+      console.log(res);
+      //  这里刷新覆盖图
+      if (handleCustomCategoryClick) {
+        handleCustomCategoryClick();
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
+
 onMounted(async () => {
   if (currentRoute.path === "/mediaSuggest/index") {
     isSuggestPath.value = true;

@@ -85,12 +85,11 @@
 </template>
 <script setup lang="ts" name="home">
 import { MEDIADETAIL } from "@/config";
-import { onMounted, onUnmounted, reactive, ref, defineProps, inject } from "vue";
+import { onMounted, onUnmounted, reactive, ref, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
-const grandParentMethods = inject("grandParentMethods");
-grandParentMethods();
+
 const brandFlagBgColor = ref({
   2: "blue",
   1: "yellow",

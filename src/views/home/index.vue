@@ -100,6 +100,10 @@ import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
 import router from "@/routers";
 import { NEGATIVE } from "@/config";
+const handleCustomCategoryClick = function () {
+  getFugaitu({ ...paramsObj.value, type: "all" });
+};
+provide("handleCustomCategoryClick", handleCustomCategoryClick);
 
 const currBrandStore = useCurrBrandStore();
 const userStore = useUserStore();
@@ -242,9 +246,6 @@ const getFugaitu = async (params: any) => {
   });
   mediaData.value = data as any;
 };
-
-const fugaituMethods = getFugaitu({ ...paramsObj.value, type: "all" });
-provide("grandParentMethods", { fugaituMethods });
 
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
