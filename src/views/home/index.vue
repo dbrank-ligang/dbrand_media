@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts" name="home">
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
@@ -242,6 +242,9 @@ const getFugaitu = async (params: any) => {
   });
   mediaData.value = data as any;
 };
+
+const fugaituMethods = getFugaitu({ ...paramsObj.value, type: "all" });
+provide("grandParentMethods", { fugaituMethods });
 
 // 监听每个滚动区域的滚动事件
 onMounted(() => {

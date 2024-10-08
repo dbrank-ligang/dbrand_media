@@ -177,10 +177,10 @@ const activeBtn = (item: { isActive: boolean }) => {
 // 提交完成后的弹窗 自定义组件
 const showNotificationWithImage = () => {
   // 创建一个包含图片的 HTML 字符串
-  // 注意：这里假设图片URL是安全的
+  // 注意：这里假设图片URL是安全的/meitu/src/assets/
   const htmlContent = `
     <div style="display: flex;  justify-content: space-between;">
-      <img src="/src/assets/images/QRcode.jpg" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
+      <img src="@/assets/images/QRcode.jpg" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
       <span>收到您的需求！<br/>我们会尽快处理，<br/>可联系榜女郎获知更新进度</span>
     </div>
   `;
@@ -194,9 +194,9 @@ const showNotificationWithImage = () => {
 };
 // 确认提交按钮
 const confirmChange = () => {
-  console.log("topMediaIds", flattenAndCheck(topListArr.value));
-  console.log("subMediaIds", flattenAndCheck(xifenListArr.value));
-  console.log("newType", newType.value);
+  // console.log("topMediaIds", flattenAndCheck(topListArr.value));
+  // console.log("subMediaIds", flattenAndCheck(xifenListArr.value));
+  // console.log("newType", newType.value);
   // console.log(topListArr.value); //复选框选中的值
   tabArr.value = [
     { title: "自选类别", isActive: false },
@@ -207,7 +207,7 @@ const confirmChange = () => {
       brandId: currBrandStore.currBrandObj.brandId,
       brandName: "海尔",
       topMediaTypeIds: flattenAndCheck(topListArr.value),
-      subMdiaTypeIds: flattenAndCheck(xifenListArr.value),
+      subMediaTypeIds: flattenAndCheck(xifenListArr.value),
       newType: newType.value
     });
     console.log(newType.value.length);
@@ -220,6 +220,7 @@ const confirmChange = () => {
     } else {
       cancelChange();
       showNotificationWithImage();
+      // 这里刷新覆盖图
     }
   } catch (error) {
     console.log(error);

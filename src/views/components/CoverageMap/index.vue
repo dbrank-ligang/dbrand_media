@@ -25,7 +25,8 @@
           v-for="(mediaTypeListArr, mediaTypeListArrIndex) in mediaTypeArr.list"
           :key="mediaTypeListArrIndex"
         >
-          <div class="media_type">{{ mediaTypeListArr.name.slice(0, 8) }}</div>
+          <!-- <div class="media_type">【{{ mediaTypeListArr.name.slice(0, 8) }}】</div> -->
+          <div class="media_type">【{{ mediaTypeListArr.name }}】</div>
           <div class="media_list">
             <div
               class="media_listIner"
@@ -84,14 +85,16 @@
 </template>
 <script setup lang="ts" name="home">
 import { MEDIADETAIL } from "@/config";
-import { onMounted, onUnmounted, reactive, ref, defineProps } from "vue";
+import { onMounted, onUnmounted, reactive, ref, defineProps, inject } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
+const grandParentMethods = inject("grandParentMethods");
+grandParentMethods();
 const brandFlagBgColor = ref({
-  0: "blue",
+  2: "blue",
   1: "yellow",
-  2: "red"
+  0: "red"
 });
 const timeFlagBgColor = ref({
   0: "ring",
@@ -180,6 +183,7 @@ function jumpDetail(urlQuery: any) {
   window.open(routerUrl.href, "_blank");
 }
 // 监听每个滚动区域的滚动事件
+
 onMounted(() => {
   setTimeout(() => {
     scrollRefs.forEach((ref, index) => {

@@ -11,7 +11,8 @@
     // height: auto;
     margin-bottom: 10px;
     overflow: hidden;
-    background-color: rgb(222 222 222);
+    background-color: #f5f5f5;
+    box-shadow: 0 1px 5px rgb(222, 222, 222);
     border-radius: 6px;
     .mediaHeader {
       display: flex;
@@ -36,6 +37,7 @@
       overflow: scroll;
       overflow-x: auto;
       white-space: nowrap;
+      box-shadow: 0 1px 5px rgb(222, 222, 222);
       .scrollButton {
         font-size: 50px;
         cursor: pointer;
