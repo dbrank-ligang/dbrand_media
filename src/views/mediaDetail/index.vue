@@ -8,7 +8,7 @@
         <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
         <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
       </div>
-      <div class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
+      <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
       <!-- <div class="mediaDetail_baike">{{ oneLevelSelectObj?.baike }}</div> -->
     </div>
     <div class="mediaDetailBox">
@@ -48,14 +48,25 @@
             <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
               <div class="mediaSource_rowTit">[{{ item.name }}]</div>
               <div class="mediaSource_rowCon">
-                <div
+                <div v-for="mediaItem in item.data" :key="mediaItem.name">
+                  <div
+                    v-if="mediaItem.data.length > 0"
+                    @click="mediaSourceItemClick(mediaItem, i)"
+                    style="cursor: pointer"
+                    :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
+                  >
+                    {{ mediaItem.name }}
+                  </div>
+                  <div v-else style="color: #bbb">{{ mediaItem.name }}</div>
+                </div>
+                <!-- <div
                   v-for="mediaItem in item.data"
                   :key="mediaItem.name"
                   @click="mediaSourceItemClick(mediaItem, i)"
                   :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
                 >
                   {{ mediaItem.name }}
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -70,6 +81,7 @@
                   v-for="(item, index) in numberArr"
                   :key="item.id"
                   @click="accountClick(index, item)"
+                  style="cursor: pointer"
                   :class="{ activeNumber: activeNumberIndex == index }"
                 >
                   {{ item.accountName }}
@@ -326,7 +338,11 @@ onMounted(() => {
   const myParam = route.query;
   defaultObj.value = myParam;
   console.log(defaultObj.value); // 输出查询参数的值
-  getOneLevelArr({ mediaId: defaultObj.value.mediaId }); // 获取左侧导航列表
+  getOneLevelArr({
+    mediaId: defaultObj.value.mediaId,
+    subUnionId: defaultObj.value.subUnionId,
+    accountName: defaultObj.value.accountName
+  }); // 获取左侧导航列表
 });
 </script>
 <style lang="scss">

@@ -19,6 +19,7 @@
               :key="item.competitorBrandId"
               :label="item.competitorBrandName"
               :value="item.competitorBrandId"
+              :disabled="item.competitorBrandId == competitorBrandId2"
             />
           </el-select>
           Vs.<span class="tiopBg blue" style="margin-left: 10px"></span>
@@ -35,6 +36,7 @@
               :key="item.competitorBrandId"
               :label="item.competitorBrandName"
               :value="item.competitorBrandId"
+              :disabled="item.competitorBrandId == competitorBrandId"
             />
           </el-select>
         </div>
@@ -67,15 +69,20 @@
               <div class="media_dec">{{ decArr[i] }}</div>
             </div>
             <div>
-              <div v-for="numItem in overviewList?.num[i]" :key="numItem">{{ numItem }}</div>
+              <!-- <div v-for="orderItem in overviewList?.orderList[i]" :key="orderItem">
+                {{ orderItem }}
+              </div> -->
+              <div v-for="(numItem, index) in overviewList?.num[i]" :key="numItem">
+                {{ getContentBeforeChar(overviewList?.orderList[i][index]) }} {{ numItem }}
+              </div>
             </div>
           </div>
           <!-- <div class="media_dec">{{ decArr[i] }}</div> -->
           <div class="media_rank">
             <div>{{ attentionlabelArr[i] }}：</div>
             <div>
-              <div v-for="percentItem in overviewList?.percent[i]" :key="percentItem">
-                {{ numFilter(percentItem) }}
+              <div v-for="(percentItem, index) in overviewList?.percent[i]" :key="percentItem">
+                {{ getContentBeforeChar(overviewList?.orderList[i][index]) }} {{ numFilter(percentItem) }}
               </div>
             </div>
           </div>
@@ -102,6 +109,7 @@
 import { ref, onMounted, onBeforeMount, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import moment from "moment";
+// import { ElMessage } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
@@ -140,6 +148,11 @@ const overviewList = ref({
   order: [],
   orderList: []
 } as any);
+
+const getContentBeforeChar = str => {
+  return str.split("N")[0];
+};
+
 const handleCustomCategoryClick = function () {
   let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
   getFugaitu({
@@ -153,6 +166,12 @@ provide("handleCustomCategoryClick", handleCustomCategoryClick);
 // 競品下拉框 change事件
 const changeCompetitorBrand = value => {
   if (value) {
+    // //限制 选择重复品牌
+    // if (value === competitorBrandId2.value) {
+    //   ElMessage.warning("竞品选择重复提醒");
+    //   competitorBrandId.value = null;
+    //   return;
+    // }
     competitorBrandId.value = value;
     let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
     paramsObj.value = {
@@ -172,6 +191,13 @@ const changeCompetitorBrand = value => {
   }
 };
 const changeCompetitorBrand2 = value => {
+  console.log("第二个", value);
+  // //限制 选择重复品牌
+  // if (value === competitorBrandId.value) {
+  //   ElMessage.warning("竞品选择重复提醒");
+  //   competitorBrandId2.value = null;
+  //   return;
+  // }
   competitorBrandId2.value = value;
   let compareBrandId = competitorBrandId.value + (competitorBrandId2.value ? "," + competitorBrandId2.value : "");
   paramsObj.value = {

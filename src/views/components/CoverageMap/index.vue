@@ -48,7 +48,7 @@
                     :class="brandFlagBgColor[i]"
                     :style="{ opacity: item }"
                     v-for="(item, i) in mediaListItem.publishFlag"
-                    :key="item"
+                    :key="item + i"
                   ></span>
                 </span>
                 <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
@@ -57,7 +57,7 @@
                     :class="timeFlagBgColor[i]"
                     :style="{ opacity: item }"
                     v-for="(item, i) in mediaListItem.publishFlag"
-                    :key="item"
+                    :key="item + i"
                   >
                   </span>
                 </span>
@@ -91,9 +91,9 @@ import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
 
 const brandFlagBgColor = ref({
-  2: "blue",
+  0: "red",
   1: "yellow",
-  0: "red"
+  2: "blue"
 });
 const timeFlagBgColor = ref({
   0: "ring",
@@ -115,7 +115,8 @@ const flagType = (item: any) => {
     return "flag";
   } else if (length === 2 && currentRoute.path === "/home/index") {
     return "timeFlag";
-  } else if (currentRoute.path === "/brandRatio/index") {
+  }
+  if (currentRoute.path === "/brandRatio/index") {
     return "brandFlag";
   }
 };

@@ -182,11 +182,19 @@ const activeBtn = (item: { isActive: boolean }) => {
 
 // 提交完成后的弹窗 自定义组件
 const showNotificationWithImage = () => {
-  // 创建一个包含图片的 HTML 字符串
-  // 注意：这里假设图片URL是安全的/meitu/src/assets/
+  // 创建一个包含图片的 HTML 字符串，打包后图片路径/meitu/assets/png/logo-B4gvHn-5.png
+  // 注意：这里假设图片URL是安全的/meitu/src/assets/   ./../public
+
+  // const htmlContent = `
+  //   <div style="display: flex;  justify-content: space-between;">
+  //     <img src="${require("./../..//assets/images/QRcode.jpg")}" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
+  //     <span>收到您的需求！<br/>我们会尽快处理，<br/>可联系榜女郎获知更新进度</span>
+  //   </div>
+  // `;
+  // /meitu/src/assets/images/QRcode.jpg
   const htmlContent = `
     <div style="display: flex;  justify-content: space-between;">
-      <img src="@/assets/images/QRcode.jpg" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
+      <img src="./../../../assets/images/QRcode.jpg" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
       <span>收到您的需求！<br/>我们会尽快处理，<br/>可联系榜女郎获知更新进度</span>
     </div>
   `;
@@ -226,7 +234,6 @@ const confirmChange = () => {
       });
     } else {
       cancelChange();
-      showNotificationWithImage();
     }
   } catch (error) {
     console.log(error);
@@ -236,6 +243,7 @@ const confirmChange = () => {
 const cancelChange = () => {
   visible.value = false;
   newType.value = [];
+  inputValue.value = ""; // 清空我要新增input框的值
   if (!isSuggestPath.value) {
     tabArr.value = [
       { title: "自选类别", isActive: false },
@@ -284,9 +292,14 @@ const saveUserMediaType = async (params: any) => {
   saveUserMediaTypeApi(params)
     .then(res => {
       console.log(res);
+      inputValue.value = ""; // 清空我要新增input框的值
       //  这里刷新覆盖图
       if (handleCustomCategoryClick) {
         handleCustomCategoryClick();
+      }
+      // 保存是有新增标签，才显示弹窗
+      if (params.newType.length > 0) {
+        showNotificationWithImage();
       }
     })
     .catch(err => {

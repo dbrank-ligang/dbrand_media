@@ -10,7 +10,7 @@
       @select="handleSelect"
       @keyup.enter="handleInputConfirm"
       @blur="handleInputConfirm"
-      value-key="mediaName"
+      value-key="showText"
     >
       <template #append><div>搜索</div></template>
     </el-autocomplete>
@@ -40,8 +40,7 @@ const inputValue = ref("");
 const historyListData = ref([] as any); // 搜索历史列表
 const tagListData = ref([] as any);
 const historyChange = item => {
-  console.log(item);
-  jumpDetail({ mediaId: item.mediaId });
+  jumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
 };
 // 获取搜索历史列表
 const getSearchMediaHistory = async () => {

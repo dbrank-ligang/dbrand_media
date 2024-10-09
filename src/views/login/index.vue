@@ -58,7 +58,7 @@ onMounted(async () => {
   // userStore.setToken("aaaaaa111111");
   // userStore.setToken("bbbbbb222222");
   // userStore.setToken("cccccc");
-  // userStore.setToken("46a18f8f163fed66685948f22c64e01e");
+  userStore.setToken("46a18f8f163fed66685948f22c64e01e");
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
