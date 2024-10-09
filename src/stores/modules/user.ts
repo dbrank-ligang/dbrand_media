@@ -5,15 +5,10 @@ import piniaPersistConfig from "@/stores/helper/persist";
 export const useUserStore = defineStore({
   id: "user-meitu",
   state: () => ({
-    token: "",
     userInfo: {} as any
   }),
   getters: {},
   actions: {
-    // Set Token
-    setToken(token: string) {
-      this.token = token;
-    },
     // Set setUserInfo
     setUserInfo(userInfo) {
       this.userInfo = userInfo;

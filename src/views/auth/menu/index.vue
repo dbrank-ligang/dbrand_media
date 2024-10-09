@@ -11,17 +11,10 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { useRouter } from "vue-router";
-import { LOGIN_URL } from "@/config";
-import { useUserStore } from "@/stores/modules/user";
 import { Promotion } from "@element-plus/icons-vue";
 
-const router = useRouter();
-const userStore = useUserStore();
-
 const handleToLogin = () => {
-  userStore.setToken("");
-  router.push(LOGIN_URL);
+  window.location.href = "https://dbrank.net/login";
 };
 </script>
 

@@ -102,12 +102,13 @@
 </template>
 
 <script setup lang="ts" name="selectAddPop">
-import { inject, onMounted, ref, onActivated } from "vue";
+import { inject, onMounted, ref, onActivated, h } from "vue";
 import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
 import { useRouter } from "vue-router";
+import QRCode from "@/assets/images/QRcode.jpg";
 const handleCustomCategoryClick = inject<Function>("handleCustomCategoryClick");
 const router = useRouter();
 // 获取当前路由对象
@@ -182,36 +183,35 @@ const activeBtn = (item: { isActive: boolean }) => {
 
 // 提交完成后的弹窗 自定义组件
 const showNotificationWithImage = () => {
-  // 创建一个包含图片的 HTML 字符串，打包后图片路径/meitu/assets/png/logo-B4gvHn-5.png
-  // 注意：这里假设图片URL是安全的/meitu/src/assets/   ./../public
-
-  // const htmlContent = `
-  //   <div style="display: flex;  justify-content: space-between;">
-  //     <img src="${require("./../..//assets/images/QRcode.jpg")}" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
-  //     <span>收到您的需求！<br/>我们会尽快处理，<br/>可联系榜女郎获知更新进度</span>
-  //   </div>
-  // `;
-  // /meitu/src/assets/images/QRcode.jpg
-  const htmlContent = `
-    <div style="display: flex;  justify-content: space-between;">
-      <img src="./../../../assets/images/QRcode.jpg" alt="Notification Image" style="width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;">
-      <span>收到您的需求！<br/>我们会尽快处理，<br/>可联系榜女郎获知更新进度</span>
-    </div>
-  `;
   // 显示 Notification
   ElNotification({
     dangerouslyUseHTMLString: true, // 允许使用HTML字符串
     // message: htmlContent
-    message: htmlContent,
-    duration: 3000
+    message: h(
+      "div",
+      {
+        style: "display: flex;  justify-content: space-between;"
+      },
+      [
+        h("img", {
+          src: QRCode,
+          alt: "Notification Image",
+          style: "width: 100px; height: 100px; margin-right: 10px; vertical-align: middle; display: inline-block;"
+        }),
+        h(
+          "div",
+          {
+            style: "font-size: 24px; color: #333; line-height: 1.5;"
+          },
+          [h("span", "收到您的需求！"), h("br"), h("span", "我们会尽快处理，"), h("br"), h("span", "可联系榜女郎获知更新进度")]
+        )
+      ]
+    ),
+    duration: 0
   });
 };
 // 确认提交按钮
 const confirmChange = () => {
-  // console.log("topMediaIds", flattenAndCheck(topListArr.value));
-  // console.log("subMediaIds", flattenAndCheck(xifenListArr.value));
-  // console.log("newType", newType.value);
-  // console.log(topListArr.value); //复选框选中的值
   tabArr.value = [
     { title: "自选类别", isActive: false },
     { title: "我要新增", isActive: false }

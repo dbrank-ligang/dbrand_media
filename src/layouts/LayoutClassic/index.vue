@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts" name="layoutClassic">
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/modules/auth";
 import { useGlobalStore } from "@/stores/modules/global";
@@ -78,7 +78,7 @@ import { useUserStore } from "@/stores/modules/user";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
-import { searchMediaApi, userInfoApi } from "@/api/modules/media";
+import { searchMediaApi } from "@/api/modules/media";
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -142,36 +142,12 @@ const handleBrand = (item: any) => {
 };
 const logout = () => {
   // 2.清除 Token
-  userStore.setToken("");
   userStore.setUserInfo("");
-};
-
-// 查询个人信息
-const getUserInfoObj = async () => {
-  const { data } = await userInfoApi();
-  // userInfoObj.value = data as any;
-  userStore.setUserInfo(data);
-  currBrandStore.setCurrBrandObj((data as any).brands[0]);
 };
 
 const changeToken = value => {
   console.log(value);
-  userStore.setToken(value);
 };
-
-// 使用watch来观察store中的token状态
-// 监听store中的token值
-watch(
-  () => userStore.token,
-  (newValue, oldValue) => {
-    // 当token值变化时，会执行这里的代码
-    console.log(`Counter changed from ${oldValue} to ${newValue}!`);
-    if (newValue !== oldValue) {
-      // onBrandChange()
-      getUserInfoObj();
-    }
-  }
-);
 </script>
 
 <style scoped lang="scss">

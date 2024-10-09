@@ -1,7 +1,30 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
-
+import { userInfoApi } from "@/api/modules/media";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
+import { useUserStore } from "@/stores/modules/user";
 const mode = import.meta.env.VITE_ROUTER_MODE;
+
+// 获取cookie中的token
+export function getCookie() {
+  let cookies = document.cookie.split("; ");
+  for (let i = 0; i < cookies.length; i++) {
+    let parts = cookies[i].split("=");
+    if (parts[0] === "token") {
+      return parts[1];
+    }
+  }
+  return "";
+}
+
+// 查询个人信息
+export const getUserInfoObj = async () => {
+  const userStore = useUserStore();
+  const currBrandStore = useCurrBrandStore();
+  const { data } = await userInfoApi();
+  userStore.setUserInfo(data);
+  currBrandStore.setCurrBrandObj((data as any).brands[0]);
+};
 
 /**
  * @description 获取localStorage
