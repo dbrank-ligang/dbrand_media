@@ -9,6 +9,10 @@ export const staticRouter: RouteRecordRaw[] = [
     path: "/",
     redirect: HOME_URL
   },
+  // {
+  //   path: "/index",
+  //   redirect: HOME_URL
+  // },
   {
     path: LOGIN_URL,
     name: "login",

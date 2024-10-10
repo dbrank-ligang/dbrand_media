@@ -14,7 +14,8 @@ export function getCookie() {
       return parts[1];
     }
   }
-  return "";
+  // return "";
+  return "46a18f8f163fed66685948f22c64e01e";
 }
 
 // 查询个人信息

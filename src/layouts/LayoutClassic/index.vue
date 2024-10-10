@@ -28,7 +28,7 @@
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
           @blur="handleInputConfirm"
-          value-key="mediaName"
+          value-key="showText"
         >
           <template #append><div>搜索</div></template>
         </el-autocomplete>

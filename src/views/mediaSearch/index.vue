@@ -18,13 +18,17 @@
     <div class="hoistryBox">
       <div class="listTit">搜索历史</div>
       <div class="listCon">
-        <div v-for="item in historyListData" :key="item.mediaId" @click="historyChange(item)">{{ item.mediaName }}</div>
+        <div v-for="item in historyListData" :key="item.mediaId" @click="historyChange(item)">
+          <span>{{ item.showText }}</span>
+        </div>
       </div>
     </div>
     <div class="hoistryBox">
       <div class="listTit">标签推荐</div>
       <div class="listCon">
-        <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item)">{{ item.mediaName }}</div>
+        <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item)">
+          <span>{{ item.mediaName }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -84,9 +88,8 @@ function jumpDetail(urlQuery: any) {
 
 // 选中后跳转
 const handleSelect = (item: Record<string, any>) => {
-  console.log("input框的值", item);
   // 搜索的媒体是否存在搜索历史中， 存在不进行添加
-  const isHaveMediaId = historyListData.value.some(items => items.mediaId === item.mediaId);
+  const isHaveMediaId = historyListData.value.some(items => items.showText === item.showText);
   if (!isHaveMediaId) {
     getAddMediaHistory(item);
   }

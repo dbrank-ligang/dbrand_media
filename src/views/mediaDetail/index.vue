@@ -33,9 +33,9 @@
               style="min-height: 50px; font-size: 14px"
             >
               {{
-                (item.beforeName ? item.beforeName + "&" : "") +
-                (item.anotherName ? item.anotherName + "&" : "") +
-                (item.includeName ? item.includeName : "")
+                (item.beforeName ? item.beforeName : "") +
+                (item.anotherName ? "&" + item.anotherName : "") +
+                (item.includeName ? "&" + item.includeName : "")
               }}
             </div>
           </li>
@@ -140,7 +140,9 @@
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               size="small"
+              value-format="X"
               @change="changeDate"
+              :default-time="[dateStart, dateEnd]"
             />
           </div>
           <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
@@ -167,6 +169,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
+import moment from "moment";
 
 const route = useRoute();
 // 左侧一级导航列表数据
@@ -184,8 +187,12 @@ const accountId = ref(null); // 账号列表选中的id
 const oneName = ref("一级"); // 一级选中的
 const twoName = ref("二级"); // 二级选中的
 const threeName = ref("三级"); // 三级选中的
-
-let dateArr = ref([]); // 时间选择器
+// 获取上周周一
+const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
+// 获取上周周日
+const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format("X");
+let dateArr = ref([dateStart, dateEnd]); // 时间范围
+// let dateArr = ref([]); // 时间选择器
 const defaultObj = ref({
   mediaId: null,
   subUnionId: null, // 左侧选中的id
@@ -231,22 +238,27 @@ function accountClick(index: any, item: any) {
   threeName.value = item.accountName; // 选中账号的name
   accountId.value = item.id; // 选中账号的id
   getAccountObj(item.id);
+  getAarticlesList(); // 调内容列表接口
 }
 const changeDate = () => {
   // console.log(dateArr.value[0]); // 开始时间
   // console.log(dateArr.value[1]); // 结束时间
-  const startTime = new Date(dateArr.value[0]).getTime() / 1000;
-  const endTime = new Date(dateArr.value[1]).getTime() / 1000;
+  // const startTime = new Date(dateArr.value[0]).getTime() / 1000;
+  // const endTime = new Date(dateArr.value[1]).getTime() / 1000;
   // console.log(new Date(startTime).getTime(), new Date(endTime).getTime());
-  getAarticlesList({ startTime, endTime });
+  // getAarticlesList({ startTime, endTime });
+  getAarticlesList();
 };
 // 时间戳转换为日期的函数
 const timestampToDate = timestamp => {
-  const date = new Date(timestamp);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  let date = new Date(timestamp * 1000); // 确保时间戳是以毫秒为单位
+  let year = date.getFullYear();
+  let month = ("0" + (date.getMonth() + 1)).slice(-2); // 月份是从0开始的
+  let day = ("0" + date.getDate()).slice(-2);
+  let hours = ("0" + date.getHours()).slice(-2);
+  let minutes = ("0" + date.getMinutes()).slice(-2);
+  let seconds = ("0" + date.getSeconds()).slice(-2);
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 // 媒体一级列表
 const getOneLevelArr = async (params: any) => {
@@ -329,9 +341,17 @@ const getAccountObj = async (params: any) => {
   numberDetailObj.value = data as any;
 };
 // 查询账号详情（根据账号列表选中的id）
-const getAarticlesList = async (params: any) => {
-  const { data } = await articlesApi({ startTime: params.startTime, endTime: params.endTime, accountId: accountId.value });
-  articlesArr.value = data as any;
+const getAarticlesList = async () => {
+  // console.log(dateArr.value[0]);
+  if (accountId.value) {
+    // const { data } = await articlesApi({ startTime: params.startTime, endTime: params.endTime, accountId: accountId.value });
+    const { data } = await articlesApi({
+      startTime: dateArr.value[0],
+      endTime: dateArr.value[1],
+      accountId: accountId.value
+    });
+    articlesArr.value = data as any;
+  }
 };
 
 onMounted(() => {
@@ -346,7 +366,8 @@ onMounted(() => {
 });
 </script>
 <style lang="scss">
-@import "./baike.scss";
+// @import "./baike.scss";
+@import "./baikeNew.scss";
 </style>
 <style scoped lang="scss">
 @import "./index.scss";

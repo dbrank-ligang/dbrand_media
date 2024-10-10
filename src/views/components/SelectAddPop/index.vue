@@ -201,9 +201,9 @@ const showNotificationWithImage = () => {
         h(
           "div",
           {
-            style: "font-size: 24px; color: #333; line-height: 1.5;"
+            style: "font-size: 13px; color: #333; line-height: 20px; display: flex; flex-direction: column;align-self: center;"
           },
-          [h("span", "收到您的需求！"), h("br"), h("span", "我们会尽快处理，"), h("br"), h("span", "可联系榜女郎获知更新进度")]
+          [h("span", "收到您的需求！"), h("span", "我们会尽快处理，"), h("span", "可联系榜女郎获知更新进度")]
         )
       ]
     ),
