@@ -83,7 +83,7 @@
         </div>
       </div>
     </div>
-    <CoverageMap v-if="userStore.userInfo.memberShip" :mediaData="mediaData" />
+    <CoverageMap v-if="userStore.userInfo.memberShip" :mediaData="mediaData" :dateArr="dateArr" />
     <div class="memberShipBox" v-else>
       <img src="@/assets/images/mengban.png" />
     </div>
@@ -220,6 +220,7 @@ const changePkNo = () => {
   };
   dateArrPk.value = []; //清空时间对比
   overviewListTimeDuibi.value = { num: [], percent: [], order: [], orderList: [] }; //清空时间对比的数据
+  getFugaitu({ ...paramsObj.value, type: "all" });
 };
 
 // 获取概览数据

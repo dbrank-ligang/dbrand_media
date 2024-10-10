@@ -46,7 +46,7 @@
         </el-dropdown>
         <div style="margin-left: 30px">{{ userInfo.name }}</div>
         <div style="margin-left: 30px" @click="logout">
-          <a style="color: #000; text-decoration: none" href="https://dbrank.net/login">退出登录</a>
+          <a @click="logout" style="color: #000; text-decoration: none; cursor: pointer">退出登录</a>
         </div>
       </div>
     </el-header>
@@ -79,6 +79,7 @@ import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { searchMediaApi } from "@/api/modules/media";
+import { deleteCookie } from "@/utils";
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -143,6 +144,8 @@ const handleBrand = (item: any) => {
 const logout = () => {
   // 2.清除 Token
   userStore.setUserInfo("");
+  deleteCookie("token");
+  window.location.href = "https://dbrank.net/login";
 };
 
 const changeToken = value => {

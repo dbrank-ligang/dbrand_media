@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <CoverageMap :mediaData="mediaData" />
+    <CoverageMap :mediaData="mediaData" :dateArr="dateArr" />
   </div>
 </template>
 
@@ -88,8 +88,6 @@ const overviewList = ref({
 
 // 时间搜索
 const changeTime = () => {
-  console.log(dateArr.value[0]); // 开始时间
-  console.log(dateArr.value[1]); // 结束时间
   paramsObj.value = {
     ...paramsObj.value,
     startTime: dateArr.value[0],
@@ -125,7 +123,6 @@ const getFugaitu = async (params: any) => {
 // 监听每个滚动区域的滚动事件
 onMounted(() => {
   const urlParams = route.query;
-  console.log(urlParams);
   dateArr.value = [urlParams.startTime, urlParams.endTime];
   paramsObj.value = {
     ...paramsObj.value,

@@ -2,6 +2,8 @@ import router from "@/routers/index";
 import { RouteRecordRaw } from "vue-router";
 import { ElNotification } from "element-plus";
 import { useAuthStore } from "@/stores/modules/auth";
+import { deleteCookie } from "@/utils";
+import { useUserStore } from "@/stores/modules/user";
 
 // 引入 views 文件夹下所有 vue 文件
 const modules = import.meta.glob("@/views/**/*.vue");
@@ -25,6 +27,9 @@ export const initDynamicRouter = async () => {
         type: "warning",
         duration: 3000
       });
+      const userStore = useUserStore();
+      userStore.setUserInfo("");
+      deleteCookie("token");
       window.location.href = "https://dbrank.net/login";
       return Promise.reject("No permission");
     }
@@ -42,6 +47,8 @@ export const initDynamicRouter = async () => {
     });
   } catch (error) {
     // 当按钮 || 菜单请求出错时，重定向到登陆页
+    userStore.setUserInfo("");
+    deleteCookie("token");
     window.location.href = "https://dbrank.net/login";
     return Promise.reject(error);
   }

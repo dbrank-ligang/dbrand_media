@@ -101,7 +101,8 @@ const timeFlagBgColor = ref({
 });
 
 const props = defineProps({
-  mediaData: Array
+  mediaData: Array,
+  dateArr: Array
 });
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
@@ -177,7 +178,9 @@ function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
-      ...urlQuery
+      ...urlQuery,
+      startTime: props.dateArr ? props.dateArr[0] : null,
+      endTime: props.dateArr ? props.dateArr[1] : null
     }
   });
   window.open(routerUrl.href, "_blank");

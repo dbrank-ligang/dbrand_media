@@ -6,7 +6,8 @@ import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "./helper/checkStatus";
 import { AxiosCanceler } from "./helper/axiosCancel";
 import router from "@/routers";
-import { getCookie } from "@/utils";
+import { deleteCookie, getCookie } from "@/utils";
+import { useUserStore } from "@/stores/modules/user";
 
 export interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   loading?: boolean;
@@ -65,6 +66,9 @@ class RequestHttp {
         config.loading && tryHideFullScreenLoading();
         // 登录失效
         if (data.code == ResultEnum.OVERDUE) {
+          const userStore = useUserStore();
+          userStore.setUserInfo("");
+          deleteCookie("token");
           window.location.href = "https://dbrank.net/login";
           ElMessage.error(data.msg);
           return Promise.reject(data);

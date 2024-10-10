@@ -4,7 +4,7 @@ import { LOGIN_URL, ROUTER_WHITE_LIST } from "@/config";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { staticRouter, errorRouter } from "@/routers/modules/staticRouter";
 import NProgress from "@/config/nprogress";
-import { getCookie } from "@/utils";
+import { deleteCookie, getCookie } from "@/utils";
 import { useUserStore } from "@/stores/modules/user";
 
 const mode = import.meta.env.VITE_ROUTER_MODE;
@@ -61,6 +61,8 @@ router.beforeEach(async (to, from, next) => {
   // 5.判断是否有 Token，没有重定向到 login 页面
   const token = getCookie();
   if (token.length <= 0) {
+    userStore.setUserInfo("");
+    deleteCookie("token");
     window.location.href = "https://dbrank.net/login";
   }
   // 如果没有用户信息 跳转本项目login中间页去获取用户信息，确定是否为会员

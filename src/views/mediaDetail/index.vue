@@ -142,7 +142,6 @@
               size="small"
               value-format="X"
               @change="changeDate"
-              :default-time="[dateStart, dateEnd]"
             />
           </div>
           <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
@@ -192,7 +191,6 @@ const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").for
 // 获取上周周日
 const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format("X");
 let dateArr = ref([dateStart, dateEnd]); // 时间范围
-// let dateArr = ref([]); // 时间选择器
 const defaultObj = ref({
   mediaId: null,
   subUnionId: null, // 左侧选中的id
@@ -237,16 +235,11 @@ function accountClick(index: any, item: any) {
   activeNumberIndex.value = index; // 点击时更新当前
   threeName.value = item.accountName; // 选中账号的name
   accountId.value = item.id; // 选中账号的id
+  changeDate();
   getAccountObj(item.id);
   getAarticlesList(); // 调内容列表接口
 }
 const changeDate = () => {
-  // console.log(dateArr.value[0]); // 开始时间
-  // console.log(dateArr.value[1]); // 结束时间
-  // const startTime = new Date(dateArr.value[0]).getTime() / 1000;
-  // const endTime = new Date(dateArr.value[1]).getTime() / 1000;
-  // console.log(new Date(startTime).getTime(), new Date(endTime).getTime());
-  // getAarticlesList({ startTime, endTime });
   getAarticlesList();
 };
 // 时间戳转换为日期的函数
@@ -342,9 +335,7 @@ const getAccountObj = async (params: any) => {
 };
 // 查询账号详情（根据账号列表选中的id）
 const getAarticlesList = async () => {
-  // console.log(dateArr.value[0]);
   if (accountId.value) {
-    // const { data } = await articlesApi({ startTime: params.startTime, endTime: params.endTime, accountId: accountId.value });
     const { data } = await articlesApi({
       startTime: dateArr.value[0],
       endTime: dateArr.value[1],
@@ -357,7 +348,9 @@ const getAarticlesList = async () => {
 onMounted(() => {
   const myParam = route.query;
   defaultObj.value = myParam;
-  console.log(defaultObj.value); // 输出查询参数的值
+  if (defaultObj.value.startTime && defaultObj.value.endTime) {
+    dateArr.value = [defaultObj.value.startTime, defaultObj.value.endTime];
+  }
   getOneLevelArr({
     mediaId: defaultObj.value.mediaId,
     subUnionId: defaultObj.value.subUnionId,

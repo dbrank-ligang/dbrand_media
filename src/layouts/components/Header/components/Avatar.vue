@@ -29,6 +29,8 @@ import { logoutApi } from "@/api/modules/login";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
 import PasswordDialog from "./PasswordDialog.vue";
+import { deleteCookie } from "@/utils";
+import { useUserStore } from "@/stores/modules/user";
 
 // 退出登录
 const logout = () => {
@@ -40,6 +42,9 @@ const logout = () => {
     // 1.执行退出登录接口
     await logoutApi();
     // 3.重定向到登陆页
+    const userStore = useUserStore();
+    userStore.setUserInfo("");
+    deleteCookie("token");
     window.location.href = "https://dbrank.net/login";
 
     ElMessage.success("退出登录成功！");

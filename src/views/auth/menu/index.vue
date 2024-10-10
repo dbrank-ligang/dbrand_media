@@ -11,9 +11,14 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
+import { deleteCookie } from "@/utils";
 import { Promotion } from "@element-plus/icons-vue";
+import { useUserStore } from "@/stores/modules/user";
 
 const handleToLogin = () => {
+  const userStore = useUserStore();
+  userStore.setUserInfo("");
+  deleteCookie("token");
   window.location.href = "https://dbrank.net/login";
 };
 </script>

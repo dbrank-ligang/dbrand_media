@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <CoverageMap :mediaData="mediaData" />
+    <CoverageMap :mediaData="mediaData" :dateArr="dateArr" />
   </div>
 </template>
 
