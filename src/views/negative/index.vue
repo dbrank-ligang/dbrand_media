@@ -43,6 +43,7 @@
       </div>
     </div>
     <CoverageMap :mediaData="mediaData" :dateArr="dateArr" />
+    <BottomNav></BottomNav>
   </div>
 </template>
 
@@ -52,6 +53,7 @@
 // }
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
+import BottomNav from "./../components/BottomNav/index.vue";
 // import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";

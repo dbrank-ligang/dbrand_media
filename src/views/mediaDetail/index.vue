@@ -1,25 +1,25 @@
 <template>
   <div class="mediaDetail_con">
-    <div class="mediaDetail_up">
-      <div class="mediaDetail_text left_top">
+    <!-- <div class="mediaDetail_up"> -->
+    <!-- <div class="mediaDetail_text left_top">
         <div class="left_top_tit1" style="">[统一归类名称]</div>
         <div class="left_top_tit2">{{ oneLevelObj.unionMediaName }}</div>
         <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
         <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
         <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
-      </div>
-      <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
-      <!-- <div class="mediaDetail_baike">{{ oneLevelSelectObj?.baike }}</div> -->
-    </div>
+      </div> -->
+    <!-- <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div> -->
+    <!-- <div class="mediaDetail_baike">{{ oneLevelSelectObj?.baike }}</div> -->
+    <!-- </div> -->
     <div class="mediaDetailBox">
       <div class="mediaDetail_left">
-        <!-- <div class="left_top">
+        <div class="mediaDetail_text left_top">
           <div class="left_top_tit1" style="">[统一归类名称]</div>
           <div class="left_top_tit2">{{ oneLevelObj.unionMediaName }}</div>
           <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
           <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
           <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
-        </div> -->
+        </div>
         <div class="left_bottom">
           <li
             v-for="item in oneLevelObj.subUnionMediaList"
@@ -42,7 +42,8 @@
         </div>
       </div>
       <div class="mediaDetail_right">
-        <div class="mediaSource">
+        <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
+        <div class="mediaSource" style="margin-top: 10px">
           <div class="mediaSource_tit">[作为媒体源]</div>
           <div class="mediaSource_listBox">
             <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
@@ -130,7 +131,7 @@
         </div>
 
         <div class="contentListBox" style="margin-top: 10px">
-          <div class="contentListBox_tit">{{ oneName }} / {{ twoName }} / {{ threeName }}</div>
+          <div class="contentListBox_tit">{{ oneName }} -（{{ twoName }}）{{ threeName }}</div>
           <div style="margin-top: 30px">
             [内容列表]
             <el-date-picker
@@ -160,6 +161,7 @@
         </div>
       </div>
     </div>
+    <BottomNav style="margin-top: 10px"></BottomNav>
   </div>
 </template>
 
@@ -169,6 +171,7 @@ import { useRoute } from "vue-router";
 import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
 import moment from "moment";
+import BottomNav from "./../components/BottomNav/index.vue";
 
 const route = useRoute();
 // 左侧一级导航列表数据
@@ -359,7 +362,7 @@ onMounted(() => {
 });
 </script>
 <style lang="scss">
-// @import "./baike.scss";
+@import "./baike.scss";
 @import "./baikeNew.scss";
 </style>
 <style scoped lang="scss">

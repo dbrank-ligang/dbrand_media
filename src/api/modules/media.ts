@@ -79,3 +79,8 @@ export const accountApi = param => {
 export const articlesApi = param => {
   return http.get(`/article/getArticles`, param, { loading: false });
 };
+
+// 我要新增模糊搜索
+export const searchMediaTypeApi = param => {
+  return http.get(`/mediaType/searchMediaType`, param, { loading: false });
+};

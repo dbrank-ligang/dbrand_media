@@ -9,3 +9,8 @@
   height: auto;
   padding: 0;
 }
+.el-backtop {
+  // :deep(.el-backtop__main svg) {
+    color: #ffdd00 ; /* 替换为你想要的颜色 */
+  // }
+}

@@ -26,11 +26,10 @@
           style="width: 300px; margin-left: 10px"
           placeholder=""
           @select="handleSelect"
-          @keyup.enter="handleInputConfirm"
-          @blur="handleInputConfirm"
+          @keyup.enter="handleSearch"
           value-key="showText"
         >
-          <template #append><div>搜索</div></template>
+          <template #append><div @click="handleSearch" style="cursor: pointer">搜索</div></template>
         </el-autocomplete>
         <el-dropdown trigger="click" style="margin-left: 30px">
           <span class="el-dropdown-link">
@@ -47,6 +46,9 @@
         <div style="margin-left: 30px">{{ userInfo.name }}</div>
         <div style="margin-left: 30px" @click="logout">
           <a @click="logout" style="color: #000; text-decoration: none; cursor: pointer">退出登录</a>
+        </div>
+        <div style="margin-left: 30px">
+          <a target="_blank" style="color: #000; text-decoration: none; cursor: pointer" href="https://dbrank.net">数榜首页</a>
         </div>
       </div>
     </el-header>
@@ -80,6 +82,8 @@ import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { searchMediaApi } from "@/api/modules/media";
 import { deleteCookie } from "@/utils";
+import { ElNotification } from "element-plus";
+// import { deleteCookie } from "@/utils";
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -91,8 +95,8 @@ const userStore = useUserStore();
 const currBrandStore = useCurrBrandStore();
 const userInfo: any = computed(() => userStore.userInfo);
 const inputValue = ref("");
-
 const value = ref("");
+const searchData = ref([] as any);
 
 const options = [
   {
@@ -109,17 +113,12 @@ const options = [
   }
 ];
 
-//  input搜索逻辑------------
-const handleInputConfirm = () => {
-  console.log(inputValue.value);
-  if (inputValue.value) {
-  }
-};
+// --------------------搜索逻辑----------------------------
 const querySearch = async (queryString: string, cb: any) => {
   const { data } = await searchMediaApi({ keyword: queryString });
+  searchData.value = data;
   cb(data);
 };
-// --------------------搜索逻辑----------------------------
 
 // 跳转详情页方法
 function jumpDetail(urlQuery: any) {
@@ -137,6 +136,22 @@ function jumpDetail(urlQuery: any) {
 const handleSelect = (item: Record<string, any>) => {
   console.log("input框的值", item);
   jumpDetail(item);
+};
+const handleSearch = () => {
+  // 阻止事件冒泡和默认行为
+  console.log("搜索数据的长度", searchData.value);
+  if (searchData.value.length > 0) {
+    jumpDetail(searchData.value[0]); //跳转详情页
+  } else {
+    // 4.跳转到首页
+    ElNotification({
+      title: "提示",
+      message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
+      type: "warning",
+      duration: 3000,
+      offset: 80
+    });
+  }
 };
 const handleBrand = (item: any) => {
   currBrandStore.setCurrBrandObj(item);

@@ -99,6 +99,7 @@
     </div>
 
     <CoverageMap :mediaData="mediaData" :dateArr="dateArr" />
+    <BottomNav></BottomNav>
   </div>
 </template>
 
@@ -108,6 +109,7 @@
 // }
 import { ref, onMounted, onBeforeMount, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
+import BottomNav from "./../components/BottomNav/index.vue";
 import moment from "moment";
 // import { ElMessage } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";

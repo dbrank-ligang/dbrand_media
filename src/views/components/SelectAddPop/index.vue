@@ -68,7 +68,7 @@
           placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。s"
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
-          value-key="mediaName"
+          value-key="name"
         />
       </div>
       <div class="tagBox">
@@ -106,7 +106,7 @@ import { inject, onMounted, ref, onActivated, h } from "vue";
 import { ElButton } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
-import { userMediaTypeApi, searchMediaApi, saveUserMediaTypeApi } from "@/api/modules/media";
+import { userMediaTypeApi, searchMediaTypeApi, saveUserMediaTypeApi } from "@/api/modules/media";
 import { useRouter } from "vue-router";
 import QRCode from "@/assets/images/QRcode.jpg";
 const handleCustomCategoryClick = inject<Function>("handleCustomCategoryClick");
@@ -277,7 +277,8 @@ const handleInputConfirm = () => {
 };
 
 const querySearch = async (queryString: string, cb: any) => {
-  const { data } = await searchMediaApi({ keyword: queryString });
+  // const { data } = await searchMediaApi({ keyword: queryString });
+  const { data } = await searchMediaTypeApi({ keyword: queryString });
   console.log(data);
   lastQueryArr.value = data;
   cb(data);

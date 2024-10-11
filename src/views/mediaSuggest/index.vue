@@ -1,156 +1,159 @@
 <template>
-  <div class="mediaSuggestBox">
-    <div class="mediaSuggest_tit">
-      <div class="mediaSuggest_tit1">媒体推荐：</div>
-      <div class="mediaSuggest_tit2">{{ currBrandStore.currBrandObj.brandName }}</div>
-    </div>
-    <div class="searchBox">
-      <div class="searchBox_1">
-        <div>[类别]</div>
-        <div class="selectBox">
-          <div>媒体大类：</div>
-          <div>
-            <el-select
-              v-model="searchForm.meitidalei"
-              class="m-2"
-              clearable
-              placeholder="请选择"
-              style="width: 150px"
-              @change="changeMedia"
-            >
-              <el-option v-for="item in meitidaleiArr" :key="item.id" :label="item.name" :value="item.id" />
-            </el-select>
-          </div>
-        </div>
-        <div class="selectBox">
-          <div>行业细分：</div>
-          <div>
-            <el-select v-model="searchForm.hangyexifen" clearable class="m-2" placeholder="请选择" style="width: 150px">
-              <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
-            </el-select>
-          </div>
-        </div>
-        <SelectAddPop style="margin-left: 20px" />
-        <div class="selectBox">
-          <div>细分圈层：</div>
-          <div>
-            <el-select v-model="searchForm.xifenquanceng" clearable class="m-2" placeholder="请选择" style="width: 150px">
-              <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
-            </el-select>
-          </div>
-        </div>
-        <SelectAddPop style="margin-left: 20px" />
+  <div>
+    <div class="mediaSuggestBox">
+      <div class="mediaSuggest_tit">
+        <div class="mediaSuggest_tit1">媒体推荐：</div>
+        <div class="mediaSuggest_tit2">{{ currBrandStore.currBrandObj.brandName }}</div>
       </div>
-      <div class="searchBox_2">
-        <div class="searchBox2_left">
-          <div class="searchBox_2tit">[平台]</div>
-          <div class="searchBox_2Con">
-            <div
-              :class="{ activePlatform: activePlatformIndex === index }"
-              v-for="(item, index) in platformArr"
-              :key="item"
-              @click="setMediaSourceActive(index, item)"
-            >
-              {{ item }}
+      <div class="searchBox">
+        <div class="searchBox_1">
+          <div>[类别]</div>
+          <div class="selectBox">
+            <div>媒体大类：</div>
+            <div>
+              <el-select
+                v-model="searchForm.meitidalei"
+                class="m-2"
+                clearable
+                placeholder="请选择"
+                style="width: 150px"
+                @change="changeMedia"
+              >
+                <el-option v-for="item in meitidaleiArr" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
             </div>
           </div>
+          <div class="selectBox">
+            <div>行业细分：</div>
+            <div>
+              <el-select v-model="searchForm.hangyexifen" clearable class="m-2" placeholder="请选择" style="width: 150px">
+                <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </div>
+          </div>
+          <SelectAddPop style="margin-left: 20px" />
+          <div class="selectBox">
+            <div>细分圈层：</div>
+            <div>
+              <el-select v-model="searchForm.xifenquanceng" clearable class="m-2" placeholder="请选择" style="width: 150px">
+                <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </div>
+          </div>
+          <SelectAddPop style="margin-left: 20px" />
         </div>
-        <el-button class="buttonStyle" @click="handleSearch">查询</el-button>
+        <div class="searchBox_2">
+          <div class="searchBox2_left">
+            <div class="searchBox_2tit">[平台]</div>
+            <div class="searchBox_2Con">
+              <div
+                :class="{ activePlatform: activePlatformIndex === index }"
+                v-for="(item, index) in platformArr"
+                :key="item"
+                @click="setMediaSourceActive(index, item)"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+          <el-button class="buttonStyle" @click="handleSearch">查询</el-button>
+        </div>
       </div>
-    </div>
-    <div class="tableBox">
-      <div class="sellBox">
-        <div class="tableTile">推荐名单TOP{{ isExpandSell ? 20 : 10 }}</div>
-        <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
-          <el-table-column align="center" type="index" width="55" label="序号">
-            <template #default="{ $index }">
-              {{ $index + 1 }}
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="媒体名称">
-            <template #default="scope">
-              <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="mediaCluster" label="所属媒体集群" />
-          <el-table-column align="center" prop="mediaType" label="媒体属性" />
-        </el-table>
-        <el-button type="info" size="small" @click="handleExpandSell({ type: 1 })">
-          {{ isExpandSell ? "- 收起" : " + 展开" }}
-        </el-button>
+      <div class="tableBox">
+        <div class="sellBox">
+          <div class="tableTile">推荐名单TOP{{ isExpandSell ? 20 : 10 }}</div>
+          <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
+            <el-table-column align="center" type="index" width="55" label="序号">
+              <template #default="{ $index }">
+                {{ $index + 1 }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="媒体名称">
+              <template #default="scope">
+                <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="mediaCluster" label="所属媒体集群" />
+            <el-table-column align="center" prop="mediaType" label="媒体属性" />
+          </el-table>
+          <el-button type="info" size="small" @click="handleExpandSell({ type: 1 })">
+            {{ isExpandSell ? "- 收起" : " + 展开" }}
+          </el-button>
+        </div>
+        <div class="sellNoBox">
+          <div class="tableTile">不推荐名单TOP{{ isExpandSellNo ? 20 : 10 }}</div>
+          <el-table :data="sellNoArr" style="width: 100%; margin-top: 10px; color: #000" border>
+            <el-table-column align="center" type="index" width="55" label="序号">
+              <template #default="{ $index }">
+                {{ $index + 1 }}
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="媒体名称">
+              <template #default="scope">
+                <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
+            <el-table-column align="center" prop="mediatype" label="媒体属性" />
+          </el-table>
+          <el-button type="info" size="small" @click="handleExpandSell({ type: 0 })">
+            {{ isExpandSellNo ? "- 收起" : " + 展开" }}
+          </el-button>
+        </div>
       </div>
-      <div class="sellNoBox">
-        <div class="tableTile">不推荐名单TOP{{ isExpandSellNo ? 20 : 10 }}</div>
-        <el-table :data="sellNoArr" style="width: 100%; margin-top: 10px; color: #000" border>
-          <el-table-column align="center" type="index" width="55" label="序号">
-            <template #default="{ $index }">
-              {{ $index + 1 }}
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="媒体名称">
-            <template #default="scope">
-              <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
-          <el-table-column align="center" prop="mediatype" label="媒体属性" />
-        </el-table>
-        <el-button type="info" size="small" @click="handleExpandSell({ type: 0 })">
-          {{ isExpandSellNo ? "- 收起" : " + 展开" }}
-        </el-button>
-      </div>
-    </div>
 
-    <div class="sellBox">
-      <div class="tableTile">
-        竞品合作媒体推测TOP{{ isExpandInfer ? 20 : 10 }}
-        <el-select
-          v-model="competitorBrandId"
-          class="m-2"
-          placeholder="请选择"
-          style="width: 150px"
-          @change="changeCompetitorBrand"
-        >
-          <el-option
-            v-for="item in currBrandStore.currBrandObj.competitor"
-            :key="item.competitorBrandId"
-            :label="item.competitorBrandName"
-            :value="item.competitorBrandId"
-          />
-        </el-select>
+      <div class="sellBox">
+        <div class="tableTile">
+          竞品合作媒体推测TOP{{ isExpandInfer ? 20 : 10 }}
+          <el-select
+            v-model="competitorBrandId"
+            class="m-2"
+            placeholder="请选择"
+            style="width: 150px"
+            @change="changeCompetitorBrand"
+          >
+            <el-option
+              v-for="item in currBrandStore.currBrandObj.competitor"
+              :key="item.competitorBrandId"
+              :label="item.competitorBrandName"
+              :value="item.competitorBrandId"
+            />
+          </el-select>
+        </div>
+        <el-table :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
+          <el-table-column align="center" type="index" width="55" label="序号">
+            <template #default="{ $index }">
+              {{ $index + 1 }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="媒体名称">
+            <template #default="scope">
+              <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="mediacluster" label="所属媒体集群" />
+          <el-table-column align="center" prop="positiveNum" label="`相关正向内容条数`<br/>123">
+            <template #header>
+              <div>(过去12个月内)</div>
+              <div>相关正向内容条数</div>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" prop="title" label="文章示例">
+            <template #default="scope">
+              <a target="_blank" :href="`www.${scope.row.docUrl}`">{{ scope.row.title }}</a>
+              <!-- <a target="_blank" href="https://www.baidu.com/">{{ scope.row.title }}</a> -->
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="可能性">
+            <template #default="scope"> {{ scope.row.probability * 100 }}% </template>
+          </el-table-column>
+        </el-table>
+        <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
+          {{ isExpandInfer ? "- 收起" : " + 展开" }}
+        </el-button>
       </div>
-      <el-table :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
-        <el-table-column align="center" type="index" width="55" label="序号">
-          <template #default="{ $index }">
-            {{ $index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="媒体名称">
-          <template #default="scope">
-            <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="mediacluster" label="所属媒体集群" />
-        <el-table-column align="center" prop="positiveNum" label="`相关正向内容条数`<br/>123">
-          <template #header>
-            <div>(过去12个月内)</div>
-            <div>相关正向内容条数</div>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="title" label="文章示例">
-          <template #default="scope">
-            <a target="_blank" :href="`www.${scope.row.docUrl}`">{{ scope.row.title }}</a>
-            <!-- <a target="_blank" href="https://www.baidu.com/">{{ scope.row.title }}</a> -->
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="可能性">
-          <template #default="scope"> {{ scope.row.probability * 100 }}% </template>
-        </el-table-column>
-      </el-table>
-      <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
-        {{ isExpandInfer ? "- 收起" : " + 展开" }}
-      </el-button>
     </div>
+    <BottomNav style="margin-top: 10px"></BottomNav>
   </div>
 </template>
 
@@ -159,6 +162,7 @@ import { onMounted, ref, watch } from "vue";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
 import SelectAddPop from "./../components/SelectAddPop/index.vue";
+import BottomNav from "./../components/BottomNav/index.vue";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 

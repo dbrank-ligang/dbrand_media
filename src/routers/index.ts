@@ -55,7 +55,6 @@ router.beforeEach(async (to, from, next) => {
     resetRouter();
     return next();
   }
-
   // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
   if (ROUTER_WHITE_LIST.includes(to.path)) return next();
   // 5.判断是否有 Token，没有重定向到 login 页面

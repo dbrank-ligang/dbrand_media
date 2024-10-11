@@ -87,12 +87,14 @@
     <div class="memberShipBox" v-else>
       <img src="@/assets/images/mengban.png" />
     </div>
+    <BottomNav></BottomNav>
   </div>
 </template>
 
 <script setup lang="ts" name="home">
 import { ref, onMounted, onUnmounted, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
+import BottomNav from "./../components/BottomNav/index.vue";
 import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { useUserStore } from "@/stores/modules/user";

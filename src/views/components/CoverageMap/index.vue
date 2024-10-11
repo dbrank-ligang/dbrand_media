@@ -85,7 +85,7 @@
 </template>
 <script setup lang="ts" name="home">
 import { MEDIADETAIL } from "@/config";
-import { onMounted, onUnmounted, reactive, ref, defineProps } from "vue";
+import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
@@ -186,8 +186,18 @@ function jumpDetail(urlQuery: any) {
   window.open(routerUrl.href, "_blank");
 }
 // 监听每个滚动区域的滚动事件
+// onMounted(() => {
+//   setTimeout(() => {
+//     scrollRefs.forEach((ref, index) => {
+//       if (ref.value) {
+//         (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
+//         updateScrollStatus(index);
+//       }
+//     });
+//   }, 1000);
+// });
 
-onMounted(() => {
+onActivated(() => {
   setTimeout(() => {
     scrollRefs.forEach((ref, index) => {
       if (ref.value) {

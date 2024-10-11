@@ -8,11 +8,10 @@
       style="width: 800px; height: 50px; margin-top: 10%"
       placeholder=""
       @select="handleSelect"
-      @keyup.enter="handleInputConfirm"
-      @blur="handleInputConfirm"
+      @keyup.enter="handleSearch"
       value-key="showText"
     >
-      <template #append><div>搜索</div></template>
+      <template #append><div @click="handleSearch" style="cursor: pointer">搜索</div></template>
     </el-autocomplete>
 
     <div class="hoistryBox">
@@ -31,6 +30,7 @@
         </div>
       </div>
     </div>
+    <BottomNav style="position: absolute; bottom: 0"></BottomNav>
   </div>
 </template>
 
@@ -38,9 +38,12 @@
 import { onMounted, ref } from "vue";
 import { searchMediaApi, searchMediaHistoryApi, addMediaHistoryApi, dictListJsonApi } from "@/api/modules/media";
 import router from "@/routers";
+import BottomNav from "./../components/BottomNav/index.vue";
 import { MEDIADETAIL } from "@/config";
+import { ElNotification } from "element-plus";
 
 const inputValue = ref("");
+const searchData = ref([] as any);
 const historyListData = ref([] as any); // 搜索历史列表
 const tagListData = ref([] as any);
 const historyChange = item => {
@@ -62,20 +65,22 @@ const getAddMediaHistory = async (params: any) => {
   getSearchMediaHistory();
 };
 
-//  input搜索逻辑------------
-const handleInputConfirm = () => {
-  console.log(inputValue.value);
-  if (inputValue.value) {
-  }
-};
-const querySearch = async (queryString: string, cb: any) => {
-  const { data } = await searchMediaApi({ keyword: queryString });
-  cb(data);
-};
 // --------------------搜索逻辑----------------------------
 
-// 跳转详情页方法
+const querySearch = async (queryString: string, cb: any) => {
+  const { data } = await searchMediaApi({ keyword: queryString });
+  searchData.value = data;
+  cb(data);
+};
+
+// 跳转详情页时：
+// 第一步：先判断搜索的内容是否存在搜索历史中，若存在不进行添加
+// 第二部：进行跳转；
 function jumpDetail(urlQuery: any) {
+  const isHaveMediaId = historyListData.value.some(items => items.showText === urlQuery.showText);
+  if (!isHaveMediaId) {
+    getAddMediaHistory(urlQuery);
+  }
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
@@ -84,16 +89,30 @@ function jumpDetail(urlQuery: any) {
   });
   window.open(routerUrl.href, "_blank");
   inputValue.value = "";
+  // searchData.value = []; //没用
 }
 
 // 选中后跳转
 const handleSelect = (item: Record<string, any>) => {
-  // 搜索的媒体是否存在搜索历史中， 存在不进行添加
-  const isHaveMediaId = historyListData.value.some(items => items.showText === item.showText);
-  if (!isHaveMediaId) {
-    getAddMediaHistory(item);
+  jumpDetail(item); //跳转详情页
+};
+// 点击搜索后:
+// 若检索数据为空，则弹框提示;
+// 若有检索数据，则直接跳转对应第一个媒体;
+const handleSearch = () => {
+  console.log("搜索数据的长度", searchData.value);
+  if (searchData.value.length > 0) {
+    jumpDetail(searchData.value[0]); //跳转详情页
+  } else {
+    // 4.跳转到首页
+    ElNotification({
+      title: "提示",
+      message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
+      type: "warning",
+      duration: 3000,
+      offset: 80
+    });
   }
-  jumpDetail(item);
 };
 onMounted(() => {
   getSearchMediaHistory();
