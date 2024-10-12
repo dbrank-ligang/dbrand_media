@@ -11,6 +11,7 @@
             :expand-on-click-node="false"
             :check-strictly="true"
             :props="defaultProps"
+            ref="treeRef"
           >
             <template #default="{ node, data }">
               <span class="custom-tree-node">
@@ -61,7 +62,6 @@
           v-model="inputValue"
           :fetch-suggestions="querySearch"
           :trigger-on-focus="false"
-          clearable
           class="inline-input w-50"
           style="width: 350px"
           maxlength="5"
@@ -103,12 +103,13 @@
 
 <script setup lang="ts" name="selectAddPop">
 import { inject, onMounted, ref, onActivated, h } from "vue";
-import { ElButton } from "element-plus";
+import { ElButton, ElMessageBox } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { userMediaTypeApi, searchMediaTypeApi, saveUserMediaTypeApi } from "@/api/modules/media";
 import { useRouter } from "vue-router";
 import QRCode from "@/assets/images/QRcode.jpg";
+
 const handleCustomCategoryClick = inject<Function>("handleCustomCategoryClick");
 const router = useRouter();
 // 获取当前路由对象
@@ -119,6 +120,7 @@ const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数
 const newType = ref([] as any); // 新增大类的数组
 const visible = ref(false);
 const popoverBtnRef = ref();
+const treeRef = ref();
 const tabArr = ref([
   { title: "自选类别", isActive: false },
   { title: "我要新增", isActive: false }
@@ -132,38 +134,65 @@ const topListArrOld = ref([]); // 存放上次的topListArr
 const xifenListArr = ref([]);
 const xifenListArrOld = ref([]); // 存放上次的xifenListArr
 
+function isParentPopover(target) {
+  console.log(target);
+  while (target) {
+    if (target.classList && (target.classList.contains("el-popover") || target.classList.contains("el-notification"))) {
+      return true; // 找到 el-popover
+    }
+    target = target.parentElement; // 移动到父元素
+  }
+  return false; // 没有找到 el-popover/el-notification
+}
+
 // 监听全局点击事件
 document.addEventListener("click", event => {
   if (!visible.value) return;
   const popoverRef = document.querySelector(".el-popover");
-  const buttonRef = document.getElementsByClassName("selectTab")[0];
-  // 首先检查 buttonRef 和 popoverRef 是否存在
-  if (!buttonRef || !popoverRef) {
-    return; // 其中之一为 null 时，直接返回
+  const buttonRef0 = document.getElementsByClassName("selectTab")[0];
+  const buttonRef1 = document.getElementsByClassName("selectTab")[1];
+  if (!popoverRef) {
+    return;
   }
   // 如果点击在按钮外且没有点击到popover，则关闭popover
-  if (!buttonRef.contains(event.target as Node) && !popoverRef.contains(event.target as Node)) {
-    // TODO 判断是否操作了类别或者新增     若有改动弹出提示语
-    // 判断topListArrOld是否与topListArr相同，可以顺序不同
-    if (arraysEqual(topListArrOld.value, topListArr.value)) {
+  if (
+    !buttonRef1.contains(event.target as Node) &&
+    !buttonRef0.contains(event.target as Node) &&
+    !popoverRef.contains(event.target as Node) &&
+    !isParentPopover(event.target) &&
+    !(event.target instanceof Element && event.target.tagName === "LI")
+  ) {
+    // 空白 TODO 判断是否操作了类别或者新增     若有改动弹出提示语
+    // 判断是否有修改，可以顺序不同
+    if (
+      arraysEqual(topListArrOld.value, topListArr.value) &&
+      arraysEqual(xifenListArrOld.value, xifenListArr.value) &&
+      newType.value.length <= 0
+    ) {
       // 没有修改，直接关闭
       tabArr.value.forEach(el => {
         el.isActive = false;
+        cancelChange(); // 不保存修改关闭弹框
       });
-      visible.value = false;
     } else {
-      // 有修改，弹出提示语
-      ElNotification({
-        title: "提示",
-        message: "提示语待确定", //todo 待确定提示语
-        type: "warning"
-      });
-      //需要保存就跳到弹窗的按钮位置
-      popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
+      ElMessageBox.confirm(`是否保留当前更改？`, "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+        draggable: true
+      })
+        .then(async () => {
+          console.log("确定关闭");
+          //需要保存就跳到弹窗的按钮位置
+          popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
+        })
+        .catch(() => {
+          console.log("取消关闭");
+          cancelChange(); // 不保存修改关闭弹框
+        });
     }
   }
 });
-
 // 判断两个数组是否相同，主要比较check字段
 function arraysEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) return false;
@@ -314,6 +343,15 @@ const handleClose = (tag: string) => {
   newType.value.splice(newType.value.indexOf(tag), 1);
 };
 
+const getNodeByName = () => {
+  const node = treeRef.value.getNode("传统媒体-产品评论");
+  if (node) {
+    console.log("找到节点:", node.data);
+  } else {
+    console.log("未找到节点");
+  }
+};
+
 // TODO 这里有bug， 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
 const inputValue = ref("");
 const handleInputConfirm = () => {
@@ -339,8 +377,10 @@ const handleInputConfirm = () => {
   if (highlightTopItem || highlightXifenItem) {
     ElNotification({
       title: "提示",
-      message: "当前类已存在于 Top List", // todo 列表已存在的提示语待修改
-      type: "warning"
+      message: "当前新增类型已存在", // todo 列表已存在的提示语待修改
+      customClass: "my-notification",
+      type: "warning",
+      offset: 400
     });
     // 找到对应的 DOM 元素并滚动到该元素 并且高亮  todo 这里id找不到这个元素 需要想办法给每个checkbox加id
     // const element = document.getElementById('top-item-' + highlightTopItem.id);
@@ -405,6 +445,7 @@ onMounted(async () => {
     isSuggestPath.value = true;
     tabArr.value = [{ title: "我要新增", isActive: false }];
   }
+  getNodeByName();
 });
 </script>
 
@@ -419,6 +460,9 @@ onMounted(async () => {
 .yellowHighlight {
   background-color: yellow; /* 或者你想要的其他颜色 */
   transition: background-color 0.3s ease; /* 过渡效果 */
+}
+.my-notification {
+  z-index: 9999 !important; /* 设置一个较高的z-index值来确保图层在最上方 */
 }
 </style>
 <style scoped lang="scss">
