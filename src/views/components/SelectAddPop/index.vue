@@ -14,7 +14,7 @@
             ref="treeRef"
           >
             <template #default="{ node, data }">
-              <span class="custom-tree-node">
+              <span class="custom-tree-node" :id="`tree-node-${data.id}`">
                 <el-checkbox
                   v-for="item in node.label"
                   :key="item"
@@ -39,7 +39,7 @@
             :props="defaultProps"
           >
             <template #default="{ node, data }">
-              <span class="custom-tree-node">
+              <span class="custom-tree-node" :id="`tree-node-${data.id}`">
                 <el-checkbox
                   v-for="item in node.label"
                   :key="item"
@@ -135,7 +135,6 @@ const xifenListArr = ref([]);
 const xifenListArrOld = ref([]); // 存放上次的xifenListArr
 
 function isParentPopover(target) {
-  console.log(target);
   while (target) {
     if (target.classList && (target.classList.contains("el-popover") || target.classList.contains("el-notification"))) {
       return true; // 找到 el-popover
@@ -182,12 +181,10 @@ document.addEventListener("click", event => {
         draggable: true
       })
         .then(async () => {
-          console.log("确定关闭");
           //需要保存就跳到弹窗的按钮位置
           popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
         })
         .catch(() => {
-          console.log("取消关闭");
           cancelChange(); // 不保存修改关闭弹框
         });
     }
@@ -226,15 +223,12 @@ const getXifenTypeArr = async () => {
   const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "subdivide" });
   xifenListArr.value = data as any;
   xifenListArrOld.value = JSON.parse(JSON.stringify(data)) as any;
-  console.log(xifenListArr.value);
 };
 //  获取头部媒体
 const getTopArr = async () => {
   const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "top" });
   topListArr.value = data as any;
   topListArrOld.value = JSON.parse(JSON.stringify(data)) as any;
-  console.log(topListArr.value);
-  console.log(topListArrOld.value);
 };
 
 onActivated(() => {
@@ -305,7 +299,6 @@ const confirmChange = () => {
       subMediaTypeIds: flattenAndCheck(xifenListArr.value),
       newType: newType.value
     });
-    console.log(newType.value.length);
     // 媒体推荐页 只用到我要新增
     if (isSuggestPath.value && newType.value.length < 1) {
       ElNotification({
@@ -343,20 +336,11 @@ const handleClose = (tag: string) => {
   newType.value.splice(newType.value.indexOf(tag), 1);
 };
 
-const getNodeByName = () => {
-  const node = treeRef.value.getNode("传统媒体-产品评论");
-  if (node) {
-    console.log("找到节点:", node.data);
-  } else {
-    console.log("未找到节点");
-  }
-};
-
 // TODO 这里有bug， 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
 const inputValue = ref("");
 const handleInputConfirm = () => {
   // inputValue.value是否在topListArr数组元素的neme数组中已存在，需要与name数组中元素的‘-’后的字符串比较，页面滚动到与inputValue.value相同的元素，且高亮显示
-  const highlightTopItem = topListArr.value.find((item: any) => {
+  let highlightTopItem = topListArr.value.find((item: any) => {
     return (
       Array.isArray(item.name) &&
       item.name.some(nameItem => {
@@ -365,7 +349,7 @@ const handleInputConfirm = () => {
     );
   });
 
-  const highlightXifenItem = xifenListArr.value.find((item: any) => {
+  let highlightXifenItem = xifenListArr.value.find((item: any) => {
     return (
       Array.isArray(item.name) &&
       item.name.some(nameItem => {
@@ -377,31 +361,35 @@ const handleInputConfirm = () => {
   if (highlightTopItem || highlightXifenItem) {
     ElNotification({
       title: "提示",
-      message: "当前新增类型已存在", // todo 列表已存在的提示语待修改
+      message: "当前新增媒体类别或圈层类别已存在", // todo 列表已存在的提示语待修改
       customClass: "my-notification",
       type: "warning",
-      offset: 400
+      offset: 100
     });
-    // 找到对应的 DOM 元素并滚动到该元素 并且高亮  todo 这里id找不到这个元素 需要想办法给每个checkbox加id
-    // const element = document.getElementById('top-item-' + highlightTopItem.id);
-    // if (element) {
-    //   element.scrollIntoView({ behavior: "smooth", block: "center" });
-    //   element.classList.add("yellowHighlight");
-    //   setTimeout(() => {
-    //     element.classList.remove("yellowHighlight");
-    //   }, 2000); // 2秒后移除高亮
-    // }
+    let element;
+    if (highlightTopItem) {
+      element = document.getElementById(`tree-node-${highlightTopItem.id}`);
+    }
+    if (highlightXifenItem) {
+      element = document.getElementById(`tree-node-${highlightXifenItem.id}`);
+    }
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      element.classList.add("yellowHighlight");
+      setTimeout(() => {
+        element.classList.remove("yellowHighlight");
+      }, 3000); // 3秒后移除高亮
+    }
   } else {
     const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
     const isNewType = newType.value.some((item: any) => item === inputValue.value);
     if (inputValue.value && !isNewType && !isLastQuery) {
-      console.log(inputValue.value);
       newType.value.push(inputValue.value);
       inputValue.value = "";
     } else {
       ElNotification({
         title: "提示",
-        message: "当前类已存在",
+        message: "当前类型已存在",
         type: "warning"
       });
     }
@@ -411,7 +399,6 @@ const handleInputConfirm = () => {
 const querySearch = async (queryString: string, cb: any) => {
   // const { data } = await searchMediaApi({ keyword: queryString });
   const { data } = await searchMediaTypeApi({ keyword: queryString });
-  console.log(data);
   lastQueryArr.value = data;
   cb(data);
 };
@@ -445,7 +432,6 @@ onMounted(async () => {
     isSuggestPath.value = true;
     tabArr.value = [{ title: "我要新增", isActive: false }];
   }
-  getNodeByName();
 });
 </script>
 
@@ -457,9 +443,20 @@ onMounted(async () => {
 .el-notification {
   background-color: #ffdd00 !important;
 }
+@keyframes flash {
+  0% {
+    background-color: yellow;
+  }
+  50% {
+    background-color: transparent; /* 透明显示 */
+  }
+  100% {
+    background-color: yellow;
+  }
+}
 .yellowHighlight {
-  background-color: yellow; /* 或者你想要的其他颜色 */
-  transition: background-color 0.3s ease; /* 过渡效果 */
+  animation: flash 1s infinite; /* 1秒循环动画 */
+  transition: background-color 0.3s ease; /* 保留原来的过渡效果 */
 }
 .my-notification {
   z-index: 9999 !important; /* 设置一个较高的z-index值来确保图层在最上方 */
