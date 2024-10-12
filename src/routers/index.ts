@@ -62,6 +62,7 @@ router.beforeEach(async (to, from, next) => {
   if (token.length <= 0) {
     userStore.setUserInfo("");
     deleteCookie("token");
+    window.localStorage.clear();
     window.location.href = "https://dbrank.net/login";
   }
   // 如果没有用户信息 跳转本项目login中间页去获取用户信息，确定是否为会员

@@ -30,12 +30,12 @@
           <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
           <div class="media_attention">{{ attentionlabelArr[i] }}：{{ numFilter(overviewList?.percent[i]) }}</div>
-          <div class="media_position">行业内排位：{{ overviewList?.order[i] }}</div>
+          <div class="media_position">行业内排位：No.{{ overviewList?.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
             <div>
               <div v-for="(orderItem, index) in overviewList?.orderList[i]" :key="orderItem">
-                No.{{ index + 1 }}{{ orderItem }}
+                0{{ index + 1 }} {{ orderItem }}
               </div>
             </div>
           </div>

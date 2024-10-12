@@ -132,7 +132,7 @@
 
         <div class="contentListBox" style="margin-top: 10px">
           <div class="contentListBox_tit">{{ oneName }} -（{{ twoName }}）{{ threeName }}</div>
-          <div style="margin-top: 30px">
+          <div style="margin-top: 30px; font-size: 14px">
             [内容列表]
             <el-date-picker
               v-model="dateArr"

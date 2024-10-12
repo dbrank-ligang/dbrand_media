@@ -18,7 +18,8 @@
         >
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
-        媒体/账号查询<el-autocomplete
+        <span style="font-size: 16px">媒体/账号查询</span>
+        <el-autocomplete
           v-model="inputValue"
           :fetch-suggestions="querySearch"
           :trigger-on-focus="false"
@@ -159,6 +160,9 @@ const handleBrand = (item: any) => {
 const logout = () => {
   // 2.清除 Token
   userStore.setUserInfo("");
+  // geeker-global
+  // 清除localStorage
+  window.localStorage.clear();
   deleteCookie("token");
   window.location.href = "https://dbrank.net/login";
 };

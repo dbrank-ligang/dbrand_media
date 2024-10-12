@@ -2,9 +2,10 @@
   box-sizing: border-box;
 }
 .selectTab {
+  width: 150px;
+  font-size: 16px;
   display: flex;
   justify-content: space-between;
-  width: 150px;
   cursor: pointer;
 }
 .treeBox {
@@ -61,7 +62,7 @@
   width: 100%;
 }
 .el-checkbox {
-  width: 210px;
+  width: 203px;
 }
 :deep(.el-notification) {
   background-color: #ffdd00 !important;

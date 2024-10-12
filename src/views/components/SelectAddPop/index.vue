@@ -65,7 +65,7 @@
           class="inline-input w-50"
           style="width: 350px"
           maxlength="5"
-          placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。s"
+          placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。"
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
           value-key="name"
@@ -304,7 +304,8 @@ const confirmChange = () => {
       ElNotification({
         type: "warning",
         title: "提示",
-        message: "未新增任何内容"
+        message: "未新增任何内容",
+        offset: 100
       });
     } else {
       cancelChange();
@@ -389,8 +390,10 @@ const handleInputConfirm = () => {
     } else {
       ElNotification({
         title: "提示",
-        message: "当前类型已存在",
-        type: "warning"
+        message: "当前新增类型已存在标签列表中",
+        type: "warning",
+        customClass: "my-notification",
+        offset: 100
       });
     }
   }
@@ -404,7 +407,8 @@ const querySearch = async (queryString: string, cb: any) => {
 };
 
 const handleSelect = (item: Record<string, any>) => {
-  console.log("input框的值", item);
+  console.log("input框的值", item.name);
+  handleInputConfirm();
 };
 // ---------
 

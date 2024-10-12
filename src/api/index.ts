@@ -69,6 +69,7 @@ class RequestHttp {
           const userStore = useUserStore();
           userStore.setUserInfo("");
           deleteCookie("token");
+          window.localStorage.clear();
           window.location.href = "https://dbrank.net/login";
           ElMessage.error(data.msg);
           return Promise.reject(data);

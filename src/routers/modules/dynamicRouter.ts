@@ -30,6 +30,7 @@ export const initDynamicRouter = async () => {
       const userStore = useUserStore();
       userStore.setUserInfo("");
       deleteCookie("token");
+      window.localStorage.clear();
       window.location.href = "https://dbrank.net/login";
       return Promise.reject("No permission");
     }
@@ -49,6 +50,7 @@ export const initDynamicRouter = async () => {
     // 当按钮 || 菜单请求出错时，重定向到登陆页
     userStore.setUserInfo("");
     deleteCookie("token");
+    window.localStorage.clear();
     window.location.href = "https://dbrank.net/login";
     return Promise.reject(error);
   }
