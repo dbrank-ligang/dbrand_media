@@ -19,6 +19,7 @@
             value-format="X"
             @change="changeTime"
             :default-time="[dateStart, dateEnd]"
+            :clearable="false"
           />
         </div>
         <el-button @click="changePk" class="buttonStyle" v-if="!isShowContrastTime">对比</el-button>
@@ -58,6 +59,8 @@
             range-separator="-"
             start-placeholder="开始时间"
             end-placeholder="结束时间"
+            value-format="X"
+            :clearable="false"
           />
         </div>
         <el-button class="buttonStyle" @click="searchPkTime">确定</el-button>
@@ -92,7 +95,7 @@
 </template>
 
 <script setup lang="ts" name="home">
-import { ref, onMounted, onUnmounted, watch, provide } from "vue";
+import { ref, onMounted, onUnmounted, watch, provide, Ref } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import BottomNav from "./../components/BottomNav/index.vue";
 import moment from "moment";
@@ -115,7 +118,8 @@ const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").for
 // 获取上周周日
 const dateEnd = moment().subtract(1, "week").endOf("week").add(1, "day").format("X");
 let dateArr = ref([dateStart, dateEnd]); // 时间范围
-let dateArrPk = ref([]); // 对比的时间范围
+// let dateArrPk = ref([]); // 对比的时间范围
+const dateArrPk: Ref<string[]> = ref([]);
 
 let isShowContrastTime = ref(false); // 是否显示时间对比（时间选择器组件）
 let isShowContrast = ref(false); // 是否显示时间对比模块
@@ -155,8 +159,6 @@ const overviewListTimeDuibi = ref({
 
 // 时间搜索
 const changeTime = () => {
-  // console.log(dateArr.value[0]); // 开始时间
-  // console.log(dateArr.value[1]); // 结束时间
   paramsObj.value = {
     ...paramsObj.value,
     startTime: dateArr.value[0],
@@ -188,16 +190,45 @@ const changeOverview = i => {
 // 点击对比按钮
 const changePk = () => {
   isShowContrastTime.value = true;
+  const isFirstDay = moment.unix(Number(dateArr.value[0])).date() === 1; // 判断 dateArr[0] 是否为第一天
+  const isLastDay = moment.unix(Number(dateArr.value[1])).isSame(moment.unix(Number(dateArr.value[1])).endOf("month"), "day"); // 判断 dateArr[1] 是否为最后一天
+  if (moment.unix(Number(dateArr.value[0])).isSame(moment.unix(Number(dateArr.value[1])), "month") && isFirstDay && isLastDay) {
+    // 逻辑处理: dateArr[0] 是当前月第一天，dateArr[1] 是当前月最后一天
+    // 则对比事件为上月起始日至上月结束日
+    const startPKDate = moment.unix(Number(dateArr.value[0])).subtract(1, "month").startOf("month").format("X");
+    const endPKDate = moment.unix(Number(dateArr.value[0])).subtract(1, "month").endOf("month").format("X");
+    dateArrPk.value = [startPKDate, endPKDate];
+  } else {
+    const date0 = moment.unix(Number(dateArr.value[0])); // dateArr[0] 转换为 moment 对象
+    const date1 = moment.unix(Number(dateArr.value[1])); // dateArr[1] 转换为 moment 对象
+    const isFirstDayOfYear = date0.isSame(date0.clone().startOf("year"), "day"); // 判断 dateArr[0] 是否为自然年的第一天
+    const isLastDayOfYear = date1.isSame(date1.clone().endOf("year"), "day"); // 判断 dateArr[1] 是否为自然年的最后一天
+    if (date0.isSame(date1, "year") && isFirstDayOfYear && isLastDayOfYear) {
+      // 若是，则对比事件为上一年起始日至上一年结束日
+      const startPKDate = moment.unix(Number(dateArr.value[0])).subtract(1, "year").startOf("year").format("X");
+      const endPKDate = moment.unix(Number(dateArr.value[0])).subtract(1, "year").endOf("year").format("X");
+      dateArrPk.value = [startPKDate, endPKDate];
+    } else {
+      // 若不是，则dataArrPK[1]为dateArr[0]前一天，dataArrPK[0]与dataArrPK[1]间隔天数和 dateArr[0]和dateArr[1]间隔天数相同
+      const intervalDays = moment.unix(Number(dateArr.value[1])).diff(moment.unix(Number(dateArr.value[0])), "days");
+      // PK开始时间
+      const startPKDate = moment
+        .unix(Number(dateArr.value[0]))
+        .subtract(1 + intervalDays, "days")
+        .format("X");
+      // PK结束时间
+      const endPKDate = moment.unix(Number(dateArr.value[0])).subtract(1, "days").format("X");
+      dateArrPk.value = [startPKDate, endPKDate];
+    }
+  }
 };
+
 // 选择对比时段后 按确定
 const searchPkTime = () => {
-  // console.log(dateArrPk);
   if (dateArrPk.value.length > 0) {
     isShowContrast.value = true;
-    const startTime = new Date(dateArrPk.value[0]).getTime() / 1000;
-    const endTime = new Date(dateArrPk.value[1]).getTime() / 1000;
-    // console.log(startTime); // 开始时间
-    // console.log(endTime); // 结束时间
+    const startTime = dateArrPk.value[0];
+    const endTime = dateArrPk.value[1];
     paramsObj.value = {
       ...paramsObj.value,
       compareStartTime: startTime,

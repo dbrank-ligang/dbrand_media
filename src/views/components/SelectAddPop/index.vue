@@ -86,7 +86,7 @@
         </el-tag>
       </div>
 
-      <div style="margin: 0; text-align: right">
+      <div style="margin: 0; text-align: right" ref="popoverBtnRef">
         <el-button size="small" text @click="cancelChange" class="buttonStyle_cancel">取消</el-button>
         <el-button size="small" type="primary" @click="confirmChange" class="buttonStyle"> 确定 </el-button>
       </div>
@@ -118,6 +118,7 @@ const isSuggestPath = ref(false); //false 是媒体推荐页的我要新增，�
 const lastQueryArr = ref([] as any); // 我要新增时 最后一次搜索的数组
 const newType = ref([] as any); // 新增大类的数组
 const visible = ref(false);
+const popoverBtnRef = ref();
 const tabArr = ref([
   { title: "自选类别", isActive: false },
   { title: "我要新增", isActive: false }
@@ -127,7 +128,55 @@ const defaultProps = {
   label: "name"
 };
 const topListArr = ref([]);
+const topListArrOld = ref([]); // 存放上次的topListArr
 const xifenListArr = ref([]);
+const xifenListArrOld = ref([]); // 存放上次的xifenListArr
+
+// 监听全局点击事件
+document.addEventListener("click", event => {
+  if (!visible.value) return;
+  const popoverRef = document.querySelector(".el-popover");
+  const buttonRef = document.getElementsByClassName("selectTab")[0];
+  // 首先检查 buttonRef 和 popoverRef 是否存在
+  if (!buttonRef || !popoverRef) {
+    return; // 其中之一为 null 时，直接返回
+  }
+  // 如果点击在按钮外且没有点击到popover，则关闭popover
+  if (!buttonRef.contains(event.target as Node) && !popoverRef.contains(event.target as Node)) {
+    // TODO 判断是否操作了类别或者新增     若有改动弹出提示语
+    // 判断topListArrOld是否与topListArr相同，可以顺序不同
+    if (arraysEqual(topListArrOld.value, topListArr.value)) {
+      // 没有修改，直接关闭
+      tabArr.value.forEach(el => {
+        el.isActive = false;
+      });
+      visible.value = false;
+    } else {
+      // 有修改，弹出提示语
+      ElNotification({
+        title: "提示",
+        message: "提示语待确定", //todo 待确定提示语
+        type: "warning"
+      });
+      //需要保存就跳到弹窗的按钮位置
+      popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+});
+
+// 判断两个数组是否相同，主要比较check字段
+function arraysEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+
+  // 将两个数组按照某个关键属性排序，例如根据 id
+  const sortedArr1 = arr1.slice().sort((a, b) => a.id - b.id);
+  const sortedArr2 = arr2.slice().sort((a, b) => a.id - b.id);
+
+  // 比较排序后的数组
+  return sortedArr1.every((item, index) => {
+    return item.check === sortedArr2[index].check; // 根据需要的属性进行比较
+  });
+}
 
 // 取出二维数组中check等于true的id 拼成数组
 const flattenAndCheck = (items: any[]) => {
@@ -147,13 +196,16 @@ const flattenAndCheck = (items: any[]) => {
 const getXifenTypeArr = async () => {
   const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "subdivide" });
   xifenListArr.value = data as any;
+  xifenListArrOld.value = JSON.parse(JSON.stringify(data)) as any;
   console.log(xifenListArr.value);
 };
 //  获取头部媒体
 const getTopArr = async () => {
   const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "top" });
   topListArr.value = data as any;
+  topListArrOld.value = JSON.parse(JSON.stringify(data)) as any;
   console.log(topListArr.value);
+  console.log(topListArrOld.value);
 };
 
 onActivated(() => {
@@ -241,6 +293,9 @@ const confirmChange = () => {
 };
 // 取消按鈕
 const cancelChange = () => {
+  tabArr.value.forEach(el => {
+    el.isActive = false;
+  });
   visible.value = false;
   newType.value = [];
   inputValue.value = ""; // 清空我要新增input框的值
@@ -259,20 +314,57 @@ const handleClose = (tag: string) => {
   newType.value.splice(newType.value.indexOf(tag), 1);
 };
 
+// TODO 这里有bug， 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
 const inputValue = ref("");
 const handleInputConfirm = () => {
-  const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
-  const isNewType = newType.value.some((item: any) => item === inputValue.value);
-  if (inputValue.value && !isNewType && !isLastQuery) {
-    console.log(inputValue.value);
-    newType.value.push(inputValue.value);
-    inputValue.value = "";
-  } else {
+  // inputValue.value是否在topListArr数组元素的neme数组中已存在，需要与name数组中元素的‘-’后的字符串比较，页面滚动到与inputValue.value相同的元素，且高亮显示
+  const highlightTopItem = topListArr.value.find((item: any) => {
+    return (
+      Array.isArray(item.name) &&
+      item.name.some(nameItem => {
+        return nameItem && nameItem.split("-")[1] === inputValue.value;
+      })
+    );
+  });
+
+  const highlightXifenItem = xifenListArr.value.find((item: any) => {
+    return (
+      Array.isArray(item.name) &&
+      item.name.some(nameItem => {
+        return nameItem && nameItem.split("-")[1] === inputValue.value;
+      })
+    );
+  });
+
+  if (highlightTopItem || highlightXifenItem) {
     ElNotification({
       title: "提示",
-      message: "当前类已存在",
+      message: "当前类已存在于 Top List", // todo 列表已存在的提示语待修改
       type: "warning"
     });
+    // 找到对应的 DOM 元素并滚动到该元素 并且高亮  todo 这里id找不到这个元素 需要想办法给每个checkbox加id
+    // const element = document.getElementById('top-item-' + highlightTopItem.id);
+    // if (element) {
+    //   element.scrollIntoView({ behavior: "smooth", block: "center" });
+    //   element.classList.add("yellowHighlight");
+    //   setTimeout(() => {
+    //     element.classList.remove("yellowHighlight");
+    //   }, 2000); // 2秒后移除高亮
+    // }
+  } else {
+    const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
+    const isNewType = newType.value.some((item: any) => item === inputValue.value);
+    if (inputValue.value && !isNewType && !isLastQuery) {
+      console.log(inputValue.value);
+      newType.value.push(inputValue.value);
+      inputValue.value = "";
+    } else {
+      ElNotification({
+        title: "提示",
+        message: "当前类已存在",
+        type: "warning"
+      });
+    }
   }
 };
 
@@ -323,6 +415,10 @@ onMounted(async () => {
 }
 .el-notification {
   background-color: #ffdd00 !important;
+}
+.yellowHighlight {
+  background-color: yellow; /* 或者你想要的其他颜色 */
+  transition: background-color 0.3s ease; /* 过渡效果 */
 }
 </style>
 <style scoped lang="scss">
