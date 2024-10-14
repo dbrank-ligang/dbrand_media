@@ -164,7 +164,7 @@ const logout = () => {
   // 清除localStorage
   window.localStorage.clear();
   deleteCookie("token");
-  window.location.href = "https://dbrank.net/login";
+  window.location.href = "https://dbrank.net";
 };
 
 const changeToken = value => {

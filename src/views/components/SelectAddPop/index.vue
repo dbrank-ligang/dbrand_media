@@ -63,13 +63,14 @@
           :fetch-suggestions="querySearch"
           :trigger-on-focus="false"
           class="inline-input w-50"
-          style="width: 350px"
+          style="width: 470px"
           maxlength="5"
-          placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内。"
+          placeholder="请一次输入一个媒体类别或圈层类别，限5个字以内；示例：商业财经"
           @select="handleSelect"
           @keyup.enter="handleInputConfirm"
           value-key="name"
         />
+        <el-button size="small" class="addBtnStyle" text @click="handleInputConfirm">添加</el-button>
       </div>
       <div class="tagBox">
         <el-tag
@@ -303,7 +304,6 @@ const confirmChange = () => {
     if (isSuggestPath.value && newType.value.length < 1) {
       ElNotification({
         type: "warning",
-        title: "提示",
         message: "未新增任何内容",
         offset: 100
       });
@@ -340,6 +340,9 @@ const handleClose = (tag: string) => {
 // TODO 这里有bug， 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
 const inputValue = ref("");
 const handleInputConfirm = () => {
+  if (!inputValue.value) {
+    return;
+  }
   // inputValue.value是否在topListArr数组元素的neme数组中已存在，需要与name数组中元素的‘-’后的字符串比较，页面滚动到与inputValue.value相同的元素，且高亮显示
   let highlightTopItem = topListArr.value.find((item: any) => {
     return (
@@ -361,7 +364,6 @@ const handleInputConfirm = () => {
 
   if (highlightTopItem || highlightXifenItem) {
     ElNotification({
-      title: "提示",
       message: "当前新增媒体类别或圈层类别已存在", // todo 列表已存在的提示语待修改
       customClass: "my-notification",
       type: "warning",
@@ -379,7 +381,7 @@ const handleInputConfirm = () => {
       element.classList.add("yellowHighlight");
       setTimeout(() => {
         element.classList.remove("yellowHighlight");
-      }, 3000); // 3秒后移除高亮
+      }, 10000); // 3秒后移除高亮
     }
   } else {
     const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
@@ -389,7 +391,6 @@ const handleInputConfirm = () => {
       inputValue.value = "";
     } else {
       ElNotification({
-        title: "提示",
         message: "当前新增类型已存在标签列表中",
         type: "warning",
         customClass: "my-notification",

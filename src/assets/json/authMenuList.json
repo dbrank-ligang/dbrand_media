@@ -63,21 +63,6 @@
       }
     },
     {
-      "path": "/numberSearch/index",
-      "name": "numberSearch",
-      "component": "/mediaSearch/index",
-      "meta": {
-        "icon": "InfoFilled",
-        "title": "账号查询",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "isDisabled": false
-      }
-    },
-    {
       "path": "/mediaDetail/index",
       "name": "mediaDetail",
       "component": "/mediaDetail/index",

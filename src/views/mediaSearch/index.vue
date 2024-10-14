@@ -106,10 +106,10 @@ const handleSearch = () => {
   } else {
     // 4.跳转到首页
     ElNotification({
-      title: "提示",
+      // title: "提示",
       message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
       type: "warning",
-      duration: 3000,
+      duration: 0,
       offset: 80
     });
   }

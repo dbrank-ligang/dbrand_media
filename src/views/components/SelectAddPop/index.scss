@@ -67,6 +67,11 @@
 :deep(.el-notification) {
   background-color: #ffdd00 !important;
 }
+.addBtnStyle{
+  border: 1px solid #ccc;
+  height: 30px;
+  margin-left: 10px;
+}
 //新增已存在时 行高亮
 // :deep(.el-tree-node) {
 //   background-color:  #000 !important;

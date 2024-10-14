@@ -49,6 +49,7 @@ onMounted(async () => {
   // 3.清空 tabs、keepAlive 数据
   tabsStore.setTabs([]);
   keepAliveStore.setKeepAliveName([]);
+  window.localStorage.clear(); // 先清除本地存储
   await getUserInfoObj(); // 获取个人信息
   await initDynamicRouter(); // 加载路由
   router.push(HOME_URL);

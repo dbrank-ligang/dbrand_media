@@ -77,7 +77,7 @@
             <el-table-column align="center" prop="mediaType" label="媒体属性" />
           </el-table>
           <el-button type="info" size="small" @click="handleExpandSell({ type: 1 })">
-            {{ isExpandSell ? "- 收起" : " + 展开" }}
+            {{ isExpandSell ? "- 收起" : " + 更多" }}
           </el-button>
         </div>
         <div class="sellNoBox">
@@ -97,7 +97,7 @@
             <el-table-column align="center" prop="mediatype" label="媒体属性" />
           </el-table>
           <el-button type="info" size="small" @click="handleExpandSell({ type: 0 })">
-            {{ isExpandSellNo ? "- 收起" : " + 展开" }}
+            {{ isExpandSellNo ? "- 收起" : " + 更多" }}
           </el-button>
         </div>
       </div>
@@ -149,7 +149,7 @@
           </el-table-column>
         </el-table>
         <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
-          {{ isExpandInfer ? "- 收起" : " + 展开" }}
+          {{ isExpandInfer ? "- 收起" : " + 更多" }}
         </el-button>
       </div>
     </div>
