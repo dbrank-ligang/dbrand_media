@@ -143,6 +143,7 @@
               size="small"
               value-format="X"
               @change="changeDate"
+              :disabled-date="disabledDateFun"
             />
           </div>
           <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
@@ -170,6 +171,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
+import { disabledDateFun } from "@/utils";
 import moment from "moment";
 import BottomNav from "./../components/BottomNav/index.vue";
 

@@ -70,6 +70,7 @@ class RequestHttp {
           userStore.setUserInfo("");
           deleteCookie("token");
           window.localStorage.clear();
+          window.localStorage.setItem("isLogin", false);
           window.location.href = "https://dbrank.net/login";
           ElMessage.error(data.msg);
           return Promise.reject(data);

@@ -290,7 +290,7 @@ const showNotificationWithImage = () => {
         )
       ]
     ),
-    duration: 0
+    duration: 9000
   });
 };
 // 确认提交按钮
@@ -302,7 +302,7 @@ const confirmChange = () => {
   try {
     saveUserMediaType({
       brandId: currBrandStore.currBrandObj.brandId,
-      brandName: "海尔",
+      brandName: currBrandStore.currBrandObj.brandName,
       topMediaTypeIds: flattenAndCheck(topListArr.value),
       subMediaTypeIds: flattenAndCheck(xifenListArr.value),
       newType: newType.value
@@ -312,6 +312,7 @@ const confirmChange = () => {
       ElNotification({
         type: "warning",
         message: "未新增任何内容",
+        duration: 9000,
         offset: 100
       });
     } else {
@@ -379,6 +380,7 @@ const handleInputConfirm = () => {
       message: "当前新增媒体类别或圈层类别已存在", // todo 列表已存在的提示语待修改
       customClass: "my-notification",
       type: "warning",
+      duration: 9000,
       offset: 100
     });
     let element;
@@ -407,7 +409,8 @@ const handleInputConfirm = () => {
         message: "当前新增类型已存在标签列表中",
         type: "warning",
         customClass: "my-notification",
-        offset: 100
+        offset: 100,
+        duration: 9000
       });
     }
   }
@@ -459,7 +462,7 @@ onMounted(async () => {
   border: 1px solid #ffdd00 !important;
 }
 .el-notification {
-  background-color: #ffdd00 !important;
+  // background-color: #ffdd00 !important;
 }
 @keyframes flash {
   0% {

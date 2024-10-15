@@ -31,6 +31,7 @@ export const initDynamicRouter = async () => {
       userStore.setUserInfo("");
       deleteCookie("token");
       window.localStorage.clear();
+      window.localStorage.setItem("isLogin", false);
       window.location.href = "https://dbrank.net/login";
       return Promise.reject("No permission");
     }
@@ -51,6 +52,7 @@ export const initDynamicRouter = async () => {
     userStore.setUserInfo("");
     deleteCookie("token");
     window.localStorage.clear();
+    window.localStorage.setItem("isLogin", false);
     window.location.href = "https://dbrank.net/login";
     return Promise.reject(error);
   }

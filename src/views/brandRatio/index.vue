@@ -54,6 +54,7 @@
             value-format="X"
             @change="changeTime"
             :default-time="[dateStart, dateEnd]"
+            :disabledDate="disabledDateFun"
           />
         </div>
       </div>
@@ -115,6 +116,7 @@ import moment from "moment";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
+import { disabledDateFun } from "@/utils";
 
 const currBrandStore = useCurrBrandStore();
 // 获取上周周一

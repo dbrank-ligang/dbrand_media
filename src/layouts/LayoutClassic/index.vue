@@ -46,7 +46,7 @@
         </el-dropdown>
         <div style="margin-left: 30px">{{ userInfo.name }}</div>
         <div style="margin-left: 30px" @click="logout">
-          <a @click="logout" style="color: #000; text-decoration: none; cursor: pointer">退出登录</a>
+          <a style="color: #000; text-decoration: none; cursor: pointer">退出登录</a>
         </div>
         <div style="margin-left: 30px">
           <a target="_blank" style="color: #000; text-decoration: none; cursor: pointer" href="https://dbrank.net">数榜首页</a>
@@ -149,7 +149,7 @@ const handleSearch = () => {
       title: "提示",
       message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
       type: "warning",
-      duration: 3000,
+      duration: 9000,
       offset: 80
     });
   }
@@ -160,9 +160,9 @@ const handleBrand = (item: any) => {
 const logout = () => {
   // 2.清除 Token
   userStore.setUserInfo("");
-  // geeker-global
   // 清除localStorage
   window.localStorage.clear();
+  window.localStorage.setItem("isLogin", false);
   deleteCookie("token");
   window.location.href = "https://dbrank.net";
 };

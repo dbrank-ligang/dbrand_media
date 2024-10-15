@@ -171,7 +171,7 @@ const scrollRight = index => {
 };
 
 const mediaClick = item => {
-  jumpDetail({ mediaId: item.mediaId });
+  jumpDetail({ mediaId: item.mediaId, subUnionId: item.subMediaId });
 };
 // 跳转到媒体详情
 function jumpDetail(urlQuery: any) {

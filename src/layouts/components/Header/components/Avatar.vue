@@ -46,6 +46,7 @@ const logout = () => {
     userStore.setUserInfo("");
     deleteCookie("token");
     window.localStorage.clear();
+    window.localStorage.setItem("isLogin", false);
     window.location.href = "https://dbrank.net/login";
 
     ElMessage.success("退出登录成功！");

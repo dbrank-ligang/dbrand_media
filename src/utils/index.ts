@@ -30,6 +30,15 @@ export const getUserInfoObj = async () => {
   currBrandStore.setCurrBrandObj((data as any).brands[0]);
 };
 
+//日期选择器不可选择大于当前日期
+export const disabledDateFun = time => {
+  let curDate = new Date().getTime();
+  let three = 3 * 100 * 24 * 3600 * 1000;
+  let threeMonths = curDate - three;
+  console.log(threeMonths, "threeMonths");
+  return time.getTime() > Date.now() || time.getTime() < threeMonths;
+};
+
 /**
  * @description 获取localStorage
  * @param {String} key Storage名称

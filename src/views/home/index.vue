@@ -20,6 +20,7 @@
             @change="changeTime"
             :default-time="[dateStart, dateEnd]"
             :clearable="false"
+            :disabledDate="disabledDateFun"
           />
         </div>
         <el-button @click="changePk" class="buttonStyle" v-if="!isShowContrastTime">对比</el-button>
@@ -61,6 +62,7 @@
             end-placeholder="结束时间"
             value-format="X"
             :clearable="false"
+            :disabledDate="disabledDateFun"
           />
         </div>
         <el-button class="buttonStyle" @click="searchPkTime">确定</el-button>
@@ -105,6 +107,8 @@ import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
 import router from "@/routers";
 import { NEGATIVE } from "@/config";
+import { disabledDateFun } from "@/utils";
+
 const handleCustomCategoryClick = function () {
   getFugaitu({ ...paramsObj.value, type: "all" });
 };

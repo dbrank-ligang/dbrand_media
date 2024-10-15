@@ -109,7 +109,7 @@ const handleSearch = () => {
       // title: "提示",
       message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
       type: "warning",
-      duration: 0,
+      duration: 9000,
       offset: 80
     });
   }
