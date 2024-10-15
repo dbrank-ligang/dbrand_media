@@ -28,7 +28,7 @@ import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { useRouter } from "vue-router";
 import { HOME_URL } from "@/config";
 import { ElNotification } from "element-plus";
-import { getTimeState } from "@/utils";
+// import { getTimeState } from "@/utils";
 import { userInfoApi } from "@/api/modules/media";
 
 const router = useRouter();
@@ -55,7 +55,7 @@ onMounted(async () => {
   router.push(HOME_URL);
   // 4.跳转到首页
   ElNotification({
-    title: getTimeState(),
+    // title: getTimeState(),
     message: "欢迎登录",
     type: "success",
     duration: 3000

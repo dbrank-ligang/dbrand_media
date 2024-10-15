@@ -123,8 +123,8 @@ const visible = ref(false);
 const popoverBtnRef = ref();
 const treeRef = ref();
 const tabArr = ref([
-  { title: "自选类别", isActive: false },
-  { title: "我要新增", isActive: false }
+  { title: "自选类别", isActive: false }
+  // { title: "我要新增", isActive: false }
 ]);
 const defaultProps = {
   children: "child",
@@ -162,35 +162,38 @@ document.addEventListener("click", event => {
     !isParentPopover(event.target) &&
     !(event.target instanceof Element && event.target.tagName === "LI")
   ) {
-    // 空白 TODO 判断是否操作了类别或者新增     若有改动弹出提示语
-    // 判断是否有修改，可以顺序不同
-    if (
-      arraysEqual(topListArrOld.value, topListArr.value) &&
-      arraysEqual(xifenListArrOld.value, xifenListArr.value) &&
-      newType.value.length <= 0
-    ) {
-      // 没有修改，直接关闭
-      tabArr.value.forEach(el => {
-        el.isActive = false;
-        cancelChange(); // 不保存修改关闭弹框
-      });
-    } else {
-      ElMessageBox.confirm(`是否保留当前更改？`, "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        draggable: true
-      })
-        .then(async () => {
-          //需要保存就跳到弹窗的按钮位置
-          popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
-        })
-        .catch(() => {
-          cancelChange(); // 不保存修改关闭弹框
-        });
-    }
+    dealPopOverChange();
   }
 });
+function dealPopOverChange() {
+  // 判断是否操作了类别或者新增     若有改动弹出提示语
+  // 判断是否有修改，可以顺序不同
+  if (
+    arraysEqual(topListArrOld.value, topListArr.value) &&
+    arraysEqual(xifenListArrOld.value, xifenListArr.value) &&
+    newType.value.length <= 0
+  ) {
+    // 没有修改，直接关闭
+    tabArr.value.forEach(el => {
+      el.isActive = false;
+      cancelChange(); // 不保存修改关闭弹框
+    });
+  } else {
+    ElMessageBox.confirm(`是否保留当前更改？`, "温馨提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+      draggable: true
+    })
+      .then(async () => {
+        //需要保存就跳到弹窗的按钮位置
+        popoverBtnRef.value.scrollIntoView({ behavior: "smooth" });
+      })
+      .catch(() => {
+        cancelChange(); // 不保存修改关闭弹框
+      });
+  }
+}
 // 判断两个数组是否相同，主要比较check字段
 function arraysEqual(arr1, arr2) {
   if (arr1.length !== arr2.length) return false;
@@ -247,14 +250,18 @@ const getStyle = (item: { isActive: any }) => {
 };
 // tab切换点击事件
 const activeBtn = (item: { isActive: boolean }) => {
-  visible.value = true;
   let currentState = item.isActive;
-  tabArr.value.forEach(el => {
-    el.isActive = false;
-  });
-  item.isActive = !currentState;
-  getTopArr();
-  getXifenTypeArr();
+  if (!currentState) {
+    visible.value = !currentState;
+    tabArr.value.forEach(el => {
+      el.isActive = false;
+    });
+    item.isActive = !currentState;
+    getTopArr();
+    getXifenTypeArr();
+  } else {
+    dealPopOverChange();
+  }
 };
 
 // 提交完成后的弹窗 自定义组件
@@ -289,8 +296,8 @@ const showNotificationWithImage = () => {
 // 确认提交按钮
 const confirmChange = () => {
   tabArr.value = [
-    { title: "自选类别", isActive: false },
-    { title: "我要新增", isActive: false }
+    { title: "自选类别", isActive: false }
+    // { title: "我要新增", isActive: false }
   ];
   try {
     saveUserMediaType({
@@ -324,8 +331,8 @@ const cancelChange = () => {
   inputValue.value = ""; // 清空我要新增input框的值
   if (!isSuggestPath.value) {
     tabArr.value = [
-      { title: "自选类别", isActive: false },
-      { title: "我要新增", isActive: false }
+      { title: "自选类别", isActive: false }
+      // { title: "我要新增", isActive: false }
     ];
   } else {
     tabArr.value = [{ title: "我要新增", isActive: false }];
@@ -337,11 +344,16 @@ const handleClose = (tag: string) => {
   newType.value.splice(newType.value.indexOf(tag), 1);
 };
 
-// TODO 这里有bug， 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
+// 1、新增时候，已存在的复选框高亮显示；2、不存在的添加到下方的标签列表；
 const inputValue = ref("");
+let heighLightId = ""; // 高亮显示的元素id
 const handleInputConfirm = () => {
   if (!inputValue.value) {
     return;
+  }
+  const elementOld = document.getElementById(heighLightId);
+  if (elementOld) {
+    elementOld.classList.remove("yellowHighlight");
   }
   // inputValue.value是否在topListArr数组元素的neme数组中已存在，需要与name数组中元素的‘-’后的字符串比较，页面滚动到与inputValue.value相同的元素，且高亮显示
   let highlightTopItem = topListArr.value.find((item: any) => {
@@ -372,16 +384,17 @@ const handleInputConfirm = () => {
     let element;
     if (highlightTopItem) {
       element = document.getElementById(`tree-node-${highlightTopItem.id}`);
+      heighLightId = `tree-node-${highlightTopItem.id}`;
     }
     if (highlightXifenItem) {
       element = document.getElementById(`tree-node-${highlightXifenItem.id}`);
+      heighLightId = `tree-node-${highlightXifenItem.id}`;
     }
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "center" });
       element.classList.add("yellowHighlight");
-      setTimeout(() => {
-        element.classList.remove("yellowHighlight");
-      }, 10000); // 3秒后移除高亮
+      // setTimeout(() => {
+      // }, 10000); // 3秒后移除高亮
     }
   } else {
     const isLastQuery = lastQueryArr.value.some((item: any) => item.mediaName === inputValue.value);
