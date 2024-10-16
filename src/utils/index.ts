@@ -19,7 +19,8 @@ export function getCookie() {
 }
 // 删除cookies
 export function deleteCookie(name) {
-  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  // 清空cookie
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
 }
 // 查询个人信息
 export const getUserInfoObj = async () => {

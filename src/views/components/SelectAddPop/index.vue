@@ -324,6 +324,10 @@ const confirmChange = () => {
 };
 // 取消按鈕
 const cancelChange = () => {
+  const elementOld = document.getElementById(heighLightId);
+  if (elementOld) {
+    elementOld.classList.remove("yellowHighlight");
+  }
   tabArr.value.forEach(el => {
     el.isActive = false;
   });
