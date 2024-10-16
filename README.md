@@ -65,30 +65,32 @@
     // },
 
 # 10月14号
-0、自选类别框关闭后 黄色高亮未消失  （新bug）
+0、自选类别框关闭后 黄色高亮未消失；  ok
 18、退出登录后，回到官网还需要 退出一次；（15号） ok
-22、添加一个默认路由，https://dbrank.net/meitu/home/index； （16号）
+22、添加一个默认路由（16号）
+https://dbrank.net/meitu/home/index；（此路由需要ngix添加） 
+https://dbrank.net/meitu/index.html; (前端已加)
 优化：
 9、 我要新增输入框中，placeholder添加“示例：商业财经”； ok
 10、时间选择器，今日后的禁止选择；（16号） ok
 11、去掉“我要新增”;（OK）
-15、媒体推荐页适配问题；（15号，优先级低）
+15、媒体推荐页适配问题；（15号，不做处理）
 17、媒体推荐“展开”改为“更多”；ok
-18、报错框关闭太快问题；（16号）
+18、报错框关闭太快问题；（16号）自动关闭时间均改为9秒 ok
 19、在导航栏里去掉“账号查询”； ok
 20、退出登录返回--官网首页，现在是返回官网登录； ok
-21、 自选类别弹框出现后，再次点击自选类别tab 应视为关闭，并弹出二次确认弹框;ok
+21、自选类别弹框出现后，再次点击自选类别tab 应视为关闭，并弹出二次确认弹框; ok
 23、头部概览 添加蓝色hover颜色；ok
 24、我要新增“新增”的输入框后面，增加一个“添加”的按钮；ok
 25、清除缓存 ；ok
 27、已实现
 28、弹窗布局一致，待设计（16号） ok
 29、媒体详情页“媒体平台号”扩大行距；ok
-30、 红点添加提示（16号）？？？？？
+30、 红点添加提示（16号）备注：所有的点都加了  ok
 
 
 # 10月15号
-1、退出登录时都加了本地存储window.localStorage.setItem('isLogin',false)
-2、bug22、添加两个默认路由：https://dbrank.net/meitu/home/index、https://dbrank.net/meitu/index.html
-3、bug23 有个logo404，但页面上图标都正常
-0、自选类别框关闭后 黄色高亮未消失  （新bug）
+1、退出登录时都加了本地存储window.localStorage.setItem('isLogin',false)  ok
+2、bug22、添加两个默认路由：（需要部署加）https://dbrank.net/meitu/home/index、https://dbrank.net/meitu/index.html（前端已加）    
+3、bug23 有个logo404，但页面上图标都正常； ok
+0、自选类别框关闭后 黄色高亮未消失；ok

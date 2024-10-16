@@ -32,9 +32,12 @@
       <div class="overview_tit">媒体关注度总览</div>
       <div class="overview_numberBox overview_numberBox_1">
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item" @click="changeOverview(i)">
+          <div :class="['media_attention', `bg-${i}`]">
+            <div>{{ attentionlabelArr[i] }}</div>
+            <div>{{ numFilter(overviewList?.percent[i]) }}</div>
+          </div>
           <div class="media_num">{{ item }}：{{ overviewList?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ numFilter(overviewList?.percent[i]) }}</div>
           <div class="media_position">行业内排位：No.{{ overviewList?.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>
@@ -73,9 +76,12 @@
       <div class="overview_tit">媒体关注度总览</div>
       <div class="overview_numberBox">
         <div class="overview_number" v-for="(item, i) in numlabelArr" :key="item">
+          <div :class="['media_attention', `bg-${i}`]">
+            <div>{{ attentionlabelArr[i] }}</div>
+            <div>{{ numFilter(overviewList?.percent[i]) }}</div>
+          </div>
           <div class="media_num">{{ item }}：{{ overviewListTimeDuibi?.num[i] }}</div>
           <div class="media_dec">{{ decArr[i] }}</div>
-          <div class="media_attention">{{ attentionlabelArr[i] }}：{{ numFilter(overviewListTimeDuibi?.percent[i]) }}</div>
           <div class="media_position">行业内排位：No.{{ overviewListTimeDuibi.order[i] }}</div>
           <div class="media_rank">
             <div>排名详情：</div>

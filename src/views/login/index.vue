@@ -27,7 +27,7 @@ import { useKeepAliveStore } from "@/stores/modules/keepAlive";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { useRouter } from "vue-router";
 import { HOME_URL } from "@/config";
-import { ElNotification } from "element-plus";
+// import { ElNotification } from "element-plus";
 // import { getTimeState } from "@/utils";
 import { userInfoApi } from "@/api/modules/media";
 
@@ -54,12 +54,12 @@ onMounted(async () => {
   await initDynamicRouter(); // 加载路由
   router.push(HOME_URL);
   // 4.跳转到首页
-  ElNotification({
-    // title: getTimeState(),
-    message: "欢迎登录",
-    type: "success",
-    duration: 3000
-  });
+  // ElNotification({
+  //   title: getTimeState(),
+  //   message: "欢迎登录",
+  //   type: "success",
+  //   duration: 3000
+  // });
 });
 
 // 查询个人信息

@@ -44,6 +44,7 @@
               <div style="display: inline-block">
                 <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
                   <span
+                    :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
                     class="circleBox"
                     :class="brandFlagBgColor[i]"
                     :style="{ opacity: item }"
@@ -53,6 +54,7 @@
                 </span>
                 <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
                   <span
+                    :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
                     class="circleBox"
                     :class="timeFlagBgColor[i]"
                     :style="{ opacity: item }"
@@ -62,7 +64,12 @@
                   </span>
                 </span>
                 <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
-                  <span class="circleBox red" :style="{ opacity: mediaListItem.publishFlag[0] }"></span>
+                  <span
+                    :title="mediaListItem.publishFlag[0] !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
+                    class="circleBox red"
+                    :style="{ opacity: mediaListItem.publishFlag[0] }"
+                  >
+                  </span>
                 </span>
               </div>
 

@@ -84,6 +84,32 @@
         .media_rank {
           display: flex;
         }
+        .media_attention{
+          width: 100%;
+          height: 109px;
+          font-size: 18px;
+          padding-top: 30px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+        .bg-0{
+          background: url("@/assets/images/bg-0.png") no-repeat;
+          background-size: 100% 100%;
+        }
+        .bg-1{
+          background: url("@/assets/images/bg-1.png") no-repeat;
+          background-size: 100% 100%;
+        }
+        .bg-2{
+          background: url("@/assets/images/bg-2.png") no-repeat;
+          background-size: 100% 100%;
+        }
+        .bg-3{
+          background: url("@/assets/images/bg-3.png") no-repeat;
+          background-size: 100% 100%;
+        }
       }
     }
   }
