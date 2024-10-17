@@ -4,7 +4,7 @@
     <el-header style="border-bottom: 1px solid #eee">
       <div class="header-lf mask-image">
         <div class="logo flx-center">
-          <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
+          <img class="logo-img" src="@/assets/images/nav-logo.png" alt="logo" />
         </div>
       </div>
 
