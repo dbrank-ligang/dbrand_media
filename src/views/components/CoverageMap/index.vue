@@ -2,7 +2,7 @@
   <!-- 头部媒体覆盖图 -->
   <div class="mediaBox" v-for="(item, index) in props.mediaData" :key="index">
     <div class="mediaHeader">
-      <div class="mediaHeader_tit">{{ index === 0 ? "头部媒体覆盖图" : "细分媒体图层" }}</div>
+      <div class="mediaHeader_tit">{{ index === 0 ? "头部媒体覆盖图" : "细分媒体圈层" }}</div>
       <div>
         <SelectAddPop />
       </div>
