@@ -93,6 +93,13 @@
       </div>
     </div>
     <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e3f7f04c1bbd39de8f97db379b350293";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
       const globalState = JSON.parse(window.localStorage.getItem("geeker-global"));
       if (globalState) {
         const dot = document.querySelectorAll(".dot i");

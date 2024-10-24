@@ -1,6 +1,6 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
-import { userInfoApi } from "@/api/modules/media";
+import { userInfoApi, addMediaNotExistApi } from "@/api/modules/media";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import { useUserStore } from "@/stores/modules/user";
 const mode = import.meta.env.VITE_ROUTER_MODE;
@@ -14,8 +14,8 @@ export function getCookie() {
       return parts[1];
     }
   }
-  return "";
-  // return "46a18f8f163fed66685948f22c64e01e";
+  // return "";
+  return "46a18f8f163fed66685948f22c64e01e";
 }
 // 删除cookies
 export function deleteCookie(name) {
@@ -29,6 +29,11 @@ export const getUserInfoObj = async () => {
   const { data } = await userInfoApi();
   userStore.setUserInfo(data);
   currBrandStore.setCurrBrandObj((data as any).brands[0]);
+};
+// 保存未搜索到的媒体
+export const addMediaNotExist = async (param: any) => {
+  const currBrandStore = useCurrBrandStore();
+  addMediaNotExistApi({ brandId: currBrandStore.currBrandObj.brandId, keyword: param });
 };
 
 //日期选择器不可选择大于当前日期

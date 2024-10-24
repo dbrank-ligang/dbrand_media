@@ -77,7 +77,14 @@ router.beforeEach(async (to, from, next) => {
   // 7.存储 routerName 做按钮权限筛选
   authStore.setRouteName(to.name as string);
 
-  // 8.正常访问页面
+  // 8.统计页面访问
+  if (to.path) {
+    if ((window as any)._hmt) {
+      (window as any)._hmt.push(["_trackPageview", "/#" + to.fullPath]);
+    }
+  }
+
+  // 9.正常访问页面
   next();
 });
 

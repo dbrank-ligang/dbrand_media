@@ -82,7 +82,7 @@ import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { searchMediaApi } from "@/api/modules/media";
-import { deleteCookie } from "@/utils";
+import { deleteCookie, addMediaNotExist } from "@/utils";
 import { ElNotification } from "element-plus";
 // import { deleteCookie } from "@/utils";
 
@@ -144,9 +144,11 @@ const handleSearch = () => {
   if (searchData.value.length > 0) {
     jumpDetail(searchData.value[0]); //跳转详情页
   } else {
+    // 保存未搜索到的媒体
+    addMediaNotExist(inputValue.value);
     // 4.跳转到首页
     ElNotification({
-      title: "提示",
+      title: "",
       message: "抱歉，您输入的媒体/账号名称不准确或未被收录",
       type: "warning",
       duration: 9000,
@@ -154,6 +156,7 @@ const handleSearch = () => {
     });
   }
 };
+
 const handleBrand = (item: any) => {
   currBrandStore.setCurrBrandObj(item);
 };

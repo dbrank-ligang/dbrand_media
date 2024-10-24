@@ -41,6 +41,7 @@ import router from "@/routers";
 import BottomNav from "./../components/BottomNav/index.vue";
 import { MEDIADETAIL } from "@/config";
 import { ElNotification } from "element-plus";
+import { addMediaNotExist } from "@/utils";
 
 const inputValue = ref("");
 const searchData = ref([] as any);
@@ -104,6 +105,8 @@ const handleSearch = () => {
   if (searchData.value.length > 0) {
     jumpDetail(searchData.value[0]); //跳转详情页
   } else {
+    // 保存未搜索到的媒体
+    addMediaNotExist(inputValue.value);
     // 4.跳转到首页
     ElNotification({
       // title: "提示",

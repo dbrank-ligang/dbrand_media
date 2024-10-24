@@ -84,3 +84,8 @@ export const articlesApi = param => {
 export const searchMediaTypeApi = param => {
   return http.get(`/mediaType/searchMediaType`, param, { loading: false });
 };
+
+// 未搜索到的媒体 做保存
+export const addMediaNotExistApi = param => {
+  return http.post(`/media/addMediaNotExist`, param, { loading: false });
+};
