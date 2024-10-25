@@ -28,31 +28,6 @@
             </template>
           </el-tree>
         </div>
-        <div class="listTitle">细分媒体圈层卡片自选</div>
-        <div class="treeBox">
-          <el-tree
-            style="margin-bottom: 20px"
-            :data="xifenListArr"
-            node-key="id"
-            :expand-on-click-node="false"
-            :check-strictly="true"
-            :props="defaultProps"
-          >
-            <template #default="{ node, data }">
-              <span class="custom-tree-node" :id="`tree-node-${data.id}`">
-                <el-checkbox
-                  v-for="item in node.label"
-                  :key="item"
-                  v-show="item !== null"
-                  :label="item"
-                  v-model="data.check"
-                  change
-                />
-                <span> </span>
-              </span>
-            </template>
-          </el-tree>
-        </div>
       </div>
 
       <div class="addListBox" style="margin-top: 10px">
@@ -132,8 +107,6 @@ const defaultProps = {
 };
 const topListArr = ref([]);
 const topListArrOld = ref([]); // 存放上次的topListArr
-const xifenListArr = ref([]);
-const xifenListArrOld = ref([]); // 存放上次的xifenListArr
 
 function isParentPopover(target) {
   while (target) {
@@ -168,11 +141,7 @@ document.addEventListener("click", event => {
 function dealPopOverChange() {
   // 判断是否操作了类别或者新增     若有改动弹出提示语
   // 判断是否有修改，可以顺序不同
-  if (
-    arraysEqual(topListArrOld.value, topListArr.value) &&
-    arraysEqual(xifenListArrOld.value, xifenListArr.value) &&
-    newType.value.length <= 0
-  ) {
+  if (arraysEqual(topListArrOld.value, topListArr.value) && newType.value.length <= 0) {
     // 没有修改，直接关闭
     tabArr.value.forEach(el => {
       el.isActive = false;
@@ -209,25 +178,26 @@ function arraysEqual(arr1, arr2) {
 }
 
 // 取出二维数组中check等于true的id 拼成数组
-const flattenAndCheck = (items: any[]) => {
+const topDlattenAndCheck = (items: any[]) => {
   return items.reduce((result: any[], item: { check: any; id: any; child: any }) => {
     // 如果当前项有 check 属性且为 true，则添加其 id 到结果数组中
     if (item.check) {
       result.push(item.id);
     }
-    // 如果当前项有 child 属性，则递归调用 flattenAndCheck
+    return result;
+  }, []);
+};
+// 取出二维数组中所有child中check等于true的id 拼成数组
+const subDlattenAndCheck = (items: any[]) => {
+  return items.reduce((result: any[], item: { check: any; id: any; child: any }) => {
+    // 如果当前项有 child 属性，则递归调用 topDlattenAndCheck
     if (Array.isArray(item.child)) {
-      result.push(...flattenAndCheck(item.child));
+      result.push(...topDlattenAndCheck(item.child));
     }
     return result;
   }, []);
 };
-//  获取细分圈层
-const getXifenTypeArr = async () => {
-  const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "subdivide" });
-  xifenListArr.value = data as any;
-  xifenListArrOld.value = JSON.parse(JSON.stringify(data)) as any;
-};
+
 //  获取头部媒体
 const getTopArr = async () => {
   const { data } = await userMediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "top" });
@@ -258,7 +228,6 @@ const activeBtn = (item: { isActive: boolean }) => {
     });
     item.isActive = !currentState;
     getTopArr();
-    getXifenTypeArr();
   } else {
     dealPopOverChange();
   }
@@ -303,8 +272,8 @@ const confirmChange = () => {
     saveUserMediaType({
       brandId: currBrandStore.currBrandObj.brandId,
       brandName: currBrandStore.currBrandObj.brandName,
-      topMediaTypeIds: flattenAndCheck(topListArr.value),
-      subMediaTypeIds: flattenAndCheck(xifenListArr.value),
+      topMediaTypeIds: topDlattenAndCheck(topListArr.value),
+      subMediaTypeIds: subDlattenAndCheck(topListArr.value),
       newType: newType.value
     });
     // 媒体推荐页 只用到我要新增
@@ -370,16 +339,7 @@ const handleInputConfirm = () => {
     );
   });
 
-  let highlightXifenItem = xifenListArr.value.find((item: any) => {
-    return (
-      Array.isArray(item.name) &&
-      item.name.some(nameItem => {
-        return nameItem && nameItem.split("-")[1] === inputValue.value;
-      })
-    );
-  });
-
-  if (highlightTopItem || highlightXifenItem) {
+  if (highlightTopItem) {
     ElNotification({
       message: "当前新增媒体类别或圈层类别已存在", // todo 列表已存在的提示语待修改
       customClass: "my-notification",
@@ -391,10 +351,6 @@ const handleInputConfirm = () => {
     if (highlightTopItem) {
       element = document.getElementById(`tree-node-${highlightTopItem.id}`);
       heighLightId = `tree-node-${highlightTopItem.id}`;
-    }
-    if (highlightXifenItem) {
-      element = document.getElementById(`tree-node-${highlightXifenItem.id}`);
-      heighLightId = `tree-node-${highlightXifenItem.id}`;
     }
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "center" });

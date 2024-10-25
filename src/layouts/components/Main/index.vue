@@ -12,7 +12,7 @@
     </router-view>
   </el-main>
   <el-footer v-show="footer" style="display: none">
-    <Footer />
+    <!-- <Footer /> -->
   </el-footer>
 </template>
 
