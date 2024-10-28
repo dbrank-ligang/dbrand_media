@@ -94,6 +94,7 @@
   </div>
 </template>
 <script setup lang="ts" name="home">
+import { mediaNavApi } from "@/api/modules/media";
 import { MEDIADETAIL } from "@/config";
 import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
@@ -181,7 +182,20 @@ const scrollRight = index => {
 };
 
 const mediaClick = item => {
-  jumpDetail({ mediaId: item.mediaId, subUnionId: item.subMediaId });
+  const params = { mediaId: item.mediaId, subUnionId: item.subMediaId };
+  getMediaNavApi(params);
+};
+
+// 是否跳转详情（查询次数限制）
+const getMediaNavApi = async (params: any) => {
+  mediaNavApi(params)
+    .then(res => {
+      console.log(res);
+      jumpDetail(params);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 // 跳转到媒体详情
 function jumpDetail(urlQuery: any) {

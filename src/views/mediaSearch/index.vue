@@ -30,13 +30,15 @@
         </div>
       </div>
     </div>
-    <BottomNav style="position: absolute; bottom: 0"></BottomNav>
+    <div style="width: 100%; position: absolute; bottom: 0">
+      <BottomNav></BottomNav>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts" name="mediaSearch">
 import { onMounted, ref } from "vue";
-import { searchMediaApi, searchMediaHistoryApi, addMediaHistoryApi, dictListJsonApi } from "@/api/modules/media";
+import { searchMediaApi, searchMediaHistoryApi, addMediaHistoryApi, dictListJsonApi, mediaNavApi } from "@/api/modules/media";
 import router from "@/routers";
 import BottomNav from "./../components/BottomNav/index.vue";
 import { MEDIADETAIL } from "@/config";
@@ -48,7 +50,8 @@ const searchData = ref([] as any);
 const historyListData = ref([] as any); // 搜索历史列表
 const tagListData = ref([] as any);
 const historyChange = item => {
-  jumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
+  // jumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
+  getMediaNavApi({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
 };
 // 获取搜索历史列表
 const getSearchMediaHistory = async () => {
@@ -93,9 +96,21 @@ function jumpDetail(urlQuery: any) {
   // searchData.value = []; //没用
 }
 
+// 是否跳转详情（查询次数限制）
+const getMediaNavApi = async (params: any) => {
+  mediaNavApi(params)
+    .then(res => {
+      console.log(res);
+      jumpDetail(params);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 // 选中后跳转
 const handleSelect = (item: Record<string, any>) => {
-  jumpDetail(item); //跳转详情页
+  getMediaNavApi(item); //跳转详情页
 };
 // 点击搜索后:
 // 若检索数据为空，则弹框提示;
@@ -103,7 +118,7 @@ const handleSelect = (item: Record<string, any>) => {
 const handleSearch = () => {
   console.log("搜索数据的长度", searchData.value);
   if (searchData.value.length > 0) {
-    jumpDetail(searchData.value[0]); //跳转详情页
+    getMediaNavApi(searchData.value[0]); //跳转详情页
   } else {
     // 保存未搜索到的媒体
     addMediaNotExist(inputValue.value);

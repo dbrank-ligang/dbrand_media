@@ -81,7 +81,7 @@ import { useUserStore } from "@/stores/modules/user";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
-import { searchMediaApi } from "@/api/modules/media";
+import { mediaNavApi, searchMediaApi } from "@/api/modules/media";
 import { deleteCookie, addMediaNotExist } from "@/utils";
 import { ElNotification } from "element-plus";
 // import { deleteCookie } from "@/utils";
@@ -133,16 +133,27 @@ function jumpDetail(urlQuery: any) {
   inputValue.value = "";
 }
 
+// 是否跳转详情（查询次数限制）
+const getMediaNavApi = async (params: any) => {
+  mediaNavApi(params)
+    .then(res => {
+      console.log(res);
+      jumpDetail(params);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 // 搜索选中后跳转
 const handleSelect = (item: Record<string, any>) => {
   console.log("input框的值", item);
-  jumpDetail(item);
+  getMediaNavApi(item); //跳转详情页
 };
 const handleSearch = () => {
   // 阻止事件冒泡和默认行为
   console.log("搜索数据的长度", searchData.value);
   if (searchData.value.length > 0) {
-    jumpDetail(searchData.value[0]); //跳转详情页
+    getMediaNavApi(searchData.value[0]); //跳转详情页
   } else {
     // 保存未搜索到的媒体
     addMediaNotExist(inputValue.value);

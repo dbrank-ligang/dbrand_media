@@ -2,7 +2,7 @@
   <div class="selectAddPopBox">
     <el-popover :visible="visible" placement="bottom" :width="736" popper-class="custom-popover">
       <div v-if="!isSuggestPath">
-        <div class="listTitle">头部媒体类别卡片自选</div>
+        <!-- <div class="listTitle">头部媒体类别卡片自选</div> -->
         <div class="treeBox">
           <el-tree
             style="margin-bottom: 20px"

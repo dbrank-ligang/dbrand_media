@@ -160,7 +160,7 @@
 <script setup lang="ts" name="mediaSuggest">
 import { onMounted, ref, watch } from "vue";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
-import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi } from "@/api/modules/media";
+import { mediaTypeApi, dictListApi, recommandMediaApi, competitorApi, mediaNavApi } from "@/api/modules/media";
 import SelectAddPop from "./../components/SelectAddPop/index.vue";
 import BottomNav from "./../components/BottomNav/index.vue";
 import router from "@/routers";
@@ -333,9 +333,20 @@ function jumpDetail(urlQuery: any) {
   });
   window.open(routerUrl.href, "_blank");
 }
+// 是否跳转详情（查询次数限制）
+const getMediaNavApi = async (params: any) => {
+  mediaNavApi(params)
+    .then(res => {
+      console.log(res);
+      jumpDetail(params);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 const handleClick = (row?: any) => {
   console.log(row);
-  jumpDetail({ mediaId: row.mediaId });
+  getMediaNavApi({ mediaId: row.mediaId });
 };
 onMounted(() => {
   getMediaType(); // 获取媒体大类
