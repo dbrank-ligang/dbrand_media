@@ -78,11 +78,11 @@ router.beforeEach(async (to, from, next) => {
   authStore.setRouteName(to.name as string);
 
   // 8.统计页面访问
-  if (to.path) {
-    if ((window as any)._hmt) {
-      (window as any)._hmt.push(["_trackPageview", "/#" + to.fullPath]);
-    }
-  }
+  // if (to.path) {
+  //   if ((window as any)._hmt) {
+  //     (window as any)._hmt.push(["_trackPageview", "/#" + to.fullPath]);
+  //   }
+  // }
 
   // 9.正常访问页面
   next();

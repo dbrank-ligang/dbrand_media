@@ -53,29 +53,34 @@
         right: 30px;
       }
       .mediaCon_ul {
-        // display: flex;
-        // justify-content: flex-start;
+        display: flex;
+        justify-content: flex-start;
         margin-bottom: 10px;
         list-style-type: none;
         .mediaCon_li {
           display: inline-table;
           width: 233px;
           height: 332px;
-          padding: 20px 5px;
+          padding: 18px 5px;
           margin-right: 10px;
           background: rgb(255 255 255 / 100%);
           border-radius: 8px;
           box-shadow: 0 2px 5px rgb(222 222 222 / 100%);
           .media_type {
             width: 100%;
-            height: 35px;
+            height: 30px;
             font-size: 16px;
             font-weight: 700;
             line-height: 24px;
             text-align: center;
           }
+          .media_lei {
+            font-size: 16px;
+            text-align: center;
+            padding-bottom: 8px;
+          }
           .media_list {
-            height: 257px;
+            height: 240px;
             overflow: auto;
             .media_listIner {
               padding-left: 6px;

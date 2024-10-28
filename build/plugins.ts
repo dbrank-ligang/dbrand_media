@@ -15,7 +15,7 @@ import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
  * @param viteEnv
  */
 export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOption[])[] => {
-  const { VITE_GLOB_APP_TITLE, VITE_REPORT } = viteEnv;
+  const { VITE_GLOB_APP_TITLE, VITE_REPORT, VITE_PWA } = viteEnv;
   return [
     vue(),
     // vue 可以使用 jsx/tsx 语法
@@ -39,7 +39,7 @@ export const createVitePlugins = (viteEnv: ViteEnv): (PluginOption | PluginOptio
       symbolId: "icon-[dir]-[name]"
     }),
     // vitePWA
-    // VITE_PWA && createVitePwa(viteEnv),
+    VITE_PWA && createVitePwa(viteEnv),
     // 是否生成包预览，分析依赖包大小做优化处理
     VITE_REPORT && (visualizer({ filename: "stats.html", gzipSize: true, brotliSize: true }) as PluginOption)
   ];
@@ -78,32 +78,32 @@ const createCompression = (viteEnv: ViteEnv): PluginOption | PluginOption[] => {
  * @description VitePwa
  * @param viteEnv
  */
-// const createVitePwa = (viteEnv: ViteEnv): PluginOption | PluginOption[] => {
-//   const { VITE_GLOB_APP_TITLE } = viteEnv;
-//   return VitePWA({
-//     registerType: "autoUpdate",
-//     manifest: {
-//       name: VITE_GLOB_APP_TITLE,
-//       short_name: VITE_GLOB_APP_TITLE,
-//       theme_color: "#ffffff",
-//       icons: [
-//         {
-//           src: "/logo.png",
-//           sizes: "192x192",
-//           type: "image/png"
-//         },
-//         {
-//           src: "/logo.png",
-//           sizes: "512x512",
-//           type: "image/png"
-//         },
-//         {
-//           src: "/logo.png",
-//           sizes: "512x512",
-//           type: "image/png",
-//           purpose: "any maskable"
-//         }
-//       ]
-//     }
-//   });
-// };
+const createVitePwa = (viteEnv: ViteEnv): PluginOption | PluginOption[] => {
+  const { VITE_GLOB_APP_TITLE } = viteEnv;
+  return VitePWA({
+    registerType: "autoUpdate",
+    manifest: {
+      name: VITE_GLOB_APP_TITLE,
+      short_name: VITE_GLOB_APP_TITLE,
+      theme_color: "#ffffff"
+      // icons: [
+      //   {
+      //     src: "/logo.png",
+      //     sizes: "192x192",
+      //     type: "image/png"
+      //   },
+      //   {
+      //     src: "/logo.png",
+      //     sizes: "512x512",
+      //     type: "image/png"
+      //   },
+      //   {
+      //     src: "/logo.png",
+      //     sizes: "512x512",
+      //     type: "image/png",
+      //     purpose: "any maskable"
+      //   }
+      // ]
+    }
+  });
+};

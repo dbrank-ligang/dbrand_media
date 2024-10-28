@@ -205,17 +205,17 @@ const getDictListApi = async () => {
 };
 // 媒体大类Api
 const getMediaType = async () => {
-  const { data } = await mediaTypeApi({ type: "meitidalei", pId: 0 });
+  const { data } = await mediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "meitidalei", pId: 0 });
   meitidaleiArr.value = data as any;
 };
 // 行业细分Api
 const getHangyexifen = async (id: any) => {
-  const { data } = await mediaTypeApi({ type: "hangyexifen", pId: id });
+  const { data } = await mediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "hangyexifen", pId: id });
   hangyexifenArr.value = data as any;
 };
 // 细分圈层Api
 const getXifenquancengArr = async (id: any) => {
-  const { data } = await mediaTypeApi({ type: "xifenquanceng", pId: id });
+  const { data } = await mediaTypeApi({ brandId: currBrandStore.currBrandObj.brandId, type: "xifenquanceng", pId: id });
   xifenquancengArr.value = data as any;
 };
 

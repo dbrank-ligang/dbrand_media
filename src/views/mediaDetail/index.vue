@@ -16,9 +16,9 @@
         <div class="mediaDetail_text left_top">
           <div class="left_top_tit1" style="">[统一归类名称]</div>
           <div class="left_top_tit2">{{ oneLevelObj.unionMediaName }}</div>
-          <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
+          <!-- <div class="left_top_tit3" style="margin-top: 20px">网站:{{ oneLevelObj.url }}</div>
           <div class="left_top_tit3">客户端: {{ oneLevelObj.client }}</div>
-          <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div>
+          <div class="left_top_tit3">电子报: {{ oneLevelObj.epaper }}</div> -->
         </div>
         <div class="left_bottom">
           <li
@@ -43,7 +43,7 @@
       </div>
       <div class="mediaDetail_right">
         <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
-        <div class="mediaSource" style="margin-top: 10px">
+        <div class="mediaSource" style="margin-top: 20px">
           <div class="mediaSource_tit">[作为媒体源]</div>
           <div class="mediaSource_listBox">
             <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
@@ -73,7 +73,7 @@
           </div>
         </div>
 
-        <div class="mediaSource" style="margin-top: 10px">
+        <div class="mediaSource" style="margin-top: 20px">
           <div class="mediaSource_tit">[账号列表]</div>
           <div class="mediaSource_listBox">
             <div class="mediaSource_listRow">
@@ -92,7 +92,7 @@
           </div>
         </div>
 
-        <div class="numberDetailBox" style="margin-top: 10px">
+        <div class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号详情]</div>
           <div style="padding: 15px 0 15px 15px">
             <div class="numberDetailBox_Row" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
@@ -102,7 +102,7 @@
           </div>
         </div>
 
-        <div class="numberDetailBox" style="margin-top: 10px">
+        <div class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号标签]</div>
           <div style="padding: 15px 0 15px 15px">
             <div class="numberDetailBox_Row">
@@ -130,7 +130,7 @@
           </div>
         </div>
 
-        <div class="contentListBox" style="margin-top: 10px">
+        <div class="contentListBox" style="margin-top: 20px">
           <div class="contentListBox_tit">{{ oneName }} -（{{ twoName }}）{{ threeName }}</div>
           <div style="margin-top: 30px; font-size: 14px">
             [内容列表]
@@ -147,13 +147,13 @@
             />
           </div>
           <el-table :data="articlesArr" height="250" style="width: 100%" class="tableBox">
-            <el-table-column prop="brandName" label="高相关品牌" />
-            <el-table-column label="内容标题">
+            <el-table-column prop="brandName" align="center" width="220" label="高相关品牌" />
+            <el-table-column label="内容标题" align="center">
               <template #default="scope">
                 <a target="_blank" :href="scope.row.docUrl">{{ scope.row.title }}</a>
               </template>
             </el-table-column>
-            <el-table-column label="发表时间">
+            <el-table-column label="发表时间" align="center" width="300">
               <template #default="scope">
                 {{ timestampToDate(scope.row.publishTime) }}
               </template>

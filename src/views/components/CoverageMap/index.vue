@@ -26,7 +26,9 @@
           :key="mediaTypeListArrIndex"
         >
           <!-- <div class="media_type">【{{ mediaTypeListArr.name.slice(0, 8) }}】</div> -->
-          <div class="media_type">【{{ mediaTypeListArr.name }}】</div>
+          <div v-if="mediaTypeListArr.name" class="media_type">【{{ mediaTypeListArr.name }}】</div>
+          <div v-else class="media_type"></div>
+          <div class="media_lei">{{ mediaTypeListArr.pname }}</div>
           <div class="media_list">
             <div
               class="media_listIner"
@@ -74,6 +76,7 @@
               </div>
 
               <span
+                :title="mediaListItem.mediaName.length > 9 ? `${mediaListItem.mediaName}` : ''"
                 :style="{
                   color:
                     flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1 ? '#d40000' : '#000',
