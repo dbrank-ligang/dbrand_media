@@ -127,7 +127,7 @@ let dateArr = ref([dateStart, dateEnd]); // 时间范围
 let competitorBrandId = ref(null); // 对比品牌
 let competitorBrandId2 = ref(null); // 对比品牌
 // const mediaData = ref(dataJson); // 覆盖图数据
-const mediaData = ref({} as any); // 覆盖图数据
+const mediaData = ref([] as any); // 覆盖图数据
 const paramsObj = ref({
   brandId: currBrandStore.currBrandObj.brandId, //品牌id                               必填
   type: null, //all 非负；negative 负面；                选填，不填，后端按非负查询

@@ -41,7 +41,6 @@ export const disabledDateFun = time => {
   let curDate = new Date().getTime();
   let three = 3 * 100 * 24 * 3600 * 1000;
   let threeMonths = curDate - three;
-  console.log(threeMonths, "threeMonths");
   return time.getTime() > Date.now() || time.getTime() < threeMonths;
 };
 

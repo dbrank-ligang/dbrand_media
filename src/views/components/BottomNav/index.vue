@@ -22,7 +22,6 @@
         <div class="QRcode">
           <div class="QRimg">
             <i class="QRimg"><img src="@/assets/images/QRcode.jpg" /></i>
-            <DbRankGirlCode />
           </div>
           <span class="QRtxt">找榜女郎私聊</span>
         </div>
