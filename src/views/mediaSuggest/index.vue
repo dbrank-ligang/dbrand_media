@@ -15,9 +15,11 @@
                 v-model="searchForm.meitidalei"
                 class="m-2"
                 clearable
+                filterable
                 placeholder="请选择"
                 style="width: 150px"
                 @change="changeMedia"
+                @clear="clearMedia"
               >
                 <el-option v-for="item in meitidaleiArr" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
@@ -26,7 +28,14 @@
           <div class="selectBox">
             <div>行业细分：</div>
             <div>
-              <el-select v-model="searchForm.hangyexifen" clearable class="m-2" placeholder="请选择" style="width: 150px">
+              <el-select
+                v-model="searchForm.hangyexifen"
+                clearable
+                filterable
+                class="m-2"
+                placeholder="请选择"
+                style="width: 150px"
+              >
                 <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </div>
@@ -35,7 +44,14 @@
           <div class="selectBox">
             <div>细分圈层：</div>
             <div>
-              <el-select v-model="searchForm.xifenquanceng" clearable class="m-2" placeholder="请选择" style="width: 150px">
+              <el-select
+                v-model="searchForm.xifenquanceng"
+                clearable
+                filterable
+                class="m-2"
+                placeholder="请选择"
+                style="width: 150px"
+              >
                 <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </div>
@@ -62,7 +78,7 @@
       <div class="tableBox">
         <div class="sellBox">
           <div class="tableTile">推荐名单TOP{{ isExpandSell ? 20 : 10 }}</div>
-          <el-table :data="sellArr" style="width: 100%; margin-top: 10px; color: #000" border>
+          <el-table :data="sellArr" v-loading="isSellTableLoading" style="width: 100%; margin-top: 10px; color: #000" border>
             <el-table-column align="center" type="index" width="55" label="序号">
               <template #default="{ $index }">
                 {{ $index + 1 }}
@@ -82,7 +98,7 @@
         </div>
         <div class="sellNoBox">
           <div class="tableTile">不推荐名单TOP{{ isExpandSellNo ? 20 : 10 }}</div>
-          <el-table :data="sellNoArr" style="width: 100%; margin-top: 10px; color: #000" border>
+          <el-table :data="sellNoArr" v-loading="isSellNoTableLoading" style="width: 100%; margin-top: 10px; color: #000" border>
             <el-table-column align="center" type="index" width="55" label="序号">
               <template #default="{ $index }">
                 {{ $index + 1 }}
@@ -93,8 +109,8 @@
                 <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
               </template>
             </el-table-column>
-            <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
-            <el-table-column align="center" prop="mediatype" label="媒体属性" />
+            <el-table-column align="center" prop="mediaCluster" label="所属媒体集群" />
+            <el-table-column align="center" prop="mediaType" label="媒体属性" />
           </el-table>
           <el-button type="info" size="small" @click="handleExpandSell({ type: 0 })">
             {{ isExpandSellNo ? "- 收起" : " + 更多" }}
@@ -120,7 +136,7 @@
             />
           </el-select>
         </div>
-        <el-table :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
+        <el-table v-loading="isLoading" :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
           <el-table-column align="center" type="index" width="55" label="序号">
             <template #default="{ $index }">
               {{ $index + 1 }}
@@ -131,21 +147,20 @@
               <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="mediacluster" label="所属媒体集群" />
-          <el-table-column align="center" prop="positiveNum" label="`相关正向内容条数`<br/>123">
+          <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
+          <el-table-column align="center" prop="positiveNum">
             <template #header>
-              <div>(过去12个月内)</div>
+              <div style="font-size: 12px">(过去12个月内)</div>
               <div>相关正向内容条数</div>
             </template>
           </el-table-column>
           <el-table-column align="center" prop="title" label="文章示例">
             <template #default="scope">
-              <a target="_blank" :href="`www.${scope.row.docUrl}`">{{ scope.row.title }}</a>
-              <!-- <a target="_blank" href="https://www.baidu.com/">{{ scope.row.title }}</a> -->
+              <a target="_blank" :href="`${scope.row.docUrl}`">{{ scope.row.title }}</a>
             </template>
           </el-table-column>
           <el-table-column align="center" label="可能性">
-            <template #default="scope"> {{ scope.row.probability * 100 }}% </template>
+            <template #default="scope"> {{ numFilter(scope.row.probability) }} </template>
           </el-table-column>
         </el-table>
         <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
@@ -165,16 +180,20 @@ import SelectAddPop from "./../components/SelectAddPop/index.vue";
 import BottomNav from "./../components/BottomNav/index.vue";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
+import { numFilter } from "@/utils/parseFloat";
 
 const currBrandStore = useCurrBrandStore();
 const searchForm = ref({
-  type: 1, //推荐；0不推荐；
+  type: null, //推荐；0不推荐；
   num: 10, //查询top10 ；20 查询top20      必填
   platform: null, //平台名称                 非必填
   meitidalei: null, //媒体大类名称             非必填
   hangyexifen: null, //行业细分名称            非必填
   xifenquanceng: null //细分圈层名称           非必填
 } as any);
+const isLoading = ref(false); //竞品列表loading
+const isSellTableLoading = ref(false); //推荐列表-loading
+const isSellNoTableLoading = ref(false); //不推荐列表-loading
 const competitorBrandId = ref(""); // 竞品id
 const meitidaleiArr = ref([] as any); // 媒体大类下拉框
 const hangyexifenArr = ref([] as any); // 媒体大类下拉框
@@ -187,6 +206,23 @@ const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
 const inferArr = ref([] as any); // 竞品列表
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
+
+// 下拉框根据id找到name
+function findNameById(arr, id) {
+  const person = arr.find(arr => arr.id === id);
+  return person ? person.name : undefined;
+}
+
+// 下拉框根据id找到name并赋值
+const searchValue = () => {
+  return {
+    ...searchForm.value,
+    meitidalei: findNameById(meitidaleiArr.value, searchForm.value.meitidalei), //媒体大类名称  非必填
+    hangyexifen: findNameById(hangyexifenArr.value, searchForm.value.hangyexifen), //媒体大类名称  非必填
+    xifenquanceng: findNameById(xifenquancengArr.value, searchForm.value.xifenquanceng) //媒体大类名称  非必填
+  };
+};
+
 //媒体大类选中事件，请求行业细分、细分圈层、清空绑定的value
 const changeMedia = value => {
   console.log(value);
@@ -197,11 +233,18 @@ const changeMedia = value => {
   searchForm.value.hangyexifen = null;
   searchForm.value.xifenquanceng = null;
 };
+const clearMedia = () => {
+  hangyexifenArr.value = []; // 行业细分下拉框
+  xifenquancengArr.value = []; // 细分圈层下拉框
+};
 
 // 平台列表Api
 const getDictListApi = async () => {
   const { data } = await dictListApi({ code: "platform" });
   platformArr.value = data as any;
+  if (platformArr.value.length > 0) {
+    platformArr.value.unshift("不分平台");
+  }
 };
 // 媒体大类Api
 const getMediaType = async () => {
@@ -222,36 +265,67 @@ const getXifenquancengArr = async (id: any) => {
 // 点击平台列表
 const setMediaSourceActive = (index, item) => {
   activePlatformIndex.value = index; // 点击时更新当前活动索引
+  if (item === "不分平台") {
+    searchForm.value.platform = null;
+    return;
+  }
   searchForm.value.platform = item;
 };
+
 // 点击查询 推荐type:1, 不推荐type:0
 const handleSearch = () => {
-  console.log(searchForm.value);
-  getSellArr({ ...searchForm.value, type: 1, brandId: currBrandStore.currBrandObj.brandId });
-  getSellNoArr({ ...searchForm.value, type: 0, brandId: currBrandStore.currBrandObj.brandId });
+  const searchValueObj = searchValue();
+  getSellArr({ ...searchValueObj, type: 1, brandId: currBrandStore.currBrandObj.brandId });
+  getSellNoArr({ ...searchValueObj, type: 0, brandId: currBrandStore.currBrandObj.brandId });
   isExpandSell.value = false;
   isExpandSellNo.value = false;
+  isSellTableLoading.value = true; //推荐名单列表 loading
+  isSellNoTableLoading.value = true; //不推荐名单列表 loading
 };
 // 推荐 不推荐列表
 const getSellArr = async (params: any) => {
-  const { data } = await recommandMediaApi(params);
-  sellArr.value = data as any;
+  await recommandMediaApi(params)
+    .then(res => {
+      setTimeout(() => {
+        isSellTableLoading.value = false;
+      }, 300);
+      sellArr.value = res.data as any;
+    })
+    .catch(() => {
+      isSellTableLoading.value = false;
+    });
 };
 const getSellNoArr = async (params: any) => {
-  const { data } = await recommandMediaApi(params);
-  sellNoArr.value = data as any;
+  await recommandMediaApi(params)
+    .then(res => {
+      setTimeout(() => {
+        isSellNoTableLoading.value = false;
+      }, 300);
+      sellNoArr.value = res.data as any;
+    })
+    .catch(() => {
+      isSellNoTableLoading.value = false;
+    });
 };
 // 竞品列表
 const getInferArr = async (params: any) => {
-  const { data } = await competitorApi(params);
-  inferArr.value = data as any;
+  competitorApi(params)
+    .then(res => {
+      isLoading.value = false;
+      inferArr.value = res.data as any;
+    })
+    .catch(() => {
+      isLoading.value = false;
+    });
 };
 // 競品下拉框 change事件
 const changeCompetitorBrand = value => {
-  console.log(value);
+  const searchValueObj = searchValue();
+  isExpandInfer.value = false; // 展开/收起 置为false（展开） false：查询10条
   competitorBrandId.value = value;
+  isLoading.value = true;
   getInferArr({
-    ...searchForm.value,
+    ...searchValueObj,
     num: isExpandSell.value === true ? 20 : 10,
     competitorBrandId: value,
     brandId: currBrandStore.currBrandObj.brandId
@@ -260,19 +334,22 @@ const changeCompetitorBrand = value => {
 
 // 推荐列表-展开收起  false:10,true:20; object:0/1/2(0：不推荐列表，1：推荐列表，2：竞品列表)
 const handleExpandSell = (Object: any) => {
+  const searchValueObj = searchValue();
   if (Object.type == 1) {
+    isSellTableLoading.value = true; //推荐名单列表 loading
     isExpandSell.value = !isExpandSell.value;
     getSellArr({
-      ...searchForm.value,
+      ...searchValueObj,
       type: Object.type,
       num: isExpandSell.value === true ? 20 : 10,
       brandId: currBrandStore.currBrandObj.brandId
     });
   }
   if (Object.type == 0) {
+    isSellNoTableLoading.value = true; //不推荐名单列表 loading
     isExpandSellNo.value = !isExpandSellNo.value;
     getSellNoArr({
-      ...searchForm.value,
+      ...searchValueObj,
       type: Object.type,
       num: isExpandSellNo.value === true ? 20 : 10,
       brandId: currBrandStore.currBrandObj.brandId
@@ -280,12 +357,14 @@ const handleExpandSell = (Object: any) => {
   }
   // 竞品列表
   if (Object.type === 2) {
+    isLoading.value = true;
     isExpandInfer.value = !isExpandInfer.value;
-    competitorApi({
-      ...searchForm.value,
+    getInferArr({
+      ...searchValueObj,
       type: null,
       num: isExpandInfer.value === true ? 20 : 10,
-      competitorBrandId: competitorBrandId.value
+      competitorBrandId: competitorBrandId.value,
+      brandId: currBrandStore.currBrandObj.brandId
     });
   }
 };
@@ -351,6 +430,8 @@ const handleClick = (row?: any) => {
 onMounted(() => {
   getMediaType(); // 获取媒体大类
   getDictListApi(); // 获取平台列表
+  handleSearch(); // 初始化查询
+  changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId);
 });
 </script>
 
