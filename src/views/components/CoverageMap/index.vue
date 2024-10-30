@@ -25,8 +25,10 @@
           v-for="(mediaTypeListArr, mediaTypeListArrIndex) in mediaTypeArr.list"
           :key="mediaTypeListArrIndex"
         >
-          <div v-if="!mediaTypeListArr.name" style="width: 233px; height: 100%; cursor: pointer" @click="handleAdd()">666</div>
-          <div v-else>
+          <div v-if="!mediaTypeListArr.name" class="addCard" @click="handleAdd(index)">
+            <!-- <div><img src="@/assets/images/addCardBg.png" /></div> -->
+          </div>
+          <div v-else style="padding: 18px 5px">
             <div class="media_lei">{{ mediaTypeListArr.pname }}</div>
             <div v-if="mediaTypeListArr.name" class="media_type">【{{ mediaTypeListArr.name }}】</div>
             <div v-else class="media_type"></div>
@@ -52,8 +54,9 @@
                       :class="brandFlagBgColor[i]"
                       :style="{ opacity: item }"
                       v-for="(item, i) in mediaListItem.publishFlag"
-                      :key="item + i"
-                    ></span>
+                      :key="item + Math.random()"
+                    >
+                    </span>
                   </span>
                   <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
                     <span
@@ -62,7 +65,7 @@
                       :class="timeFlagBgColor[i]"
                       :style="{ opacity: item }"
                       v-for="(item, i) in mediaListItem.publishFlag"
-                      :key="item + i"
+                      :key="item + Math.random()"
                     >
                     </span>
                   </span>
@@ -104,7 +107,7 @@ import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
-const childRef = ref();
+const childRef = ref(null) as any;
 const brandFlagBgColor = ref({
   0: "red",
   1: "yellow",
@@ -119,9 +122,9 @@ const props = defineProps({
   mediaData: Array,
   dateArr: Array
 });
-const handleAdd = () => {
+const handleAdd = (index?: any) => {
   if (childRef.value) {
-    childRef.value.activeBtn();
+    childRef.value[index].activeBtn({ title: "自选类别", isActive: false });
   }
 };
 
