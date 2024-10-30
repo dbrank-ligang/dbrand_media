@@ -4,7 +4,7 @@
     <div class="mediaHeader">
       <div class="mediaHeader_tit">{{ index === 0 ? "头部媒体覆盖图" : "细分媒体圈层" }}</div>
       <div>
-        <SelectAddPop />
+        <SelectAddPop ref="childRef" />
       </div>
     </div>
 
@@ -25,66 +25,70 @@
           v-for="(mediaTypeListArr, mediaTypeListArrIndex) in mediaTypeArr.list"
           :key="mediaTypeListArrIndex"
         >
-          <!-- <div class="media_type">【{{ mediaTypeListArr.name.slice(0, 8) }}】</div> -->
-          <div v-if="mediaTypeListArr.name" class="media_type">【{{ mediaTypeListArr.name }}】</div>
-          <div v-else class="media_type"></div>
-          <div class="media_lei">{{ mediaTypeListArr.pname }}</div>
-          <div class="media_list">
-            <div
-              class="media_listIner"
-              v-for="(mediaListItem, mediaListItemIndex) in mediaTypeListArr.list"
-              :key="mediaListItemIndex"
-              @click="mediaClick(mediaListItem)"
-            >
-              <!-- 
+          <div v-if="!mediaTypeListArr.name" style="width: 233px; height: 100%; cursor: pointer" @click="handleAdd()">666</div>
+          <div v-else>
+            <div class="media_lei">{{ mediaTypeListArr.pname }}</div>
+            <div v-if="mediaTypeListArr.name" class="media_type">【{{ mediaTypeListArr.name }}】</div>
+            <div v-else class="media_type"></div>
+            <div class="media_list">
+              <div
+                class="media_listIner"
+                v-for="(mediaListItem, mediaListItemIndex) in mediaTypeListArr.list"
+                :key="mediaListItemIndex"
+                @click="mediaClick(mediaListItem)"
+              >
+                <!-- 
               publishFlag:[1,1,0]; 数组里的1表示展示，0表示不展示
               publishFlag:[1];单个时： 显示一个红点
               publishFlag:[1];负面时： name红色字体
               publishFlag:[1，0]; 时间对比时：显示一个 红圈，红点
               publishFlag:[1，1，0]; 3个品牌时：显示三个 蓝、 黄，红
               -->
-              <div style="display: inline-block">
-                <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
-                  <span
-                    :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
-                    class="circleBox"
-                    :class="brandFlagBgColor[i]"
-                    :style="{ opacity: item }"
-                    v-for="(item, i) in mediaListItem.publishFlag"
-                    :key="item + i"
-                  ></span>
-                </span>
-                <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
-                  <span
-                    :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
-                    class="circleBox"
-                    :class="timeFlagBgColor[i]"
-                    :style="{ opacity: item }"
-                    v-for="(item, i) in mediaListItem.publishFlag"
-                    :key="item + i"
-                  >
+                <div style="display: inline-block">
+                  <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'brandFlag'">
+                    <span
+                      :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
+                      class="circleBox"
+                      :class="brandFlagBgColor[i]"
+                      :style="{ opacity: item }"
+                      v-for="(item, i) in mediaListItem.publishFlag"
+                      :key="item + i"
+                    ></span>
                   </span>
-                </span>
-                <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
-                  <span
-                    :title="mediaListItem.publishFlag[0] !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
-                    class="circleBox red"
-                    :style="{ opacity: mediaListItem.publishFlag[0] }"
-                  >
+                  <span style="line-height: 14px" v-if="flagType(mediaListItem.publishFlag) === 'timeFlag'">
+                    <span
+                      :title="item !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
+                      class="circleBox"
+                      :class="timeFlagBgColor[i]"
+                      :style="{ opacity: item }"
+                      v-for="(item, i) in mediaListItem.publishFlag"
+                      :key="item + i"
+                    >
+                    </span>
                   </span>
+                  <span v-if="flagType(mediaListItem.publishFlag) === 'flag'">
+                    <span
+                      :title="mediaListItem.publishFlag[0] !== 0 ? '该媒体近期发表了与品牌相关的文章。' : ''"
+                      class="circleBox red"
+                      :style="{ opacity: mediaListItem.publishFlag[0] }"
+                    >
+                    </span>
+                  </span>
+                </div>
+
+                <span
+                  :title="mediaListItem.mediaName.length > 9 ? `${mediaListItem.mediaName}` : ''"
+                  :style="{
+                    color:
+                      flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1
+                        ? '#d40000'
+                        : '#000',
+                    marginLeft: flagType(mediaListItem.publishFlag) === 'negative' ? '30px' : null
+                  }"
+                >
+                  {{ mediaListItem.mediaName.slice(0, 9) }}
                 </span>
               </div>
-
-              <span
-                :title="mediaListItem.mediaName.length > 9 ? `${mediaListItem.mediaName}` : ''"
-                :style="{
-                  color:
-                    flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1 ? '#d40000' : '#000',
-                  marginLeft: flagType(mediaListItem.publishFlag) === 'negative' ? '30px' : null
-                }"
-              >
-                {{ mediaListItem.mediaName.slice(0, 9) }}
-              </span>
             </div>
           </div>
         </div>
@@ -100,7 +104,7 @@ import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
-
+const childRef = ref();
 const brandFlagBgColor = ref({
   0: "red",
   1: "yellow",
@@ -115,6 +119,11 @@ const props = defineProps({
   mediaData: Array,
   dateArr: Array
 });
+const handleAdd = () => {
+  if (childRef.value) {
+    childRef.value.activeBtn();
+  }
+};
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
 const flagType = (item: any) => {

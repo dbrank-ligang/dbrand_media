@@ -107,7 +107,6 @@ const defaultProps = {
 };
 const topListArr = ref([]);
 const topListArrOld = ref([]); // 存放上次的topListArr
-
 function isParentPopover(target) {
   while (target) {
     if (target.classList && (target.classList.contains("el-popover") || target.classList.contains("el-notification"))) {
@@ -220,6 +219,7 @@ const getStyle = (item: { isActive: any }) => {
 };
 // tab切换点击事件
 const activeBtn = (item: { isActive: boolean }) => {
+  console.log(item);
   let currentState = item.isActive;
   if (!currentState) {
     visible.value = !currentState;
@@ -232,6 +232,9 @@ const activeBtn = (item: { isActive: boolean }) => {
     dealPopOverChange();
   }
 };
+defineExpose({
+  activeBtn
+});
 
 // 提交完成后的弹窗 自定义组件
 const showNotificationWithImage = () => {
