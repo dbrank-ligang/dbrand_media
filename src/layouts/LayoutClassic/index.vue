@@ -82,7 +82,7 @@ import { useCurrBrandStore } from "@/stores/modules/currBrand";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { mediaNavApi, searchMediaApi } from "@/api/modules/media";
-import { deleteCookie, addMediaNotExist } from "@/utils";
+import { deleteCookie, addMediaNotExist, getCookie } from "@/utils";
 import { ElNotification } from "element-plus";
 // import { deleteCookie } from "@/utils";
 
@@ -120,13 +120,14 @@ const querySearch = async (queryString: string, cb: any) => {
   searchData.value = data;
   cb(data);
 };
-
+const token = getCookie();
 // 跳转详情页方法
 function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
-      ...urlQuery
+      ...urlQuery,
+      token: token
     }
   });
   window.open(routerUrl.href, "_blank");

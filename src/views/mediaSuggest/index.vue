@@ -181,6 +181,7 @@ import BottomNav from "./../components/BottomNav/index.vue";
 import router from "@/routers";
 import { MEDIADETAIL } from "@/config";
 import { numFilter } from "@/utils/parseFloat";
+import { getCookie } from "@/utils";
 
 const currBrandStore = useCurrBrandStore();
 const searchForm = ref({
@@ -403,11 +404,13 @@ function onBrandChange() {
   isExpandInfer.value = false; // 竞品推荐推荐列表 fasle:收起
 }
 // 跳转详情页方法
+const token = getCookie();
 function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
-      ...urlQuery
+      ...urlQuery,
+      token: token
     }
   });
   window.open(routerUrl.href, "_blank");

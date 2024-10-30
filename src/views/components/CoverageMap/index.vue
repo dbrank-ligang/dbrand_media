@@ -25,10 +25,9 @@
           v-for="(mediaTypeListArr, mediaTypeListArrIndex) in mediaTypeArr.list"
           :key="mediaTypeListArrIndex"
         >
-          <div v-if="!mediaTypeListArr.name" class="addCard" @click="handleAdd(index)">
-            <!-- <div><img src="@/assets/images/addCardBg.png" /></div> -->
-          </div>
-          <div v-else style="padding: 18px 5px">
+          <!-- <div v-if="!mediaTypeListArr.name" class="addCard" @click="handleAdd(index)"></div>
+          <div v-else style="padding: 18px 5px"> -->
+          <div style="padding: 18px 5px">
             <div class="media_lei">{{ mediaTypeListArr.pname }}</div>
             <div v-if="mediaTypeListArr.name" class="media_type">【{{ mediaTypeListArr.name }}】</div>
             <div v-else class="media_type"></div>
@@ -103,6 +102,7 @@
 <script setup lang="ts" name="home">
 import { mediaNavApi } from "@/api/modules/media";
 import { MEDIADETAIL } from "@/config";
+import { getCookie } from "@/utils";
 import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
@@ -122,11 +122,11 @@ const props = defineProps({
   mediaData: Array,
   dateArr: Array
 });
-const handleAdd = (index?: any) => {
-  if (childRef.value) {
-    childRef.value[index].activeBtn({ title: "自选类别", isActive: false });
-  }
-};
+// const handleAdd = (index?: any) => {
+//   if (childRef.value) {
+//     childRef.value[index].activeBtn({ title: "自选类别", isActive: false });
+//   }
+// };
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
 const flagType = (item: any) => {
@@ -210,13 +210,15 @@ const getMediaNavApi = async (params: any) => {
     });
 };
 // 跳转到媒体详情
+const token = getCookie();
 function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
       ...urlQuery,
       startTime: props.dateArr ? props.dateArr[0] : null,
-      endTime: props.dateArr ? props.dateArr[1] : null
+      endTime: props.dateArr ? props.dateArr[1] : null,
+      token: token
     }
   });
   window.open(routerUrl.href, "_blank");

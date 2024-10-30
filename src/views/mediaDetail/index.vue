@@ -27,7 +27,9 @@
             :class="{ active: oneLevelActiveId == item.subUnionId }"
             @click="oneLevelClick(item)"
           >
-            <div class="mediaName_nav"><span></span>{{ item.subUnionName }}</div>
+            <div class="mediaName_nav" :title="item.subUnionName.length > 9 ? `${item.subUnionName}` : ''">
+              <span></span>{{ item.subUnionName.slice(0, 9) }}
+            </div>
             <div
               v-if="oneLevelActiveId == item.subUnionId && (item.beforeName || item.anotherName || item.includeName)"
               style="min-height: 50px; font-size: 14px"

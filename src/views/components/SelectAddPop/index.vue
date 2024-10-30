@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts" name="selectAddPop">
-import { inject, onMounted, ref, onActivated, h, defineExpose } from "vue";
+import { inject, onMounted, ref, onActivated, h } from "vue";
 import { ElButton, ElMessageBox } from "element-plus";
 import { ElNotification } from "element-plus";
 import { useCurrBrandStore } from "@/stores/modules/currBrand";
@@ -119,18 +119,17 @@ function isParentPopover(target) {
 
 // 监听全局点击事件
 document.addEventListener("click", event => {
-  let clickedElement = event.target; // 获取当前被点击的元素
-  let className = clickedElement.className; // 获取类名
-  console.log(className); // 打印类名
-
-  let boxes = document.getElementsByClassName("addCard");
-  console.log(boxes.length);
+  // let clickedElement = event.target; // 获取当前被点击的元素
+  // let className = clickedElement.className; // 获取类名
+  // console.log(className); // 打印类名
+  // let boxes = document.getElementsByClassName("addCard");
+  // console.log(boxes.length);
   if (!visible.value) return;
   const popoverRef = document.querySelector(".el-popover");
   const buttonRef0 = document.getElementsByClassName("selectTab")[0];
   const buttonRef1 = document.getElementsByClassName("selectTab")[1];
-  const addCardRef0 = document.getElementsByClassName("addCard")[0];
-  const addCardRef1 = document.getElementsByClassName("addCard")[1];
+  // const addCardRef0 = document.getElementsByClassName("addCard")[0];
+  // const addCardRef1 = document.getElementsByClassName("addCard")[1];
   if (!popoverRef) {
     return;
   }
@@ -139,8 +138,8 @@ document.addEventListener("click", event => {
     !buttonRef1.contains(event.target as Node) &&
     !buttonRef0.contains(event.target as Node) &&
     !popoverRef.contains(event.target as Node) &&
-    !addCardRef0.contains(event.target as Node) &&
-    !addCardRef1.contains(event.target as Node) &&
+    // !addCardRef0.contains(event.target as Node) &&
+    // !addCardRef1.contains(event.target as Node) &&
     !isParentPopover(event.target) &&
     !(event.target instanceof Element && event.target.tagName === "LI")
   ) {
@@ -242,12 +241,10 @@ const activeBtn = item => {
     dealPopOverChange();
   }
 };
-// function childMethod() {
-//   console.log("Child method called");
-// }
-defineExpose({
-  activeBtn
-});
+
+// defineExpose({
+//   activeBtn
+// });
 
 // 提交完成后的弹窗 自定义组件
 const showNotificationWithImage = () => {

@@ -43,7 +43,7 @@ import router from "@/routers";
 import BottomNav from "./../components/BottomNav/index.vue";
 import { MEDIADETAIL } from "@/config";
 import { ElNotification } from "element-plus";
-import { addMediaNotExist } from "@/utils";
+import { addMediaNotExist, getCookie } from "@/utils";
 
 const inputValue = ref("");
 const searchData = ref([] as any);
@@ -80,6 +80,7 @@ const querySearch = async (queryString: string, cb: any) => {
 // 跳转详情页时：
 // 第一步：先判断搜索的内容是否存在搜索历史中，若存在不进行添加
 // 第二部：进行跳转；
+const token = getCookie();
 function jumpDetail(urlQuery: any) {
   const isHaveMediaId = historyListData.value.some(items => items.showText === urlQuery.showText);
   if (!isHaveMediaId) {
@@ -88,7 +89,8 @@ function jumpDetail(urlQuery: any) {
   let routerUrl = router.resolve({
     path: MEDIADETAIL,
     query: {
-      ...urlQuery
+      ...urlQuery,
+      token: token
     }
   });
   window.open(routerUrl.href, "_blank");
