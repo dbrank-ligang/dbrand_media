@@ -96,12 +96,18 @@
 
         <div class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号详情]</div>
-          <div style="padding: 15px 0 15px 15px">
+          <el-row :gutter="20" style="padding: 15px 0 15px 15px">
+            <el-col class="numberDetailBox_Row" :span="12" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
+              <div class="numberDetailBox_rowTit">{{ item }}：</div>
+              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
+            </el-col>
+          </el-row>
+          <!-- <div style="padding: 15px 0 15px 15px">
             <div class="numberDetailBox_Row" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
               <div class="numberDetailBox_rowTit">{{ item }}：</div>
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="numberDetailBox" style="margin-top: 20px">
