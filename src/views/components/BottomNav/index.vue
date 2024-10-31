@@ -22,8 +22,8 @@
         <div class="QRcode">
           <div class="QRimg">
             <i class="QRimg"><img src="@/assets/images/QRcode.jpg" /></i>
+            <span class="QRtxt">找榜女郎私聊</span>
           </div>
-          <span class="QRtxt">找榜女郎私聊</span>
         </div>
       </li>
     </ul>

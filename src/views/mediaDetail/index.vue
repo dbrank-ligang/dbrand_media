@@ -114,14 +114,8 @@
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
             </div>
             <div class="numberDetailBox_Row">
-              <div class="numberDetailBox_rowTit">行业二级标签：</div>
-              <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyeerji || "" }}</div>
-            </div>
-            <div class="numberDetailBox_Row">
               <div class="numberDetailBox_rowTit">内容属性标签：</div>
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.neirongshuxing || "" }}</div>
-            </div>
-            <div class="numberDetailBox_Row">
               <div class="numberDetailBox_rowTit">媒体属性标签：</div>
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.meitishuxing || "" }}</div>
             </div>

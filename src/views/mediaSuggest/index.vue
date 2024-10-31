@@ -35,6 +35,7 @@
                 class="m-2"
                 placeholder="请选择"
                 style="width: 150px"
+                @change="handleSearch"
               >
                 <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
@@ -51,6 +52,7 @@
                 class="m-2"
                 placeholder="请选择"
                 style="width: 150px"
+                @change="handleSearch"
               >
                 <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
@@ -72,7 +74,7 @@
               </div>
             </div>
           </div>
-          <el-button class="buttonStyle" @click="handleSearch">查询</el-button>
+          <!-- <el-button class="buttonStyle" @click="handleSearch">查询</el-button> -->
         </div>
       </div>
       <div class="tableBox">
@@ -232,6 +234,7 @@ const changeMedia = value => {
   }
   searchForm.value.hangyexifen = null;
   searchForm.value.xifenquanceng = null;
+  handleSearch();
 };
 const clearMedia = () => {
   hangyexifenArr.value = []; // 行业细分下拉框
@@ -267,9 +270,10 @@ const setMediaSourceActive = (index, item) => {
   activePlatformIndex.value = index; // 点击时更新当前活动索引
   if (item === "不分平台") {
     searchForm.value.platform = null;
-    return;
+  } else {
+    searchForm.value.platform = item;
   }
-  searchForm.value.platform = item;
+  handleSearch();
 };
 
 // 点击查询 推荐type:1, 不推荐type:0

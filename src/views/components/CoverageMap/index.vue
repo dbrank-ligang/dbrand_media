@@ -99,14 +99,14 @@
     <div class="mediaFooter"></div>
   </div>
 </template>
-<script setup lang="ts" name="home">
+<script setup lang="ts" name="CoverageMap">
 import { mediaNavApi } from "@/api/modules/media";
 import { MEDIADETAIL } from "@/config";
 import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 const router = useRouter();
-const childRef = ref(null) as any;
+const childRef = ref() as any;
 const brandFlagBgColor = ref({
   0: "red",
   1: "yellow",
@@ -125,6 +125,7 @@ const handleAdd = (index?: any) => {
   if (childRef.value) {
     childRef.value[index].activeBtn({ title: "自选类别", isActive: false });
   }
+  document.getElementsByClassName("mediaHeader_tit")[index].scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
 // 计算属性根据数组长度返回颜色  flag/timeFlag/brandFlag
