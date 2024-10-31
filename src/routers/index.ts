@@ -84,8 +84,14 @@ router.beforeEach(async (to, from, next) => {
   //   }
   // }
 
-  // 9.正常访问页面
-  next();
+  // // 9.正常访问页面 路径增加token为了统计时带上token
+  if (to.query.token === undefined) {
+    // 使用 `push` 方法来更改路由，增加参数
+    next({ path: to.path, query: { ...to.query, token: token } });
+  } else {
+    // 如果已经有参数了，就直接进行下一步
+    next();
+  }
 });
 
 /**

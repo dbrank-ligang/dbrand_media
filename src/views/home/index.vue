@@ -113,7 +113,7 @@ import { fugaituApi, overviewApi } from "@/api/modules/media";
 import { numFilter } from "@/utils/parseFloat";
 import router from "@/routers";
 import { NEGATIVE } from "@/config";
-import { disabledDateFun, getCookie } from "@/utils";
+import { disabledDateFun } from "@/utils";
 
 const handleCustomCategoryClick = function () {
   getFugaitu({ ...paramsObj.value, type: "all" });
@@ -181,13 +181,11 @@ const changeTime = () => {
   getFugaitu({ ...paramsObj.value, type: "all" });
 };
 // 跳转负面曝光页方法
-const token = getCookie();
 function jumpNegative(urlQuery: any) {
   let routerUrl = router.resolve({
     path: NEGATIVE,
     query: {
-      ...urlQuery,
-      token: token
+      ...urlQuery
     }
   });
   window.open(routerUrl.href, "_blank");
