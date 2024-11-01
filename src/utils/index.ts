@@ -14,8 +14,8 @@ export function getCookie() {
       return parts[1];
     }
   }
-  // return "";
-  return "46a18f8f163fed66685948f22c64e01e";
+  return "";
+  // return "46a18f8f163fed66685948f22c64e01e";
 }
 // 删除cookies
 export function deleteCookie(name) {
@@ -43,6 +43,27 @@ export const disabledDateFun = time => {
   let threeMonths = curDate - three;
   return time.getTime() > Date.now() || time.getTime() < threeMonths;
 };
+
+export function mixedSubstring(str, chineseLen, englishLen) {
+  let result = "";
+  let count = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) > 255) {
+      // 中文字符
+      count += 2;
+      if (count <= chineseLen) {
+        result += str[i];
+      }
+    } else {
+      // 英文字符
+      count += 1;
+      if (count <= englishLen) {
+        result += str[i];
+      }
+    }
+  }
+  return result;
+}
 
 /**
  * @description 获取localStorage

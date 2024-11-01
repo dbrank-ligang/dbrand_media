@@ -147,7 +147,7 @@ function dealPopOverChange() {
       cancelChange(); // 不保存修改关闭弹框
     });
   } else {
-    ElMessageBox.confirm(`是否保留当前更改？`, "温馨提示", {
+    ElMessageBox.confirm(`是否保留当前更改？`, "", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "warning",
@@ -425,6 +425,9 @@ onMounted(async () => {
 }
 .el-notification {
   // background-color: #ffdd00 !important;
+}
+.el-message-box {
+  background-color: #ffdd00 !important;
 }
 @keyframes flash {
   0% {

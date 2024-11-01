@@ -139,29 +139,29 @@
           </el-select>
         </div>
         <el-table v-loading="isLoading" :data="inferArr" style="width: 100%; margin-top: 10px; color: #000" border>
-          <el-table-column align="center" type="index" width="55" label="序号">
+          <el-table-column align="center" type="index" min-width="5%" label="序号">
             <template #default="{ $index }">
               {{ $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="媒体名称">
+          <el-table-column align="center" label="媒体名称" min-width="10%">
             <template #default="scope">
               <el-button link type="primary" size="small" @click="handleClick(scope.row)">{{ scope.row.mediaName }}</el-button>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="mediacluster" label="所属媒体集群" />
-          <el-table-column align="center" prop="positiveNum">
+          <el-table-column align="center" prop="mediacluster" label="所属媒体集群" min-width="10%" />
+          <el-table-column align="center" prop="positiveNum" min-width="13%">
             <template #header>
               <div style="font-size: 12px">(过去12个月内)</div>
               <div>相关正向内容条数</div>
             </template>
           </el-table-column>
-          <el-table-column align="center" prop="title" label="文章示例">
+          <el-table-column min-width="50%" align="center" prop="title" label="文章示例">
             <template #default="scope">
               <a target="_blank" :href="`${scope.row.docUrl}`">{{ scope.row.title }}</a>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="可能性">
+          <el-table-column align="center" label="可能性" min-width="10%">
             <template #default="scope"> {{ numFilter(scope.row.probability) }} </template>
           </el-table-column>
         </el-table>
@@ -185,21 +185,13 @@ import { MEDIADETAIL } from "@/config";
 import { numFilter } from "@/utils/parseFloat";
 
 const currBrandStore = useCurrBrandStore();
-const searchForm = ref({
-  type: null, //推荐；0不推荐；
-  num: 10, //查询top10 ；20 查询top20      必填
-  platform: null, //平台名称                 非必填
-  meitidalei: null, //媒体大类名称             非必填
-  hangyexifen: null, //行业细分名称            非必填
-  xifenquanceng: null //细分圈层名称           非必填
-} as any);
 const isLoading = ref(false); //竞品列表loading
 const isSellTableLoading = ref(false); //推荐列表-loading
 const isSellNoTableLoading = ref(false); //不推荐列表-loading
 const competitorBrandId = ref(""); // 竞品id
 const meitidaleiArr = ref([] as any); // 媒体大类下拉框
-const hangyexifenArr = ref([] as any); // 媒体大类下拉框
-const xifenquancengArr = ref([] as any); // 媒体大类下拉框
+const hangyexifenArr = ref([] as any); // 行业细分下拉框
+const xifenquancengArr = ref([] as any); // 细分媒体下拉框
 const platformArr = ref([] as any); //平台
 let activePlatformIndex = ref(null); // 媒体源，默认选中第一个
 const sellArr = ref([] as any); // 推荐列表
@@ -208,7 +200,15 @@ const sellNoArr = ref([] as any); // 推荐列表
 const isExpandSellNo = ref(false); // 不推荐列表 fasle:收起
 const inferArr = ref([] as any); // 竞品列表
 const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
-
+const searchForm = ref({
+  type: null, //推荐；0不推荐；
+  num: 10, //查询top10 ；20 查询top20      必填
+  platform: null, //平台名称                 非必填
+  meitidalei: 1, //媒体大类名称             非必填
+  hangyexifen: null, //行业细分名称            非必填
+  xifenquanceng: null, //细分圈层名称           非必填
+  competitorBrandId: null
+} as any);
 // 下拉框根据id找到name
 function findNameById(arr, id) {
   const person = arr.find(arr => arr.id === id);
@@ -234,7 +234,9 @@ const changeMedia = value => {
   }
   searchForm.value.hangyexifen = null;
   searchForm.value.xifenquanceng = null;
-  handleSearch();
+  setTimeout(() => {
+    handleSearch();
+  }, 500);
 };
 const clearMedia = () => {
   hangyexifenArr.value = []; // 行业细分下拉框
@@ -281,10 +283,21 @@ const handleSearch = () => {
   const searchValueObj = searchValue();
   getSellArr({ ...searchValueObj, type: 1, brandId: currBrandStore.currBrandObj.brandId });
   getSellNoArr({ ...searchValueObj, type: 0, brandId: currBrandStore.currBrandObj.brandId });
+  getInferArr({
+    ...searchValueObj,
+    competitorBrandId: competitorBrandId.value,
+    type: null,
+    brandId: currBrandStore.currBrandObj.brandId
+  });
+  // setTimeout(() => {
+  //   changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId); //竞品列表 初始化查询
+  // }, 400);
   isExpandSell.value = false;
   isExpandSellNo.value = false;
+  isExpandInfer.value = false;
   isSellTableLoading.value = true; //推荐名单列表 loading
   isSellNoTableLoading.value = true; //不推荐名单列表 loading
+  isLoading.value = true; // 竞品列表loading
 };
 // 推荐 不推荐列表
 const getSellArr = async (params: any) => {
@@ -292,7 +305,7 @@ const getSellArr = async (params: any) => {
     .then(res => {
       setTimeout(() => {
         isSellTableLoading.value = false;
-      }, 300);
+      }, 200);
       sellArr.value = res.data as any;
     })
     .catch(() => {
@@ -304,7 +317,7 @@ const getSellNoArr = async (params: any) => {
     .then(res => {
       setTimeout(() => {
         isSellNoTableLoading.value = false;
-      }, 300);
+      }, 200);
       sellNoArr.value = res.data as any;
     })
     .catch(() => {
@@ -323,17 +336,21 @@ const getInferArr = async (params: any) => {
     });
 };
 // 競品下拉框 change事件
-const changeCompetitorBrand = value => {
+const changeCompetitorBrand = (value, meitidalei?: any) => {
   const searchValueObj = searchValue();
+  console.log("searchValueObj", searchValueObj);
   isExpandInfer.value = false; // 展开/收起 置为false（展开） false：查询10条
   competitorBrandId.value = value;
   isLoading.value = true;
-  getInferArr({
-    ...searchValueObj,
-    num: isExpandSell.value === true ? 20 : 10,
-    competitorBrandId: value,
-    brandId: currBrandStore.currBrandObj.brandId
-  });
+  setTimeout(() => {
+    getInferArr({
+      ...searchValueObj,
+      meitidalei: !meitidalei ? searchValueObj.meitidalei : meitidalei,
+      num: isExpandSell.value === true ? 20 : 10,
+      competitorBrandId: value,
+      brandId: currBrandStore.currBrandObj.brandId
+    });
+  }, 300);
 };
 
 // 推荐列表-展开收起  false:10,true:20; object:0/1/2(0：不推荐列表，1：推荐列表，2：竞品列表)
@@ -434,8 +451,11 @@ const handleClick = (row?: any) => {
 onMounted(() => {
   getMediaType(); // 获取媒体大类
   getDictListApi(); // 获取平台列表
-  handleSearch(); // 初始化查询
-  changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId);
+  // handleSearch(); // 推荐、不推荐名单 初始化查询
+  changeMedia(1);
+  setTimeout(() => {
+    changeCompetitorBrand(currBrandStore.currBrandObj.competitor[0].competitorBrandId, meitidaleiArr.value[0].name); //竞品列表 初始化查询
+  }, 400);
 });
 </script>
 

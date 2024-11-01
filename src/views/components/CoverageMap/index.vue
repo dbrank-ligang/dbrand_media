@@ -79,7 +79,11 @@
                 </div>
 
                 <span
-                  :title="mediaListItem.mediaName.length > 9 ? `${mediaListItem.mediaName}` : ''"
+                  :title="
+                    mixedSubstring(mediaListItem.mediaName, 18, 18) !== mediaListItem.mediaName
+                      ? `${mediaListItem.mediaName}`
+                      : ''
+                  "
                   :style="{
                     color:
                       flagType(mediaListItem.publishFlag) === 'negative' && mediaListItem.publishFlag[0] == 1
@@ -88,7 +92,7 @@
                     marginLeft: flagType(mediaListItem.publishFlag) === 'negative' ? '30px' : null
                   }"
                 >
-                  {{ mediaListItem.mediaName.slice(0, 9) }}
+                  {{ mixedSubstring(mediaListItem.mediaName, 18, 18) }}
                 </span>
               </div>
             </div>
@@ -105,6 +109,7 @@ import { MEDIADETAIL } from "@/config";
 import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
+import { mixedSubstring } from "@/utils";
 const router = useRouter();
 const childRef = ref() as any;
 const brandFlagBgColor = ref({
@@ -194,7 +199,7 @@ const scrollRight = index => {
 };
 
 const mediaClick = item => {
-  const params = { mediaId: item.mediaId, subUnionId: item.subMediaId };
+  const params = { mediaId: item.mediaId, subUnionId: item.subMediaId, accountName: item.mediaName, platform: item.platform };
   getMediaNavApi(params);
 };
 

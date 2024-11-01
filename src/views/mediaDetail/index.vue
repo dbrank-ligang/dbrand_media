@@ -27,8 +27,11 @@
             :class="{ active: oneLevelActiveId == item.subUnionId }"
             @click="oneLevelClick(item)"
           >
-            <div class="mediaName_nav" :title="item.subUnionName.length > 9 ? `${item.subUnionName}` : ''">
-              <span></span>{{ item.subUnionName.slice(0, 9) }}
+            <div
+              class="mediaName_nav"
+              :title="mixedSubstring(item.subUnionName, 18, 18) !== item.subUnionName ? `${item.subUnionName}` : ''"
+            >
+              <span></span>{{ mixedSubstring(item.subUnionName, 18, 18) }}
             </div>
             <div
               v-if="oneLevelActiveId == item.subUnionId && (item.beforeName || item.anotherName || item.includeName)"
@@ -96,7 +99,7 @@
 
         <div class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号详情]</div>
-          <el-row :gutter="20" style="padding: 15px 0 15px 15px">
+          <el-row :gutter="20" style="padding: 15px 0 0px 15px">
             <el-col class="numberDetailBox_Row" :span="12" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
               <div class="numberDetailBox_rowTit">{{ item }}：</div>
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.extendFields[item] }}</div>
@@ -112,7 +115,7 @@
 
         <div class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号标签]</div>
-          <div style="padding: 15px 0 15px 15px">
+          <div style="padding: 15px 0 0px 15px">
             <div class="numberDetailBox_Row">
               <div class="numberDetailBox_rowTit">行业大类标签：</div>
               <div class="numberDetailBox_rowCon">{{ numberDetailObj?.hangyedalei || "" }}</div>
@@ -176,6 +179,7 @@ import { isArray } from "@/utils/is";
 import { disabledDateFun } from "@/utils";
 import moment from "moment";
 import BottomNav from "./../components/BottomNav/index.vue";
+import { mixedSubstring } from "@/utils";
 
 const route = useRoute();
 // 左侧一级导航列表数据

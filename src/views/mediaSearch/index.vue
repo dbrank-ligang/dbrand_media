@@ -51,7 +51,7 @@ const historyListData = ref([] as any); // 搜索历史列表
 const tagListData = ref([] as any);
 const historyChange = item => {
   // jumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
-  getMediaNavApi({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
+  getMediaNavApi({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName, platform: item.platform });
 };
 // 获取搜索历史列表
 const getSearchMediaHistory = async () => {
