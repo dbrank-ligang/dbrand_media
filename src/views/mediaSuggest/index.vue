@@ -9,6 +9,22 @@
         <div class="searchBox_1">
           <div>[类别]</div>
           <div class="selectBox">
+            <div>媒体类别：</div>
+            <div>
+              <el-select
+                v-model="searchForm.mediaType"
+                class="m-2"
+                clearable
+                filterable
+                placeholder="请选择"
+                style="width: 130px"
+                @change="handleSearch"
+              >
+                <el-option v-for="item in meitiTypeArr" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </div>
+          </div>
+          <div class="selectBox">
             <div>媒体大类：</div>
             <div>
               <el-select
@@ -17,7 +33,7 @@
                 clearable
                 filterable
                 placeholder="请选择"
-                style="width: 150px"
+                style="width: 130px"
                 @change="changeMedia"
                 @clear="clearMedia"
               >
@@ -34,7 +50,7 @@
                 filterable
                 class="m-2"
                 placeholder="请选择"
-                style="width: 150px"
+                style="width: 130px"
                 @change="handleSearch"
               >
                 <el-option v-for="item in hangyexifenArr" :key="item.id" :label="item.name" :value="item.id" />
@@ -51,7 +67,7 @@
                 filterable
                 class="m-2"
                 placeholder="请选择"
-                style="width: 150px"
+                style="width: 130px"
                 @change="handleSearch"
               >
                 <el-option v-for="item in xifenquancengArr" :key="item.id" :label="item.name" :value="item.id" />
@@ -127,7 +143,7 @@
             v-model="competitorBrandId"
             class="m-2"
             placeholder="请选择"
-            style="width: 150px"
+            style="width: 130px"
             @change="changeCompetitorBrand"
           >
             <el-option
@@ -189,11 +205,25 @@ const isLoading = ref(false); //竞品列表loading
 const isSellTableLoading = ref(false); //推荐列表-loading
 const isSellNoTableLoading = ref(false); //不推荐列表-loading
 const competitorBrandId = ref(""); // 竞品id
+const meitiTypeArr = ref([
+  {
+    id: "传统媒体",
+    name: "传统媒体"
+  },
+  {
+    id: "资讯网媒",
+    name: "资讯网媒"
+  },
+  {
+    id: "自媒体",
+    name: "自媒体"
+  }
+]);
 const meitidaleiArr = ref([] as any); // 媒体大类下拉框
 const hangyexifenArr = ref([] as any); // 行业细分下拉框
 const xifenquancengArr = ref([] as any); // 细分媒体下拉框
 const platformArr = ref([] as any); //平台
-let activePlatformIndex = ref(null); // 媒体源，默认选中第一个
+let activePlatformIndex = ref(null) as any; // 媒体源，默认选中第一个
 const sellArr = ref([] as any); // 推荐列表
 const isExpandSell = ref(false); // 推荐列表 fasle:收起
 const sellNoArr = ref([] as any); // 推荐列表
@@ -203,11 +233,12 @@ const isExpandInfer = ref(false); // 竞品推荐推荐列表 fasle:收起
 const searchForm = ref({
   type: null, //推荐；0不推荐；
   num: 10, //查询top10 ；20 查询top20      必填
-  platform: null, //平台名称                 非必填
+  platform: null, //平台名称          非必填
+  mediaType: null, // 媒体类别 非必填
   meitidalei: 1, //媒体大类名称             非必填
-  hangyexifen: null, //行业细分名称            非必填
-  xifenquanceng: null, //细分圈层名称           非必填
-  competitorBrandId: null
+  hangyexifen: null, //行业细分名称         非必填
+  xifenquanceng: null, //细分圈层名称        非必填
+  competitorBrandId: null //竞品合作媒体推测列表
 } as any);
 // 下拉框根据id找到name
 function findNameById(arr, id) {
@@ -449,6 +480,7 @@ const handleClick = (row?: any) => {
   getMediaNavApi({ mediaId: row.mediaId });
 };
 onMounted(() => {
+  activePlatformIndex.value = 0; // 点击时更新当前活动索引
   getMediaType(); // 获取媒体大类
   getDictListApi(); // 获取平台列表
   // handleSearch(); // 推荐、不推荐名单 初始化查询

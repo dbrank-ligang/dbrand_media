@@ -48,6 +48,9 @@
       </div>
       <div class="mediaDetail_right">
         <div v-if="oneLevelSelectObj?.baike" class="mediaDetail_baike" v-html="oneLevelSelectObj?.baike"></div>
+        <div v-if="oneLevelSelectObj?.baike" class="baikeTip">
+          *以上信息来自百度百科，本站无法保证其内容的真实性、准确性、完整性和权威性
+        </div>
         <div class="mediaSource" style="margin-top: 20px">
           <div class="mediaSource_tit">[作为媒体源]</div>
           <div class="mediaSource_listBox">
@@ -273,7 +276,7 @@ const getOneLevelArr = async (params: any) => {
   if (defaultObj.value?.subUnionId) {
     for (let i = 0; i < oneLevelObj.value.subUnionMediaList.length; i++) {
       let item = oneLevelObj.value.subUnionMediaList[i];
-      console.log(item, "subUnionName");
+      // console.log(item, "subUnionName");
       if (item.subUnionId == defaultObj.value.subUnionId) {
         selectItem = item;
         oneLevelClick(selectItem);
@@ -301,7 +304,7 @@ const getMdiaSourceArr = async (params: any) => {
     for (let i = 0; i < mediaSourceArr.value.length; i++) {
       let tempData = mediaSourceArr.value[i];
       for (let j = 0; j < tempData.data.length; j++) {
-        console.log(tempData.data[j]);
+        // console.log(tempData.data[j]);
         if (tempData.data[j].name === defaultObj.value.platform) {
           mediaSourceItem = tempData.data[j];
           selectIndex = i;
@@ -370,8 +373,9 @@ onMounted(() => {
 });
 </script>
 <style lang="scss">
-@import "./baike.scss";
-@import "./baikeNew.scss";
+// @import "./baike1.scss";
+// @import "./baike2.scss";
+@import "./baike3.scss";
 </style>
 <style scoped lang="scss">
 @import "./index.scss";

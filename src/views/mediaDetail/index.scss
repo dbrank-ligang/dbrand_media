@@ -21,7 +21,7 @@
   background: rgb(255 255 255 / 100%);
   border-radius: 6px;
   // margin: 0 0 20px 20px;
-  padding: 20px 20px 10px 20px;;
+  padding: 20px 20px 15px 20px;;
 }
 .mediaDetail_text{
   width: 280px;
@@ -188,4 +188,13 @@
     background-color: #ffdd00; /* 你想要的背景色 */
     border-radius: 5px;
   }
+}
+.baikeTip {
+  font-size: 10px;
+  text-align: right;
+  line-height: 16px;
+  position: relative;
+  right: 10px;
+  bottom: 25px;
+  float: inline-end;
 }
