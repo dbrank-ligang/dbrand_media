@@ -5,45 +5,70 @@
 .mediaDetailBox > div {
   // border: 1px solid red;
 }
+.mediaDetail_con{
+  .mediaDetail_up{
+    width: 280px;
+    // display: flex;
+    // justify-content: space-between;
+    min-height: 200px;
+ 
+   
+  }
+
+}
+.mediaDetail_baike{
+  flex: 1;
+  background: rgb(255 255 255 / 100%);
+  border-radius: 6px;
+  // margin: 0 0 20px 20px;
+  padding: 20px 20px 15px 20px;;
+}
+.mediaDetail_text{
+  width: 280px;
+}
+.left_top {
+  // height: 200px;
+  overflow: hidden;
+  text-align: center;
+  .left_top_tit1 {
+    font-size: 14px;
+    margin-top: 20px;
+    font-weight: 700;
+    line-height: 40px;
+  }
+  .left_top_tit2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: rgb(89 68 0);
+  }
+  .left_top_tit3 {
+    font-size: 14px;
+    line-height: 24px;
+  }
+}
 .mediaDetailBox {
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 100%;
+
+
   .mediaDetail_left {
-    display: flex;
-    flex-direction: column;
-    width: 256px;
+    width: 280px;
     height: 100%;
     overflow: hidden;
-    .left_top {
-      height: 200px;
-      overflow: hidden;
-      text-align: center;
-      .left_top_tit1 {
-        margin-top: 20px;
-        font-weight: 700;
-        line-height: 40px;
-      }
-      .left_top_tit2 {
-        font-size: 30px;
-        font-weight: 700;
-        color: rgb(89 68 0);
-      }
-      .left_top_tit3 {
-        font-size: 14px;
-        line-height: 24px;
-      }
-    }
+
     .left_bottom {
       flex: 1;
       padding-left: 0;
       overflow: auto;
       text-align: center;
+      margin-top: 20px;
       li {
         width: 100%;
         cursor: pointer;
         background-color: #ffffff;
+        font-size: 16px;
       }
       li > .mediaName_nav {
         min-height: 60px;
@@ -74,7 +99,7 @@
     .mediaSource {
       width: 100%;
       height: auto;
-      padding: 20px;
+      padding: 10px;
       background: rgb(255 255 255 / 100%);
       border-radius: 6px;
       .mediaSource_tit {
@@ -89,13 +114,13 @@
           justify-content: left;
           margin-bottom: 10px;
           .mediaSource_rowCon {
+            font-size: 14px;
             display: flex;
             flex: 1;
             flex-wrap: wrap;
             justify-content: left;
             div {
-              margin: 0 10px;
-              cursor: pointer;
+              margin: 0 10px 4px 10px;
             }
           }
         }
@@ -104,7 +129,7 @@
     .numberDetailBox {
       width: 100%;
       height: auto;
-      padding: 20px;
+      padding: 10px;
       background: rgb(255 255 255 / 100%);
       border-radius: 6px;
       .numberDetailBox_tit {
@@ -112,6 +137,7 @@
         font-weight: 550;
       }
       .numberDetailBox_Row {
+        font-size: 14px;
         display: flex;
         flex-wrap: wrap;
         justify-content: start;
@@ -150,6 +176,10 @@
       color: #000 !important;
     }
   }
+
+  .mediaSource_rowTit{
+    font-size: 14px;
+  }
   .activeMedia {
     background-color: #ffdd00; /* 你想要的背景色 */
     border-radius: 5px;
@@ -158,4 +188,13 @@
     background-color: #ffdd00; /* 你想要的背景色 */
     border-radius: 5px;
   }
+}
+.baikeTip {
+  font-size: 10px;
+  text-align: right;
+  line-height: 16px;
+  position: relative;
+  right: 10px;
+  bottom: 25px;
+  float: inline-end;
 }

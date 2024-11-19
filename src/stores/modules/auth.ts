@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { AuthState } from "@/stores/interface";
 import { getAuthButtonListApi, getAuthMenuListApi } from "@/api/modules/login";
 import { getFlatMenuList, getShowMenuList, getAllBreadcrumbList } from "@/utils";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
+import { useUserStore } from "@/stores/modules/user";
 
 export const useAuthStore = defineStore({
   id: "geeker-auth",
@@ -33,7 +35,27 @@ export const useAuthStore = defineStore({
     },
     // Get AuthMenuList 获取菜单
     async getAuthMenuList() {
+      const currBrandStore = useCurrBrandStore();
+      const userStore = useUserStore();
+
       const { data } = await getAuthMenuListApi();
+      if (!userStore.userInfo.memberShip) {
+        // 非会员 导航只有首页可以点
+        data.map(item => {
+          if (item.name !== "home") {
+            item.meta.isDisabled = true;
+          }
+        });
+      } else {
+        data.map(item => {
+          // 品牌对比，如果没有竞品，品牌对比菜单设置成isDisable不可点击
+          if (item.name == "brandRatio") {
+            if (!currBrandStore.currBrandObj.competitor || currBrandStore.currBrandObj.competitor.length < 1) {
+              item.meta.isDisabled = true;
+            }
+          }
+        });
+      }
       this.authMenuList = data;
     },
     // Set RouteName

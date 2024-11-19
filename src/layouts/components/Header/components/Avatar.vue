@@ -25,16 +25,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { LOGIN_URL } from "@/config";
-import { useRouter } from "vue-router";
 import { logoutApi } from "@/api/modules/login";
-import { useUserStore } from "@/stores/modules/user";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
 import PasswordDialog from "./PasswordDialog.vue";
-
-const router = useRouter();
-const userStore = useUserStore();
+import { deleteCookie } from "@/utils";
+import { useUserStore } from "@/stores/modules/user";
 
 // 退出登录
 const logout = () => {
@@ -45,12 +41,14 @@ const logout = () => {
   }).then(async () => {
     // 1.执行退出登录接口
     await logoutApi();
-
-    // 2.清除 Token
-    userStore.setToken("");
-
     // 3.重定向到登陆页
-    router.replace(LOGIN_URL);
+    const userStore = useUserStore();
+    userStore.setUserInfo("");
+    deleteCookie("token");
+    window.localStorage.clear();
+    window.localStorage.setItem("isLogin", false);
+    window.location.href = "https://dbrank.net/login";
+
     ElMessage.success("退出登录成功！");
   });
 };

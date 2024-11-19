@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+  list-style: none;
+  // color: #000 !important;
+}
+.lemmaSummary_jO4rs {
+  word-wrap: break-word;
+  zoom: 1;
+  clear: both;
+  color: #333;
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  position: relative;
+  text-indent: 2em
+}
+.lemmaSummary_jO4rs .lemmaSummaryAnchor_hwbCj {
+  position: absolute;
+  top: -80px
+}
+.para_YSJB6 {
+  word-wrap: break-word;
+  zoom: 1;
+  clear: both;
+  color: #333;
+  font-size: 14px;
+  line-height: 24px
+}
+
+.para_YSJB6.summary_LggeX {
+  // margin-bottom: 15px;
+  text-indent: 2em
+}
+.text_S3vZG {
+  position: relative
+}
+.text_S3vZG .innerLink_I4_DN {
+  color: #136ec2;
+  -webkit-text-decoration: none;
+  text-decoration: none
+}
+
+.text_S3vZG .innerLink_I4_DN:hover {
+  -webkit-text-decoration: underline;
+  text-decoration: underline
+}
+.basicInfo_O1Zot {
+  background: url(https://baikebcs.bdimg.com/baike-react/lemma/basicInfo-bg.png);
+  background-position-y: 16px;
+  margin: 20px 0 20px
+}
+.basicInfo_O1Zot:after {
+  clear: both;
+  content: "";
+  display: block
+}
+.basicInfo_O1Zot .basicInfoBlock_mxixf {
+  float: left;
+  width: 395px
+}
+
+.basicInfo_O1Zot .basicInfoBlock_mxixf .itemWrapper_uuTI3 {
+  position: relative;
+  // margin-top: -16px;
+}
+
+.basicInfo_O1Zot .basicInfoBlock_mxixf .itemWrapper_uuTI3:after {
+  clear: both;
+  content: "";
+  display: block
+}
+.basicInfo_O1Zot .basicInfoBlock_mxixf .basicInfoItem_kkuIl {
+  display: block;
+  float: left;
+  line-height: 26px;
+  margin: 0;
+  padding: 0
+}
+.basicInfo_O1Zot .basicInfoBlock_mxixf .basicInfoItem_kkuIl.itemName_JAwrE {
+  color: #999;
+  font-weight: 700;
+  overflow: hidden;
+  padding: 0 5px 0 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90px
+}
+
+.basicInfo_O1Zot .basicInfoBlock_mxixf .basicInfoItem_kkuIl.itemName_JAwrE:before {
+  content: "";
+  display: block
+}
+.basicInfo_O1Zot .basicInfoBlock_mxixf .basicInfoItem_kkuIl.itemValue_zVpWC {
+  zoom: 1;
+  color: #333;
+  float: left;
+  position: relative;
+  width: 285px;
+  word-break: break-all
+}

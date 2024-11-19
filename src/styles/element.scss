@@ -3,6 +3,26 @@
 .el-notification {
   z-index: 2070 !important;
 }
+.el-notification {
+  background-color: #ffdd00 !important;
+  .el-notification--success {
+    color: #00B744 !important;
+  }
+  .el-notification--warning {
+    color: #F78400 !important;
+  }
+  .el-notification--error {
+    color: #F51818 !important;
+  }
+  .el-notification--info {
+    color: #524700 !important;
+  }
+  .el-notification__content, .el-notification__closeBtn{
+    font-size: 12px !important;
+    color: #000000 !important;
+  }
+  
+}
 
 /* el-alert */
 .el-alert {

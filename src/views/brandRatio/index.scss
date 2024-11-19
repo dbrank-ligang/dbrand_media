@@ -1,0 +1,211 @@
+* {
+  box-sizing: border-box;
+}
+.brandRatio {
+  width: 100%;
+  height: 100%;
+  .header_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    .header_box_left {
+      font-size: 16px;
+      span {
+        font-weight: bolder;
+      }
+      .tiopBg {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background-color: rgb(209 93 88 / 100%);
+        border-radius: 50%;
+      }
+      .red {
+        background-color: #d15d58;
+      }
+      .yellow {
+        background-color: #ffe122;
+      }
+      .blue {
+        background-color: #5576cc;
+      }
+    }
+    .header_box_right {
+      font-size: 16px;
+      display: flex;
+      justify-content: flex-end;
+      div {
+        margin-right: 4px;
+        .tiopBd {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          margin-right: 8px;
+          border: 1px solid rgb(209 93 88 / 100%);
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  // 概览数据
+  .overview {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 16px 30px;
+    margin-bottom: 10px;
+    background: rgb(255 255 255 / 100%);
+    border-radius: 6px;
+    .overview_tit {
+      height: 42px;
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 35px;
+    }
+    // 媒体数据
+    .overview_numberBox {
+      display: flex;
+      flex: 1;
+      justify-content: space-around;
+      height: 100%;
+      .overview_number {
+        width: 280px;
+        height: 100%;
+        font-size: 16px;
+        line-height: 28px;
+        padding: 10px;
+        border-radius: 5px;
+        .media_dec {
+          width: 123px;
+          font-size: 12px;
+          line-height: 18px;
+          color: rgb(128 128 128 / 100%);
+        }
+        .media_rank {
+          display: flex;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  .buttonStyle {
+    background-color: #ffdd00;
+  }
+
+  // 媒体数据
+  .mediaBox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 1184px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    .mediaHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 83px;
+      padding: 0 30px;
+      background-color: #ffffff;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+      .mediaHeader_tit {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 34px;
+      }
+    }
+    .mediaCon {
+      flex: 1;
+      width: auto;
+      padding: 10px;
+      overflow: scroll;
+      overflow-x: auto;
+      white-space: nowrap;
+      .scrollButton {
+        font-size: 50px;
+        cursor: pointer;
+      }
+      .scrollButton_left {
+        position: absolute;
+        top: 600px;
+        left: 30px;
+      }
+      .scrollButton_right {
+        position: absolute;
+        top: 600px;
+        right: 30px;
+      }
+      .mediaCon_ul {
+        // display: flex;
+        // justify-content: flex-start;
+        margin-bottom: 10px;
+        list-style-type: none;
+        .mediaCon_li {
+          display: inline-table;
+          width: 233px;
+          height: 332px;
+          padding: 20px 5px;
+          margin-right: 10px;
+          background: rgb(255 255 255 / 100%);
+          border-radius: 8px;
+          box-shadow: 0 2px 5px rgb(222 222 222 / 100%);
+          .media_type {
+            width: 100%;
+            height: 35px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            text-align: center;
+          }
+          .media_list {
+            .media_listIner {
+              padding-left: 6px;
+              line-height: 24px;
+              span {
+                margin-right: 5px;
+              }
+              .circleBox {
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+              }
+              .red {
+                background-color: #d15d58;
+              }
+              .yellow {
+                background-color: #ffe122;
+              }
+              .blue {
+                background-color: #5576cc;
+              }
+            }
+          }
+        }
+      }
+    }
+    .mediaFooter {
+      width: 100%;
+      height: 45px;
+      background-color: #ffffff;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+    }
+  }
+  .home-bg {
+    width: 70%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+  }
+
+}

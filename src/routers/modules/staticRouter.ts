@@ -10,6 +10,14 @@ export const staticRouter: RouteRecordRaw[] = [
     redirect: HOME_URL
   },
   {
+    path: "/index.html",
+    redirect: HOME_URL
+  },
+  {
+    path: "/index",
+    redirect: HOME_URL
+  },
+  {
     path: LOGIN_URL,
     name: "login",
     component: () => import("@/views/login/index.vue"),
@@ -26,7 +34,6 @@ export const staticRouter: RouteRecordRaw[] = [
     children: []
   }
 ];
-
 /**
  * errorRouter (错误页面路由)
  */

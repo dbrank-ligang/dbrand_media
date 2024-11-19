@@ -9,7 +9,7 @@
       </template>
       <SubMenu :menu-list="subItem.children" />
     </el-sub-menu>
-    <el-menu-item v-else :index="subItem.path" @click="handleClickMenu(subItem)">
+    <el-menu-item v-else :index="subItem.path" :disabled="subItem.meta.isDisabled" @click="handleClickMenu(subItem)">
       <!-- <el-icon v-if="subItem.meta.icon">
         <component :is="subItem.meta.icon"></component>
       </el-icon> -->
@@ -27,6 +27,7 @@ defineProps<{ menuList: Menu.MenuOptions[] }>();
 
 const router = useRouter();
 const handleClickMenu = (subItem: Menu.MenuOptions) => {
+  if (subItem.meta.isDisabled) return;
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
   router.push(subItem.path);
 };
@@ -35,10 +36,11 @@ const handleClickMenu = (subItem: Menu.MenuOptions) => {
 <style lang="scss">
 .el-menu-item {
   display: inline-block;
-  width: 80%;
-  height: 35px;
-  margin-top: 10px !important;
-  line-height: 35px;
+  // width: 90px;
+  height: 34px;
+  text-align: center;
+  line-height: 32px;
+  margin-top: 37px !important;
   color: #000000;
   background: #ffffff;
   border: 2px solid #000000;
@@ -61,8 +63,10 @@ const handleClickMenu = (subItem: Menu.MenuOptions) => {
     color: var(--el-menu-hover-text-color);
   }
   &.is-active {
-    width: 80%;
-    margin: 0 auto;
+    // width: 90px;
+    // height: 34px;
+    // text-align: center;
+    // line-height: 32px;
     font-weight: bolder;
     color: #000000;
     background-color: rgb(255 221 0);

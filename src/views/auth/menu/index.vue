@@ -11,17 +11,17 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { useRouter } from "vue-router";
-import { LOGIN_URL } from "@/config";
-import { useUserStore } from "@/stores/modules/user";
+import { deleteCookie } from "@/utils";
 import { Promotion } from "@element-plus/icons-vue";
-
-const router = useRouter();
-const userStore = useUserStore();
+import { useUserStore } from "@/stores/modules/user";
 
 const handleToLogin = () => {
-  userStore.setToken("");
-  router.push(LOGIN_URL);
+  const userStore = useUserStore();
+  userStore.setUserInfo("");
+  deleteCookie("token");
+  window.localStorage.clear();
+  window.localStorage.setItem("isLogin", false);
+  window.location.href = "https://dbrank.net/login";
 };
 </script>
 

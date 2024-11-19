@@ -73,10 +73,11 @@
 /* scroll bar */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
+  height: 10px;
 }
 ::-webkit-scrollbar-thumb {
   background-color: var(--el-border-color-darker);
+  // background-color: red;
   border-radius: 20px;
 }
 

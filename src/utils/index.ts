@@ -1,7 +1,69 @@
 import { isArray } from "@/utils/is";
 import { FieldNamesProps } from "@/components/ProTable/interface";
-
+import { userInfoApi, addMediaNotExistApi } from "@/api/modules/media";
+import { useCurrBrandStore } from "@/stores/modules/currBrand";
+import { useUserStore } from "@/stores/modules/user";
 const mode = import.meta.env.VITE_ROUTER_MODE;
+
+// 获取cookie中的token
+export function getCookie() {
+  let cookies = document.cookie.split("; ");
+  for (let i = 0; i < cookies.length; i++) {
+    let parts = cookies[i].split("=");
+    if (parts[0] === "token") {
+      return parts[1];
+    }
+  }
+  return "";
+  // return "46a18f8f163fed66685948f22c64e01e";
+}
+// 删除cookies
+export function deleteCookie(name) {
+  // 清空cookie
+  document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;";
+}
+// 查询个人信息
+export const getUserInfoObj = async () => {
+  const userStore = useUserStore();
+  const currBrandStore = useCurrBrandStore();
+  const { data } = await userInfoApi();
+  userStore.setUserInfo(data);
+  currBrandStore.setCurrBrandObj((data as any).brands[0]);
+};
+// 保存未搜索到的媒体
+export const addMediaNotExist = async (param: any) => {
+  const currBrandStore = useCurrBrandStore();
+  addMediaNotExistApi({ brandId: currBrandStore.currBrandObj.brandId, keyword: param });
+};
+
+//日期选择器不可选择大于当前日期
+export const disabledDateFun = time => {
+  let curDate = new Date().getTime();
+  let three = 3 * 100 * 24 * 3600 * 1000;
+  let threeMonths = curDate - three;
+  return time.getTime() > Date.now() || time.getTime() < threeMonths;
+};
+
+export function mixedSubstring(str, chineseLen, englishLen) {
+  let result = "";
+  let count = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) > 255) {
+      // 中文字符
+      count += 2;
+      if (count <= chineseLen) {
+        result += str[i];
+      }
+    } else {
+      // 英文字符
+      count += 1;
+      if (count <= englishLen) {
+        result += str[i];
+      }
+    }
+  }
+  return result;
+}
 
 /**
  * @description 获取localStorage

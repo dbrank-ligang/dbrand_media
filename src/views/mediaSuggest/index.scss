@@ -8,7 +8,7 @@
   background-color: #ffffff;
   padding: 20px;
   overflow: hidden;
-
+  font-size: 16px;
   .mediaSuggest_tit{
     width: 100%;
     display: flex;
@@ -24,7 +24,7 @@
     }
   }
   .searchBox{
-    width: 80%;
+    width: 100%;
     margin-left: 30px;
     .searchBox_1{
       display: flex;
@@ -36,7 +36,7 @@
       .selectBox{
         display: flex;
         justify-content: left;
-        margin-left: 20px;
+        margin-left: 15px;
       }
     }
     .searchBox_2{
@@ -89,17 +89,17 @@
     // padding: 30px 40px;
     .tableTile{
       width: 100%;
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 500;
     }
     .sellBox {
-      width: 43%;
-      height: 300px;
+      width: 45%;
+      height: auto;
       // border: 1px solid red;
     }
     .sellNoBox {
-      width: 43%;
-      height: 300px;
+      width: 45%;
+      height: auto;
       // border: 1px solid red;
       margin-left: 5%;
    

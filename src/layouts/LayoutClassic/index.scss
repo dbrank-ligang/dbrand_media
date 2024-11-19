@@ -9,7 +9,7 @@
     height: 80px;
     padding: 0 53px;
     background-color: var(--el-header-bg-color);
-    border: 1px solid red;
+    // border: 1px solid red;
 
     // border-bottom: 1px solid var(--el-header-border-color);
     .header-lf {
@@ -28,8 +28,9 @@
     .header-ri {
       display: flex;
       align-items: center;
+      font-size: 16px;
       div {
-        margin-left: 20px;
+        // margin-left: 20px;
       }
       .el-dropdown-link {
         font-size: 16px;
@@ -45,12 +46,16 @@
         font-size: 14px;
         color: #8492a6;
       }
+    
     }
+  }
+  :deep(.el-input-group__append) {
+    background-color: #ffdd00;
   }
   .classic-content {
     display: flex;
     height: calc(100% - 80px);
-    border: 1px solid red;
+    // border: 1px solid red;
     :deep(.el-aside) {
       width: auto;
       background-color: var(--el-menu-bg-color);
