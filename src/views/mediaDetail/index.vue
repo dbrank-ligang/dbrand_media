@@ -197,9 +197,9 @@ const oneLevelObj = ref({
 let activeMediaSourceIndex = ref(0); // 媒体源，默认选中第一个
 const activeNumberIndex = ref(0); // 账号列表，默认选中第一个
 const accountId = ref(null); // 账号列表选中的id
-const oneName = ref("一级"); // 一级选中的
-const twoName = ref("二级"); // 二级选中的
-const threeName = ref("三级"); // 三级选中的
+const oneName = ref(""); // 一级选中的
+const twoName = ref(""); // 二级选中的
+const threeName = ref(""); // 三级选中的
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
 // 获取上周周日

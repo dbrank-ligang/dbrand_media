@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="hoistryBox">
-      <div class="listTit">标签推荐</div>
+      <div class="listTit">搜索推荐</div>
       <div class="listCon">
         <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item)">
           <span>{{ item.mediaName }}</span>
