@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-carousel :interval="40000" :loop="false" :autoplay="false" type="card" @change="carouselChange" ref="carousel" >
+    <el-carousel :interval="40000" type="card" @change="carouselChange" ref="carousel">
       <el-carousel-item v-for="item in carouseData" :key="item.id" :id="item.id" :ref="setItemRef(item.id)">
         {{ item.id }}
         <!-- <img class="element-img" alt="" :src="item.url"> -->
