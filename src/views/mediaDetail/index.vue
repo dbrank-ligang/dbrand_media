@@ -53,18 +53,20 @@
         </div>
         <div class="mediaSource" style="margin-top: 20px">
           <div class="mediaSource_tit">[作为媒体源]</div>
-          <div class="mediaSource_listBox">
+          <div class="mediaSource_listBox mediaSource_listBox1">
             <div class="mediaSource_listRow" v-for="(item, i) in mediaSourceArr" :key="item.name">
-              <div class="mediaSource_rowTit">[{{ item.name }}]</div>
+              <div class="mediaSource_rowTit" v-if="item.name !== '不分平台'">[{{ item.name }}]</div>
+              <div class="mediaSource_rowTit" v-else></div>
+
               <div class="mediaSource_rowCon">
                 <div v-for="mediaItem in item.data" :key="mediaItem.name">
                   <div
-                    v-if="mediaItem.data.length > 0"
+                    v-if="mediaItem.data.length > 0 || mediaItem.name === '不分平台'"
                     @click="mediaSourceItemClick(mediaItem, i)"
                     style="cursor: pointer"
                     :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
                   >
-                    {{ mediaItem.name }}
+                    {{ mediaItem.name !== "不分平台" ? mediaItem.name : `(${mediaItem.name})` }}
                   </div>
                   <div v-else style="color: #bbb">{{ mediaItem.name }}</div>
                 </div>
@@ -81,7 +83,26 @@
           </div>
         </div>
 
-        <div class="mediaSource" style="margin-top: 20px">
+        <div v-if="platformArr.length > 0" class="mediaSource mediaSource1" style="margin-top: 20px">
+          <div class="mediaSource_tit">[作为发布平台]</div>
+          <div class="mediaSource_listBox">
+            <div class="mediaSource_listRow">
+              <div class="mediaSource_rowCon">
+                <div
+                  v-for="(item, index) in platformArr"
+                  :key="item.id"
+                  @click="platformClick(index, item)"
+                  style="cursor: pointer"
+                  :class="{ activeNumber: activePlatformIndex == index }"
+                >
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="isShow" class="mediaSource" style="margin-top: 20px">
           <div class="mediaSource_tit">[账号列表]</div>
           <div class="mediaSource_listBox">
             <div class="mediaSource_listRow">
@@ -100,7 +121,7 @@
           </div>
         </div>
 
-        <div class="numberDetailBox" style="margin-top: 20px">
+        <div v-if="isShow" class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号详情]</div>
           <el-row :gutter="20" style="padding: 15px 0 0px 15px">
             <el-col class="numberDetailBox_Row" :span="12" v-for="item in Object.keys(numberDetailObj?.extendFields)" :key="item">
@@ -116,7 +137,7 @@
           </div> -->
         </div>
 
-        <div class="numberDetailBox" style="margin-top: 20px">
+        <div v-if="isShow" class="numberDetailBox" style="margin-top: 20px">
           <div class="numberDetailBox_tit">[账号标签]</div>
           <div style="padding: 15px 0 0px 15px">
             <div class="numberDetailBox_Row">
@@ -150,7 +171,7 @@
               end-placeholder="结束时间"
               size="small"
               value-format="X"
-              @change="changeDate"
+              @change="getAarticlesList"
               :disabled-date="disabledDateFun"
             />
           </div>
@@ -177,7 +198,7 @@
 <script setup lang="ts" name="mediaDetail">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { mediaNavApi, accountListApi, accountApi, articlesApi } from "@/api/modules/media";
+import { mediaNavApi, accountListApi, accountApi, articlesApi, platformApi } from "@/api/modules/media";
 import { isArray } from "@/utils/is";
 import { disabledDateFun } from "@/utils";
 import moment from "moment";
@@ -195,11 +216,13 @@ const oneLevelObj = ref({
   subUnionMediaList: []
 } as any);
 let activeMediaSourceIndex = ref(0); // 媒体源，默认选中第一个
+const activePlatformIndex = ref(-1); // 账号列表，默认选中第一个
 const activeNumberIndex = ref(0); // 账号列表，默认选中第一个
 const accountId = ref(null); // 账号列表选中的id
 const oneName = ref(""); // 一级选中的
 const twoName = ref(""); // 二级选中的
 const threeName = ref(""); // 三级选中的
+const subUnionIdParams = ref(""); // 左侧导航栏的id
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
 // 获取上周周日
@@ -215,7 +238,10 @@ const defaultObj = ref({
 
 //媒体源、账号列表
 const mediaSourceArr = ref([] as any);
+let platformArr = ref([] as any); //作为发布平台列表
 let numberArr = ref([] as any); //账号列表
+const isShow = ref(true); //媒体源选择“不分平台”或者选择【作为发布平台】隐藏：账号列表、账号详情、账号标签
+
 // 账号详情、账号标签
 let numberDetailObj = ref({
   extendFields: {},
@@ -230,32 +256,57 @@ const oneLevelActiveId = ref(); // 左侧列表 选中的id
 const oneLevelSelectObj = ref(); // 左侧选中的obj
 // // 左侧列表点击事件
 function oneLevelClick(item) {
+  subUnionIdParams.value = item.subUnionId;
   oneLevelActiveId.value = item.subUnionId;
   getMdiaSourceArr({ subUnionId: item.subUnionId }); //获取媒体源、账号列表
+  getPlatformApi({ subUnionId: item.subUnionId }); // 获取作为发布平台
+  getAarticlesList({ accountId: null, publishPlatform: null }); // 获取内容列表
   console.log("一级菜单栏选中的：", item);
   oneName.value = item.subUnionName;
   oneLevelSelectObj.value = item;
 }
 // 切换媒体源
 function mediaSourceItemClick(mediaItem, i) {
+  activePlatformIndex.value = -1; // 作为发布平台取消选中
   activeNumberIndex.value = 0;
   activeMediaSourceIndex.value = i + mediaItem.name; // 点击时更新当前活动索引
   getAccountList(mediaItem);
   twoName.value = mediaItem.name;
-  // console.log(numberArr.value);
+  if (mediaItem.name === "不分平台") {
+    isShow.value = false;
+    twoName.value = "全部相关内容";
+    // threeName.value = ""; // 清空第三个name
+    getAarticlesList({ accountId: null, publishPlatform: "不分平台" }); // 获取内容列表
+  } else {
+    isShow.value = true;
+  }
+}
+//切换作为发布平台
+function platformClick(i, item) {
+  console.log(item, i);
+  isShow.value = false;
+  activeMediaSourceIndex.value = -1; // 作为媒体源取消选中
+  activePlatformIndex.value = i;
+  twoName.value = item;
+  threeName.value = ""; // 选中账号的name
+  getAarticlesList({ accountId: null, publishPlatform: item }); // 获取内容列表
+  // activeMediaSourceIndex.value = i + item; // 点击时更新当前活动索引
+  // activeNumberIndex.value = 0;
+  // getAccountList(mediaItem);
 }
 // 点击账号
 function accountClick(index: any, item: any) {
   activeNumberIndex.value = index; // 点击时更新当前
   threeName.value = item.accountName; // 选中账号的name
   accountId.value = item.id; // 选中账号的id
-  changeDate();
+  // changeDate();
   getAccountObj(item.id);
-  getAarticlesList(); // 调内容列表接口
+  getAarticlesList({ accountId: accountId.value, publishPlatform: null }); // 获取内容列表
 }
-const changeDate = () => {
-  getAarticlesList();
-};
+// change时间 获取内容列表
+// const changeDate = () => {
+// getAarticlesList();
+// };
 // 时间戳转换为日期的函数
 const timestampToDate = timestamp => {
   let date = new Date(timestamp * 1000); // 确保时间戳是以毫秒为单位
@@ -348,17 +399,22 @@ const getAccountObj = async (params: any) => {
   numberDetailObj.value = data as any;
 };
 // 查询账号详情（根据账号列表选中的id）
-const getAarticlesList = async () => {
-  if (accountId.value) {
-    const { data } = await articlesApi({
-      startTime: dateArr.value[0],
-      endTime: dateArr.value[1],
-      accountId: accountId.value
-    });
-    articlesArr.value = data as any;
-  }
+const getAarticlesList = async (params: any) => {
+  // if (accountId.value) {
+  const { data } = await articlesApi({
+    startTime: dateArr.value[0],
+    endTime: dateArr.value[1],
+    subUnionId: subUnionIdParams.value,
+    ...params
+  });
+  articlesArr.value = data as any;
+  // }
 };
-
+// 作为发布品台
+const getPlatformApi = async (params: any) => {
+  const { data } = await platformApi(params);
+  platformArr.value = data as any;
+};
 onMounted(() => {
   const myParam = route.query;
   defaultObj.value = myParam;

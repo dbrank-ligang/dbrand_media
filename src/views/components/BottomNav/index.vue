@@ -1,5 +1,4 @@
 <template>
-  <!-- 头部媒体覆盖图 -->
   <div class="footer">
     <ul class="footMain">
       <li class="footItem">

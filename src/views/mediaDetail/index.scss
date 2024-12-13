@@ -96,6 +96,7 @@
     height: 100%;
     margin-left: 20px;
     overflow: auto;
+
     .mediaSource {
       width: 100%;
       height: auto;
@@ -124,6 +125,22 @@
             }
           }
         }
+       
+      }
+    }
+    .mediaSource_listBox1 {
+      margin-top: -36px;
+      .mediaSource_listRow:nth-child(1) {
+        margin-left: 72px;
+      }
+    }
+    .mediaSource1 {
+      display: flex;
+      .mediaSource_listBox {
+        padding: 6px 15px 0;
+      }
+      .mediaSource_listRow {
+        margin-bottom: 0px !important;
       }
     }
     .numberDetailBox {

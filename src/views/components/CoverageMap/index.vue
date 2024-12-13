@@ -199,7 +199,7 @@ const scrollRight = index => {
 };
 
 const mediaClick = item => {
-  const params = { mediaId: item.mediaId, subUnionId: item.subMediaId, accountName: item.mediaName, platform: item.platform };
+  const params = { mediaId: item.mediaId, subUnionId: item.subMediaId, accountName: item.mediaName, platform: "不分平台" };
   getMediaNavApi(params);
 };
 

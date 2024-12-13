@@ -89,3 +89,7 @@ export const searchMediaTypeApi = param => {
 export const addMediaNotExistApi = param => {
   return http.post(`/media/addMediaNotExist`, param, { loading: false });
 };
+// 媒体详情-作为发布平台
+export const platformApi = param => {
+  return http.get(`/media/publishPlatform`, param, { loading: false });
+};

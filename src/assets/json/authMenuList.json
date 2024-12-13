@@ -84,8 +84,7 @@
       "component": "/negative/index",
       "meta": {
         "icon": "",
-        "title": "负面曝光",
-        "isLink": "",
+        "title": "负面曝光", 
         "isHide": true,
         "isFull": false,
         "isAffix": false,
@@ -93,39 +92,9 @@
         "activeMenu":"/negative/index",
         "isDisabled": false
       }
-    },
-    {
-      "path": "/mediaQ/index",
-      "name": "mediaQ",
-      "component": "/mediaQ/index",
-      "meta": {
-        "icon": "",
-        "title": "其他页面",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "activeMenu":"/mediaQ/index",
-        "isDisabled": false
-      }
-    },
-    {
-      "path": "/mediaQ2/index",
-      "name": "mediaQ2",
-      "component": "/mediaQ2/index",
-      "meta": {
-        "icon": "",
-        "title": "其他页面2",
-        "isLink": "",
-        "isHide": false,
-        "isFull": false,
-        "isAffix": false,
-        "isKeepAlive": true,
-        "activeMenu":"/mediaQ2/index",
-        "isDisabled": false
-      }
     }
   ],
   "msg": "成功"
 }
+
+
