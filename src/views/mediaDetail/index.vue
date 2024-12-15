@@ -260,7 +260,7 @@ function oneLevelClick(item) {
   oneLevelActiveId.value = item.subUnionId;
   getMdiaSourceArr({ subUnionId: item.subUnionId }); //获取媒体源、账号列表
   getPlatformApi({ subUnionId: item.subUnionId }); // 获取作为发布平台
-  getAarticlesList({ accountId: null, publishPlatform: null }); // 获取内容列表
+  // getAarticlesList({ accountId: null, publishPlatform: null }); // 获取内容列表
   console.log("一级菜单栏选中的：", item);
   oneName.value = item.subUnionName;
   oneLevelSelectObj.value = item;
@@ -275,7 +275,7 @@ function mediaSourceItemClick(mediaItem, i) {
   if (mediaItem.name === "不分平台") {
     isShow.value = false;
     twoName.value = "全部相关内容";
-    // threeName.value = ""; // 清空第三个name
+    threeName.value = ""; // 清空第三个name
     getAarticlesList({ accountId: null, publishPlatform: "不分平台" }); // 获取内容列表
   } else {
     isShow.value = true;
