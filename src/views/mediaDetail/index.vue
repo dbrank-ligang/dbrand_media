@@ -61,7 +61,7 @@
               <div class="mediaSource_rowCon">
                 <div v-for="mediaItem in item.data" :key="mediaItem.name">
                   <div
-                    v-if="mediaItem.data.length > 0 || mediaItem.name === '不分平台'"
+                    v-if="mediaItem.exist === 1"
                     @click="mediaSourceItemClick(mediaItem, i)"
                     style="cursor: pointer"
                     :class="{ activeMedia: activeMediaSourceIndex === i + mediaItem.name }"
@@ -171,7 +171,7 @@
               end-placeholder="结束时间"
               size="small"
               value-format="X"
-              @change="getAarticlesList"
+              @change="changeDate"
               :disabled-date="disabledDateFun"
             />
           </div>
@@ -223,6 +223,8 @@ const oneName = ref(""); // 一级选中的
 const twoName = ref(""); // 二级选中的
 const threeName = ref(""); // 三级选中的
 const subUnionIdParams = ref(""); // 左侧导航栏的id
+const publishPlatformParams = ref("" as any); //不分平台、作为发布平台参数
+
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
 // 获取上周周日
@@ -241,7 +243,6 @@ const mediaSourceArr = ref([] as any);
 let platformArr = ref([] as any); //作为发布平台列表
 let numberArr = ref([] as any); //账号列表
 const isShow = ref(true); //媒体源选择“不分平台”或者选择【作为发布平台】隐藏：账号列表、账号详情、账号标签
-
 // 账号详情、账号标签
 let numberDetailObj = ref({
   extendFields: {},
@@ -258,7 +259,7 @@ const oneLevelSelectObj = ref(); // 左侧选中的obj
 function oneLevelClick(item) {
   subUnionIdParams.value = item.subUnionId;
   oneLevelActiveId.value = item.subUnionId;
-  getMdiaSourceArr({ subUnionId: item.subUnionId }); //获取媒体源、账号列表
+  getMdiaSourceArr(""); //获取媒体源、账号列表
   getPlatformApi({ subUnionId: item.subUnionId }); // 获取作为发布平台
   // getAarticlesList({ accountId: null, publishPlatform: null }); // 获取内容列表
   console.log("一级菜单栏选中的：", item);
@@ -267,17 +268,20 @@ function oneLevelClick(item) {
 }
 // 切换媒体源
 function mediaSourceItemClick(mediaItem, i) {
+  console.log(mediaItem);
   activePlatformIndex.value = -1; // 作为发布平台取消选中
   activeNumberIndex.value = 0;
   activeMediaSourceIndex.value = i + mediaItem.name; // 点击时更新当前活动索引
   getAccountList(mediaItem);
   twoName.value = mediaItem.name;
-  if (mediaItem.name === "不分平台") {
+  if (mediaItem.exist === 1 && mediaItem.data.length <= 0) {
     isShow.value = false;
-    twoName.value = "全部相关内容";
+    twoName.value = mediaItem.name === "不分平台" ? "全部相关内容" : mediaItem.name;
     threeName.value = ""; // 清空第三个name
-    getAarticlesList({ accountId: null, publishPlatform: "不分平台" }); // 获取内容列表
+    getAarticlesList({ accountId: null, publishPlatform: mediaItem.name }); // 获取内容列表
+    publishPlatformParams.value = mediaItem.name; //作为发布平台参数
   } else {
+    publishPlatformParams.value = null;
     isShow.value = true;
   }
 }
@@ -290,6 +294,7 @@ function platformClick(i, item) {
   twoName.value = item;
   threeName.value = ""; // 选中账号的name
   getAarticlesList({ accountId: null, publishPlatform: item }); // 获取内容列表
+  publishPlatformParams.value = item; // 作为发布平台参数
   // activeMediaSourceIndex.value = i + item; // 点击时更新当前活动索引
   // activeNumberIndex.value = 0;
   // getAccountList(mediaItem);
@@ -304,9 +309,14 @@ function accountClick(index: any, item: any) {
   getAarticlesList({ accountId: accountId.value, publishPlatform: null }); // 获取内容列表
 }
 // change时间 获取内容列表
-// const changeDate = () => {
-// getAarticlesList();
-// };
+const changeDate = () => {
+  if (publishPlatformParams.value) {
+    getAarticlesList({ accountId: null, publishPlatform: publishPlatformParams.value });
+  } else {
+    getAarticlesList({ accountId: accountId.value, publishPlatform: null });
+  }
+  getMdiaSourceArr("onlyData"); //获取媒体源、账号列表
+};
 // 时间戳转换为日期的函数
 const timestampToDate = timestamp => {
   let date = new Date(timestamp * 1000); // 确保时间戳是以毫秒为单位
@@ -343,36 +353,42 @@ const getOneLevelArr = async (params: any) => {
 };
 
 // 获取媒体源列表
-const getMdiaSourceArr = async (params: any) => {
-  const { data } = await accountListApi(params);
+const getMdiaSourceArr = async (onlyData: any | null) => {
+  const { data } = await accountListApi({
+    startTime: dateArr.value[0],
+    endTime: dateArr.value[1],
+    subUnionId: subUnionIdParams.value
+  });
   mediaSourceArr.value = data as any;
+  //onlyData: 只请求数据
+  if (!onlyData) {
+    let mediaSourceItem = {};
+    let selectIndex = 0;
 
-  let mediaSourceItem = {};
-  let selectIndex = 0;
-
-  if (defaultObj.value?.platform) {
-    // 账号、媒体查询页 跳进来后，找到对应的item
-    for (let i = 0; i < mediaSourceArr.value.length; i++) {
-      let tempData = mediaSourceArr.value[i];
-      for (let j = 0; j < tempData.data.length; j++) {
-        // console.log(tempData.data[j]);
-        if (tempData.data[j].name === defaultObj.value.platform) {
-          mediaSourceItem = tempData.data[j];
-          selectIndex = i;
-          defaultObj.value.platform = null;
+    if (defaultObj.value?.platform) {
+      // 账号、媒体查询页 跳进来后，找到对应的item
+      for (let i = 0; i < mediaSourceArr.value.length; i++) {
+        let tempData = mediaSourceArr.value[i];
+        for (let j = 0; j < tempData.data.length; j++) {
+          // console.log(tempData.data[j]);
+          if (tempData.data[j].name === defaultObj.value.platform) {
+            mediaSourceItem = tempData.data[j];
+            selectIndex = i;
+            defaultObj.value.platform = null;
+          }
+        }
+      }
+    } else {
+      if (isArray(mediaSourceArr.value) && mediaSourceArr.value.length > 0) {
+        selectIndex = 0;
+        let obj = mediaSourceArr.value[0];
+        if (isArray(obj.data) && obj.data.length > 0) {
+          mediaSourceItem = obj.data[0];
         }
       }
     }
-  } else {
-    if (isArray(mediaSourceArr.value) && mediaSourceArr.value.length > 0) {
-      selectIndex = 0;
-      let obj = mediaSourceArr.value[0];
-      if (isArray(obj.data) && obj.data.length > 0) {
-        mediaSourceItem = obj.data[0];
-      }
-    }
+    mediaSourceItemClick(mediaSourceItem, selectIndex); // 传入点击的item 及 第几行
   }
-  mediaSourceItemClick(mediaSourceItem, selectIndex); // 传入点击的item 及 第几行
 };
 
 // 获取账户列表
