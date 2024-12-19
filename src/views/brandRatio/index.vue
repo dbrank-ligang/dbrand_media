@@ -164,6 +164,7 @@ const handleCustomCategoryClick = function () {
     compareBrandId: compareBrandId,
     type: "all"
   });
+  getOverview({ ...paramsObj.value });
 };
 provide("handleCustomCategoryClick", handleCustomCategoryClick);
 

@@ -115,8 +115,10 @@ import router from "@/routers";
 import { NEGATIVE } from "@/config";
 import { disabledDateFun } from "@/utils";
 
+// 自选类别组件修改后  更新总览和覆盖图
 const handleCustomCategoryClick = function () {
   getFugaitu({ ...paramsObj.value, type: "all" });
+  getOverview({ ...paramsObj.value });
 };
 provide("handleCustomCategoryClick", handleCustomCategoryClick);
 

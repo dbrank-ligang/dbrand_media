@@ -54,7 +54,7 @@
 // export default {
 
 // }
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, provide } from "vue";
 import CoverageMap from "./../components/CoverageMap/index.vue";
 import BottomNav from "./../components/BottomNav/index.vue";
 // import moment from "moment";
@@ -90,6 +90,13 @@ const overviewList = ref({
   order: [],
   orderList: []
 } as any);
+
+// 自选类别组件修改后  更新总览和覆盖图
+const handleCustomCategoryClick = function () {
+  getFugaitu({ ...paramsObj.value, type: "all" });
+  getOverview({ ...paramsObj.value });
+};
+provide("handleCustomCategoryClick", handleCustomCategoryClick);
 
 // 时间搜索
 const changeTime = () => {

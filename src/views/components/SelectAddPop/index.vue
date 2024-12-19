@@ -21,7 +21,7 @@
                   v-show="item !== null"
                   :label="item"
                   v-model="data.check"
-                  change
+                  @change="handleChange(node)"
                 />
                 <span> </span>
               </span>
@@ -175,6 +175,24 @@ function arraysEqual(arr1, arr2) {
     return item.check === sortedArr2[index].check; // 根据需要的属性进行比较
   });
 }
+
+// 父级操作联动子集
+const handleChange = node => {
+  // 遍历外层数组
+  topListArr.value.forEach((item: any) => {
+    // 检查当前对象的id是否等于4
+    if (item.id === node.data.id) {
+      // 获取当前对象的check值
+      const parentCheck = item.check;
+
+      // 遍历child数组
+      item.child.forEach(child => {
+        // 将父对象的check值赋给子对象的check属性
+        child.check = parentCheck;
+      });
+    }
+  });
+};
 
 // 取出二维数组中check等于true的id 拼成数组
 const topDlattenAndCheck = (items: any[]) => {

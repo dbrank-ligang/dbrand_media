@@ -272,22 +272,25 @@ function mediaSourceItemClick(mediaItem, i) {
   activePlatformIndex.value = -1; // 作为发布平台取消选中
   activeNumberIndex.value = 0;
   activeMediaSourceIndex.value = i + mediaItem.name; // 点击时更新当前活动索引
-  getAccountList(mediaItem);
   twoName.value = mediaItem.name;
-  if (mediaItem.exist === 1 && mediaItem.data.length <= 0) {
-    isShow.value = false;
-    twoName.value = mediaItem.name === "不分平台" ? "全部相关内容" : mediaItem.name;
-    threeName.value = ""; // 清空第三个name
-    getAarticlesList({ accountId: null, publishPlatform: mediaItem.name }); // 获取内容列表
-    publishPlatformParams.value = mediaItem.name; //作为发布平台参数
-  } else {
-    publishPlatformParams.value = null;
-    isShow.value = true;
-  }
+  getAccountList(mediaItem);
+  setTimeout(() => {
+    if (mediaItem.exist === 1 && !(mediaItem.data.length > 0)) {
+      // 不分平台和其他平台
+      isShow.value = false;
+      twoName.value = mediaItem.name === "不分平台" ? "全部相关内容" : mediaItem.name;
+      threeName.value = ""; // 清空第三个name
+      getAarticlesList({ accountId: null, publishPlatform: mediaItem.name === "不分平台" ? null : mediaItem.name }); // 获取内容列表
+      publishPlatformParams.value = mediaItem.name; //作为发布平台参数
+    } else {
+      publishPlatformParams.value = null;
+      isShow.value = true;
+    }
+  }, 500);
 }
 //切换作为发布平台
 function platformClick(i, item) {
-  console.log(item, i);
+  // console.log(item, i);
   isShow.value = false;
   activeMediaSourceIndex.value = -1; // 作为媒体源取消选中
   activePlatformIndex.value = i;
@@ -311,7 +314,10 @@ function accountClick(index: any, item: any) {
 // change时间 获取内容列表
 const changeDate = () => {
   if (publishPlatformParams.value) {
-    getAarticlesList({ accountId: null, publishPlatform: publishPlatformParams.value });
+    getAarticlesList({
+      accountId: null,
+      publishPlatform: publishPlatformParams.value === "不分平台" ? null : publishPlatformParams.value
+    });
   } else {
     getAarticlesList({ accountId: accountId.value, publishPlatform: null });
   }
