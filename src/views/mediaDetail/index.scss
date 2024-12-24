@@ -215,3 +215,11 @@
   bottom: 25px;
   float: inline-end;
 }
+
+.aStyle {
+  color: #000;
+  &:hover {
+    text-decoration: underline;
+    // color: aqua;
+  }
+}

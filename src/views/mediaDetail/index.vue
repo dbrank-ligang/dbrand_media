@@ -91,11 +91,14 @@
                 <div
                   v-for="(item, index) in platformArr"
                   :key="item.id"
-                  @click="platformClick(index, item)"
+                  @click="platformClick(index, item.name)"
                   style="cursor: pointer"
                   :class="{ activeNumber: activePlatformIndex == index }"
                 >
-                  {{ item }}
+                  <span v-if="item.type === 'website'">
+                    <a class="aStyle" :href="item.link" target="_blank" title="进入官网">官网：</a>{{ item.name }}
+                  </span>
+                  <span v-else>客户端：{{ item.name }}</span>
                 </div>
               </div>
             </div>
@@ -224,7 +227,6 @@ const twoName = ref(""); // 二级选中的
 const threeName = ref(""); // 三级选中的
 const subUnionIdParams = ref(""); // 左侧导航栏的id
 const platformParams = ref("" as any); //不分平台、其他平台参数
-const publishPlatformParams = ref("" as any); //作为发布平台参数
 
 // 获取上周周一
 const dateStart = moment().subtract(1, "week").startOf("week").add(1, "day").format("X");
@@ -262,7 +264,6 @@ function oneLevelClick(item) {
   oneLevelActiveId.value = item.subUnionId;
   getMdiaSourceArr(""); //获取媒体源、账号列表
   getPlatformApi({ subUnionId: item.subUnionId }); // 获取作为发布平台
-  // getAarticlesList({ accountId: null, publishPlatform: null }); // 获取内容列表
   // console.log("一级菜单栏选中的：", item);
   oneName.value = item.subUnionName;
   oneLevelSelectObj.value = item;
@@ -271,7 +272,6 @@ function oneLevelClick(item) {
 function mediaSourceItemClick(mediaItem, i) {
   // console.log(mediaItem);
   accountId.value = null; // 清空账号id
-  publishPlatformParams.value = null; // 清空作为发布平台参数
   activePlatformIndex.value = -1; // 作为发布平台取消选中
   activeNumberIndex.value = 0;
   activeMediaSourceIndex.value = i + mediaItem.name; // 点击时更新当前活动索引
@@ -284,7 +284,7 @@ function mediaSourceItemClick(mediaItem, i) {
       twoName.value = mediaItem.name === "不分平台" ? "全部相关内容" : mediaItem.name;
       threeName.value = ""; // 清空第三个name
       platformParams.value = mediaItem.name === "不分平台" ? null : mediaItem.name; //作为发布平台参数
-      getAarticlesList({ accountId: null, platform: platformParams.value, publishPlatform: null }); // 获取内容列表
+      getAarticlesList({ accountId: null, platform: platformParams.value }); // 获取内容列表
     } else {
       platformParams.value = null;
       isShow.value = true;
@@ -300,13 +300,8 @@ function platformClick(i, item) {
   twoName.value = item;
   threeName.value = ""; // 选中账号的name
   accountId.value = null; // 清空账号id
-  platformParams.value = null; // 清空平台
-  publishPlatformParams.value = item; // 作为发布平台参数
-  getAarticlesList({ accountId: null, platform: null, publishPlatform: publishPlatformParams.value }); // 获取内容列表
-
-  // activeMediaSourceIndex.value = i + item; // 点击时更新当前活动索引
-  // activeNumberIndex.value = 0;
-  // getAccountList(mediaItem);
+  platformParams.value = item; // 清空平台
+  getAarticlesList({ accountId: null, platform: platformParams.value }); // 获取内容列表
 }
 // 点击账号
 function accountClick(index: any, item: any) {
@@ -314,10 +309,9 @@ function accountClick(index: any, item: any) {
   threeName.value = item.accountName; // 选中账号的name
   accountId.value = item.id; // 选中账号的id
   platformParams.value = null; // 清空平台
-  publishPlatformParams.value = null; // 作为发布平台参数
   // changeDate();
   getAccountObj(item.id);
-  getAarticlesList({ accountId: accountId.value, platform: null, publishPlatform: null }); // 获取内容列表
+  getAarticlesList({ accountId: accountId.value, platform: null }); // 获取内容列表
 }
 // change时间 获取内容列表
 const changeDate = () => {
@@ -325,20 +319,12 @@ const changeDate = () => {
   if (platformParams.value) {
     paramsObj = {
       accountId: null,
-      platform: platformParams.value,
-      publishPlatform: null
-    };
-  } else if (publishPlatformParams.value) {
-    paramsObj = {
-      accountId: null,
-      platform: null,
-      publishPlatform: publishPlatformParams.value
+      platform: platformParams.value
     };
   } else {
     paramsObj = {
       accountId: accountId.value,
-      platform: null,
-      publishPlatform: null
+      platform: null
     };
   }
   getAarticlesList(paramsObj);
@@ -443,7 +429,6 @@ const getAccountObj = async (params: any) => {
 };
 // 查询账号详情（根据账号列表选中的id）
 const getAarticlesList = async (params: any) => {
-  // if (accountId.value) {
   const { data } = await articlesApi({
     startTime: dateArr.value[0],
     endTime: dateArr.value[1],
@@ -451,7 +436,6 @@ const getAarticlesList = async (params: any) => {
     ...params
   });
   articlesArr.value = data as any;
-  // }
 };
 // 作为发布品台
 const getPlatformApi = async (params: any) => {
