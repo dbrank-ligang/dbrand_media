@@ -217,9 +217,10 @@
 }
 
 .aStyle {
-  color: #000;
+  color: #409eff;
+  cursor: pointer;
   &:hover {
-    text-decoration: underline;
+    // text-decoration: underline;
     // color: aqua;
   }
 }

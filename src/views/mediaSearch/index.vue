@@ -25,7 +25,7 @@
     <div class="hoistryBox">
       <div class="listTit">搜索推荐</div>
       <div class="listCon">
-        <div v-for="item in tagListData" :key="item.mediaId" @click="historyChange(item)">
+        <div v-for="item in tagListData" :key="item.mediaId" @click="suggestChange(item)">
           <span>{{ item.mediaName }}</span>
         </div>
       </div>
@@ -49,10 +49,26 @@ const inputValue = ref("");
 const searchData = ref([] as any);
 const historyListData = ref([] as any); // 搜索历史列表
 const tagListData = ref([] as any);
+//  点击搜索历史
 const historyChange = item => {
-  // jumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
-  getMediaNavApi({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName, platform: item.platform });
+  onlyJumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName, platform: item.platform });
 };
+// 点击搜索推荐
+const suggestChange = item => {
+  onlyJumpDetail({ mediaId: item.mediaId, subUnionId: item.subUnionId, accountName: item.accountName });
+};
+
+// 仅跳转详情页
+function onlyJumpDetail(urlQuery: any) {
+  let routerUrl = router.resolve({
+    path: MEDIADETAIL,
+    query: {
+      ...urlQuery
+    }
+  });
+  window.open(routerUrl.href, "_blank");
+  inputValue.value = "";
+}
 // 获取搜索历史列表
 const getSearchMediaHistory = async () => {
   const { data } = await searchMediaHistoryApi();
@@ -66,7 +82,9 @@ const getDictListJson = async () => {
 // 添加搜索历史
 const getAddMediaHistory = async (params: any) => {
   addMediaHistoryApi(params);
-  getSearchMediaHistory();
+  setTimeout(() => {
+    getSearchMediaHistory();
+  }, 500);
 };
 
 // --------------------搜索逻辑----------------------------
@@ -81,6 +99,7 @@ const querySearch = async (queryString: string, cb: any) => {
 // 第一步：先判断搜索的内容是否存在搜索历史中，若存在不进行添加
 // 第二部：进行跳转；
 function jumpDetail(urlQuery: any) {
+  // 判断当前搜索历史是否存在； 不存在进行新增
   const isHaveMediaId = historyListData.value.some(items => items.showText === urlQuery.showText);
   if (!isHaveMediaId) {
     getAddMediaHistory(urlQuery);

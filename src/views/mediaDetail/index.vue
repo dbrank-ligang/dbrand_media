@@ -91,13 +91,14 @@
                 <div
                   v-for="(item, index) in platformArr"
                   :key="item.id"
-                  @click="platformClick(index, item.name)"
+                  @click="platformClick(index, item)"
                   style="cursor: pointer"
                   :class="{ activeNumber: activePlatformIndex == index }"
                 >
-                  <span v-if="item.type === 'website'">
-                    <a class="aStyle" :href="item.link" target="_blank" title="进入官网">官网：</a>{{ item.name }}
-                  </span>
+                  <!-- <span v-if="item.type === 'website'">
+                    官网：<a class="aStyle" :href="item.link" target="_blank" title="进入官网">{{ item.name }}</a>
+                  </span> -->
+                  <span v-if="item.type === 'website'"> 官网：{{ item.name }} </span>
                   <span v-else>客户端：{{ item.name }}</span>
                 </div>
               </div>
@@ -163,7 +164,14 @@
         </div>
 
         <div class="contentListBox" style="margin-top: 20px">
-          <div class="contentListBox_tit">{{ oneName }} -（{{ twoName }}）{{ threeName }}</div>
+          <div class="contentListBox_tit">
+            {{ oneName }} -
+            <span v-if="twoNameTypeObj.type === 'website'">
+              <a class="aStyle" :href="twoNameTypeObj.link" target="_blank" title="进入官网"> （{{ twoName }}） </a>
+            </span>
+            <span v-else>（{{ twoName }}）</span>
+            {{ threeName }}
+          </div>
           <div style="margin-top: 30px; font-size: 14px">
             [内容列表]
             <el-date-picker
@@ -222,9 +230,10 @@ let activeMediaSourceIndex = ref(0); // 媒体源，默认选中第一个
 const activePlatformIndex = ref(-1); // 账号列表，默认选中第一个
 const activeNumberIndex = ref(0); // 账号列表，默认选中第一个
 const accountId = ref(null); // 账号列表选中的id
-const oneName = ref(""); // 一级选中的
-const twoName = ref(""); // 二级选中的
-const threeName = ref(""); // 三级选中的
+const oneName = ref(""); // 一级选中的name
+const twoName = ref(""); // 二级选中的name
+const twoNameTypeObj = ref({} as any); // 二级选中的类型
+const threeName = ref(""); // 三级选中的name
 const subUnionIdParams = ref(""); // 左侧导航栏的id
 const platformParams = ref("" as any); //不分平台、其他平台参数
 
@@ -260,6 +269,7 @@ const oneLevelActiveId = ref(); // 左侧列表 选中的id
 const oneLevelSelectObj = ref(); // 左侧选中的obj
 // // 左侧列表点击事件
 function oneLevelClick(item) {
+  twoNameTypeObj.value = {}; // 清空作为发布平台类型
   subUnionIdParams.value = item.subUnionId;
   oneLevelActiveId.value = item.subUnionId;
   getMdiaSourceArr(""); //获取媒体源、账号列表
@@ -271,6 +281,7 @@ function oneLevelClick(item) {
 // 切换媒体源
 function mediaSourceItemClick(mediaItem, i) {
   // console.log(mediaItem);
+  twoNameTypeObj.value = {}; // 清空作为发布平台类型
   accountId.value = null; // 清空账号id
   activePlatformIndex.value = -1; // 作为发布平台取消选中
   activeNumberIndex.value = 0;
@@ -293,18 +304,19 @@ function mediaSourceItemClick(mediaItem, i) {
 }
 //切换作为发布平台
 function platformClick(i, item) {
-  // console.log(item, i);
+  twoNameTypeObj.value = item;
   isShow.value = false;
   activeMediaSourceIndex.value = -1; // 作为媒体源取消选中
   activePlatformIndex.value = i;
-  twoName.value = item;
+  twoName.value = item.name;
   threeName.value = ""; // 选中账号的name
   accountId.value = null; // 清空账号id
-  platformParams.value = item; // 清空平台
+  platformParams.value = item.name; // 清空平台
   getAarticlesList({ accountId: null, platform: platformParams.value }); // 获取内容列表
 }
 // 点击账号
 function accountClick(index: any, item: any) {
+  twoNameTypeObj.value = {}; // 清空作为发布平台类型
   activeNumberIndex.value = index; // 点击时更新当前
   threeName.value = item.accountName; // 选中账号的name
   accountId.value = item.id; // 选中账号的id
