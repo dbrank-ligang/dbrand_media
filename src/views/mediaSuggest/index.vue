@@ -181,6 +181,7 @@
             <template #default="scope"> {{ numFilter(scope.row.probability) }} </template>
           </el-table-column>
         </el-table>
+        <!-- file deepcode ignore VuePropsDeclAssignment: <please specify a reason of ignoring this> -->
         <el-button type="info" size="small" @click="handleExpandSell({ type: 2 })">
           {{ isExpandInfer ? "- 收起" : " + 更多" }}
         </el-button>
