@@ -165,6 +165,7 @@ const scrollRefs = Array.from({ length: 2 }, () => ref(null));
 const getScrollRef = index => el => {
   if (el) {
     scrollRefs[index].value = el;
+    // 计算内容宽度，添加延时（代码已提交，未上线）
     setTimeout(() => {
       updateScrollStatus(index);
     }, 1000);
