@@ -106,7 +106,7 @@
 <script setup lang="ts" name="CoverageMap">
 import { mediaNavApi } from "@/api/modules/media";
 import { MEDIADETAIL } from "@/config";
-import { onUnmounted, reactive, ref, defineProps, onActivated } from "vue";
+import { onUnmounted, reactive, ref, defineProps, onActivated, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import SelectAddPop from "../SelectAddPop/index.vue";
 import { mixedSubstring } from "@/utils";
@@ -165,12 +165,15 @@ const scrollRefs = Array.from({ length: 2 }, () => ref(null));
 const getScrollRef = index => el => {
   if (el) {
     scrollRefs[index].value = el;
-    updateScrollStatus(index);
+    setTimeout(() => {
+      updateScrollStatus(index);
+    }, 1000);
   }
 };
 // 更新横向滚动状态
 const updateScrollStatus = index => {
   const scrollArea = scrollRefs[index].value;
+  console.log("scrollArea", (scrollArea as any).scrollWidth);
   if (scrollArea) {
     scrolls[index].scrollLeft = (scrollArea as any).scrollLeft;
     scrolls[index].clientWidth = (scrollArea as any).clientWidth;
@@ -227,16 +230,16 @@ function jumpDetail(urlQuery: any) {
   window.open(routerUrl.href, "_blank");
 }
 // 监听每个滚动区域的滚动事件
-// onMounted(() => {
-//   setTimeout(() => {
-//     scrollRefs.forEach((ref, index) => {
-//       if (ref.value) {
-//         (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
-//         updateScrollStatus(index);
-//       }
-//     });
-//   }, 1000);
-// });
+onMounted(() => {
+  setTimeout(() => {
+    scrollRefs.forEach((ref, index) => {
+      if (ref.value) {
+        (ref.value as any).addEventListener("scroll", () => updateScrollStatus(index));
+        updateScrollStatus(index);
+      }
+    });
+  }, 1000);
+});
 
 onActivated(() => {
   setTimeout(() => {
